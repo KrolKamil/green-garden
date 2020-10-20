@@ -4,7 +4,7 @@ import { Logger } from "winston";
 import { createConnection, ConnectionOptions } from "typeorm";
 import { ContainerDependencies } from "../container";
 import * as db from "../../config/db";
-import { UserModel } from "../app/features/users/models/user.model";
+import { UserBaseModel } from "../app/features/users/models/user-base.model";
 // MODELS_IMPORTS
 
 export async function registerDatabase(container: AwilixContainer, dependencies?: ContainerDependencies) {
@@ -17,7 +17,7 @@ export async function registerDatabase(container: AwilixContainer, dependencies?
   }
   container.register({
     dbConnection: awilix.asValue(dbConnection),
-    userRepository: awilix.asValue(dbConnection.getRepository(UserModel)),
+    userBaseRepository: awilix.asValue(dbConnection.getRepository(UserBaseModel)),
     // MODELS_SETUP
   });
 }

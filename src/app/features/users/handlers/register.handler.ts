@@ -1,11 +1,12 @@
 import { CommandHandler } from "../../../../shared/command-bus";
 import { REGISTER_COMMAND_TYPE, RegisterCommand } from "../commands/register.command";
-import { EventDispatcher } from "../../../../shared/event-dispatcher";
-import RegisterEvent from "../events/register.event";
+import { UserBaseRepository } from "../repositories/user-base.repository";
+import { HttpError } from "../../../../../src/errors/http.error";
+import { BAD_REQUEST } from "http-status-codes";
 
 
 export interface RegisterHandlerDependencies {
-  eventDispatcher: EventDispatcher;
+  userBaseRepository: UserBaseRepository;
 }
 
 export default class RegisterHandler implements CommandHandler<RegisterCommand> {
@@ -14,8 +15,14 @@ export default class RegisterHandler implements CommandHandler<RegisterCommand> 
   constructor(private dependencies: RegisterHandlerDependencies) {}
 
   async execute(command: RegisterCommand) {
-    // execute body
-    await this.dependencies.eventDispatcher.dispatch(new RegisterEvent(command))
+    const {userBaseRepository} = this.dependencies;
+    const {email, password, invite} = command.payload;
+
+    const existingUser = userBaseRepository.find({email});
+    if(existingUser)
+      throw new HttpError('Email is occupied', BAD_REQUEST);
+
+    // const hasedPassword = something(password);
 
     return {
       result: command

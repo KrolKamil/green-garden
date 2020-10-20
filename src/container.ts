@@ -15,6 +15,7 @@ import { registerCommandHandlers } from "./container/command-handlers";
 import { registerRouting } from "./container/routing";
 import { registerSubscribers } from "./container/subscribers";
 import { registerGraphQLDependencies } from "./container/graphql";
+import { registerRepositories } from "./container/repositories";
 
 loadEnvs();
 
@@ -38,6 +39,7 @@ export async function createContainer(dependencies?: ContainerDependencies): Pro
   await registerRouting(container);
   await registerGraphQLDependencies(container);
   await registerSubscribers(container);
+  await registerRepositories(container);
 
   container.register({
     app: awilix.asFunction(createApp).singleton(),

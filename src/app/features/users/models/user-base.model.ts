@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
 
-interface UserModelProps {
+interface UserBaseModelProps {
   id: string;
   email: string;
   password: string;
@@ -12,12 +12,12 @@ enum UserType {
 }
 
 @Entity({
-  name: "user"
+  name: "user_base"
 })
-export class UserModel {
+export class UserBaseModel {
 
-  public static create(data: UserModelProps): UserModel {
-    const entity = new UserModel();
+  public static create(data: Partial<UserBaseModelProps>): UserBaseModel {
+    const entity = new UserBaseModel();
     Object.assign(entity, data);
     return entity
   }
