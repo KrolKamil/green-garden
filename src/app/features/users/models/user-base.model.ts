@@ -1,12 +1,15 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, ManyToOne } from "typeorm";
+import { WorkspaceModel } from "../../workspace/models/workspace.model";
 
 interface UserBaseModelProps {
   id: string;
   email: string;
   password: string;
+  type: UserBaseType;
+  workspace: WorkspaceModel;
 }
 
-enum UserType {
+export enum UserBaseType {
   MANAGER = 'MANAGER',
   USER = 'USER'
 }
@@ -16,7 +19,7 @@ enum UserType {
 })
 export class UserBaseModel {
 
-  public static create(data: Partial<UserBaseModelProps>): UserBaseModel {
+  public static create(data: UserBaseModelProps): UserBaseModel {
     const entity = new UserBaseModel();
     Object.assign(entity, data);
     return entity
@@ -43,5 +46,8 @@ export class UserBaseModel {
   phone: string;
 
   @Column()
-  type: UserType;
+  type: UserBaseType;
+
+  @ManyToOne(() => WorkspaceModel)
+  workspace: WorkspaceModel
 }

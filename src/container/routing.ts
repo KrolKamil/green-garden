@@ -2,6 +2,7 @@ import { AwilixContainer, Lifetime } from "awilix";
 import * as awilix from "awilix";
 
 import { usersRouting } from "../app/features/users/routing";
+import { workspaceRouting } from "../app/features/workspace/routing";
 // ROUTING_IMPORTS
 
 export async function registerRouting(container: AwilixContainer) {
@@ -15,6 +16,7 @@ export async function registerRouting(container: AwilixContainer) {
 
   container.register({
     usersRouting: awilix.asFunction(usersRouting),
+  workspaceRouting: awilix.asFunction(workspaceRouting),
   // ROUTING_SETUP
   });
 
