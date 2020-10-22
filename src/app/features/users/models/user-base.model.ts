@@ -36,13 +36,19 @@ export class UserBaseModel {
   @Column()
   password: string;
 
-  @Column()
+  @Column({
+    nullable: true
+  })
   name: string;
 
-  @Column()
+  @Column({
+    nullable: true
+  })
   surname: string;
 
-  @Column()
+  @Column({
+    nullable: true
+  })
   phone: string;
 
   @Column()

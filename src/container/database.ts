@@ -25,7 +25,7 @@ export async function registerDatabase(container: AwilixContainer, dependencies?
     // MODELS_SETUP
   });
   container.register({
-    userBaseRepository: awilix.asClass(UserBaseRepository),
-    workspaceRepository: awilix.asClass(WorkspaceRepository)
+    userBaseRepository: awilix.asValue(dbConnection.getCustomRepository(UserBaseRepository)),
+    workspaceRepository: awilix.asValue(dbConnection.getCustomRepository(WorkspaceRepository)),
   })
 }
