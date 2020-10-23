@@ -5,42 +5,26 @@ import { UserBaseRepository } from "../../src/app/features/users/repositories/us
 import { WorkspaceRepository } from "../../src/app/features/users/repositories/workspace.repository";
 import { UserBaseType } from "../../src/app/features/users/models/user-base.model";
 
-describe("/users/register integration", () => {
-  it("register manager", async () => {
-    const userBaseRepository: UserBaseRepository = global.container.resolve('userBaseRepository');
-    const workspaceRepository: WorkspaceRepository = global.container.resolve('workspaceRepository');
-    return request(global.container.resolve("app"))
-      .post("/api/users/register")
-      .send({
-          email: 'example-email@test.com',
-          password: '123456'
-        })
-      .expect(200)
-      .then(async () => {
-        const registeredManager = await userBaseRepository.findOneOrFail({relations: ['workspace']});
-        const registeredWorkspace = await workspaceRepository.findOneOrFail({});
-        expect(registeredManager.type).to.be.equal(UserBaseType.MANAGER);
-        expect(registeredManager.workspace).to.be.deep.equal(registeredWorkspace);
-      });
-  });
+describe("/users/register-user integration", () => {
   it("register user", async () => {
     const userBaseRepository: UserBaseRepository = global.container.resolve('userBaseRepository');
     const workspaceRepository: WorkspaceRepository = global.container.resolve('workspaceRepository');
     await request(global.container.resolve("app"))
-      .post("/api/users/register")
+      .post("/api/users/register-manager")
       .send({
-          email: 'example-email@test.com',
-          password: '123456'
+        email: 'example-email@test.com',
+        password: '123456',
+        workspaceName: 'garden'
         });
     
     const workspace = await workspaceRepository.findOneOrFail({});
 
         await request(global.container.resolve("app"))
-        .post("/api/users/register")
+        .post("/api/users/register-user")
         .send({
             email: 'example-email+user@test.com',
             password: '123456',
-            workspace: workspace.id
+            workspaceId: workspace.id
           });
       
     const user = await userBaseRepository.findOne({type: UserBaseType.USER});

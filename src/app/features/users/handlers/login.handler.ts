@@ -1,11 +1,9 @@
 import { CommandHandler } from "../../../../shared/command-bus";
 import { LOGIN_COMMAND_TYPE, LoginCommand } from "../commands/login.command";
-import { EventDispatcher } from "../../../../shared/event-dispatcher";
-import LoginEvent from "../events/login.event";
-
+import { TokenService } from "../../../../app/services/token.service";
 
 export interface LoginHandlerDependencies {
-  eventDispatcher: EventDispatcher;
+  tokenService: TokenService    
 }
 
 export default class LoginHandler implements CommandHandler<LoginCommand> {
@@ -15,7 +13,6 @@ export default class LoginHandler implements CommandHandler<LoginCommand> {
 
   async execute(command: LoginCommand) {
     // execute body
-    await this.dependencies.eventDispatcher.dispatch(new LoginEvent(command))
 
     return {
       result: command

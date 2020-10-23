@@ -1,7 +1,8 @@
-import { Entity, PrimaryColumn } from "typeorm";
+import { Entity, PrimaryColumn, Column } from "typeorm";
 
 interface WorkspaceModelProps {
   id: string;
+  name: string;
 }
 
 @Entity({
@@ -17,4 +18,9 @@ export class WorkspaceModel {
 
   @PrimaryColumn()
   id: string;
+
+  @Column({
+    unique: true
+  })
+  name: string;
 }

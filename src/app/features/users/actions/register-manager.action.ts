@@ -2,19 +2,20 @@ import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
 import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 import { CommandBus } from "../../../../shared/command-bus";
-import { LoginCommand } from "../commands/login.command";
+import { RegisterManagerCommand } from "../commands/register-manager.command";
 import { Action } from "../../../../shared/http/types";
 
-export interface LoginActionDependencies {
+export interface RegisterManagerActionDependencies {
   commandBus: CommandBus;
 }
 
-export const loginActionValidation = celebrate(
+export const registerManagerActionValidation = celebrate(
   {
     headers: Joi.object(),
     body: {
       email: Joi.string().email().required(),
       password: Joi.string().min(6).max(80).required(),
+      workspaceName: Joi.string().min(3).required()
     }
   },
   { abortEarly: false },
@@ -24,11 +25,11 @@ export const loginActionValidation = celebrate(
   path: "/api",
   name: "users",
 })
-class LoginAction implements Action {
-  constructor(private dependencies: LoginActionDependencies) { }
+class RegisterManagerAction implements Action {
+  constructor(private dependencies: RegisterManagerActionDependencies) {}
 
   @ApiOperationPost({
-    path: "/users/login",
+    path: "/users/register-manager",
     description: "Description",
     parameters: {},
     responses: {
@@ -45,10 +46,12 @@ class LoginAction implements Action {
   })
   async invoke({ body }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
-      new LoginCommand({...body}),
+      new RegisterManagerCommand({
+        ...body
+      }),
     );
 
     res.json(commandResult.result);
   }
 }
-export default LoginAction;
+export default RegisterManagerAction;
