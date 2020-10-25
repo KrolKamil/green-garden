@@ -23,7 +23,7 @@ async <T>(req: Request, res: Response, next: NextFunction) => {
     try {
       const verified = tokenService.verifyAccessToken(token);
       // eslint-disable-next-line no-param-reassign
-      res.locals.userBase = verified;
+      res.locals.userDTO = verified;
 
       return next();
     } catch (e) {

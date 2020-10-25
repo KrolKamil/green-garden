@@ -11,11 +11,16 @@ describe("TokenService", () => {
     const tokenService = new TokenService({
         appConfig: fakeAppConfig
     });
-    it.only("todo", () => {
-        const test = {a: 10};
-        const x = tokenService.getAccessToken(test);
-        console.log(x);
-        const b = tokenService.verifyAccessToken(x);
-        console.log(b);
+    it("sign and usign by accessToken", () => {
+        const target = {x: 'test'};
+        const targetSigned = tokenService.getAccessToken(target);
+        const targetUnsigned = tokenService.verifyAccessToken(targetSigned);
+        expect(targetUnsigned).to.be.deep.equal(target);
+    });
+    it("sign and usign by refreshToken", () => {
+        const target = {x: 'test'};
+        const targetSigned = tokenService.getRefreshToken(target);
+        const targetUnsigned = tokenService.verifyRefreshToken(targetSigned);
+        expect(targetUnsigned).to.be.deep.equal(target);
     })
 })

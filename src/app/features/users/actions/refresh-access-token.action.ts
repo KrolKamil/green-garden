@@ -2,20 +2,18 @@ import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
 import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 import { CommandBus } from "../../../../shared/command-bus";
-import { LoginCommand } from "../commands/login.command";
+import { RefreshAccessTokenCommand } from "../commands/refresh-access-token.command";
 import { Action } from "../../../../shared/http/types";
 
-export interface LoginActionDependencies {
+export interface RefreshAccessTokenActionDependencies {
   commandBus: CommandBus;
 }
 
-export const loginActionValidation = celebrate(
+export const refreshAccessTokenActionValidation = celebrate(
   {
     headers: Joi.object(),
     body: {
-      email: Joi.string().email().required(),
-      password: Joi.string().min(6).max(80).required(),
-      workspaceId: Joi.string().required(),
+      refreshToken: Joi.string().required()
     }
   },
   { abortEarly: false },
@@ -25,11 +23,11 @@ export const loginActionValidation = celebrate(
   path: "/api",
   name: "users",
 })
-class LoginAction implements Action {
-  constructor(private dependencies: LoginActionDependencies) { }
+class RefreshAccessTokenAction implements Action {
+  constructor(private dependencies: RefreshAccessTokenActionDependencies) {}
 
   @ApiOperationPost({
-    path: "/users/login",
+    path: "/users/refresh-access-token",
     description: "Description",
     parameters: {},
     responses: {
@@ -46,10 +44,12 @@ class LoginAction implements Action {
   })
   async invoke({ body }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
-      new LoginCommand({...body}),
+      new RefreshAccessTokenCommand({
+        ...body
+      }),
     );
 
     res.json(commandResult.result);
   }
 }
-export default LoginAction;
+export default RefreshAccessTokenAction;

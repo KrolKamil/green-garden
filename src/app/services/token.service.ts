@@ -32,8 +32,6 @@ export class TokenService {
       
       private verify(token: string, tokenSecret: string) {
           const {exp, ...rest} = verify(token, tokenSecret) as any;
-          console.log(exp);
-          console.log(rest);
           return rest;
       }
 
