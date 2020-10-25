@@ -15,8 +15,8 @@ export const registerUserActionValidation = celebrate(
     body: {
       email: Joi.string().email().required(),
       password: Joi.string().min(6).max(80).required(),
-      workspaceId: Joi.string().required()
-    }
+      workspaceId: Joi.string().required(),
+    },
   },
   { abortEarly: false },
 );
@@ -47,7 +47,7 @@ class RegisterUserAction implements Action {
   async invoke({ body }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
       new RegisterUserCommand({
-        ...body
+        ...body,
       }),
     );
 

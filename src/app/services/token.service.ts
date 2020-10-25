@@ -1,38 +1,39 @@
-import {sign, verify} from 'jsonwebtoken';
-import { AppConfig } from '../../../config/app';
+import { sign, verify } from "jsonwebtoken";
+import { AppConfig } from "../../../config/app";
 
 interface TokenServiceDependencies {
-    appConfig: AppConfig
+  appConfig: AppConfig;
 }
 
 export class TokenService {
-    private accessTokenSecret: string;
-    private refreshTokenSecret: string;
+  private accessTokenSecret: string;
 
-    constructor(dependencies: TokenServiceDependencies){
-        this.accessTokenSecret = dependencies.appConfig.accessTokenSecret;
-        this.refreshTokenSecret = dependencies.appConfig.refreshTokenSecret;
-    }
+  private refreshTokenSecret: string;
 
-    getAccessToken(payload: any){
-        return sign(payload, this.accessTokenSecret, {expiresIn: "10m", noTimestamp: true});
-    }
+  constructor(dependencies: TokenServiceDependencies) {
+    this.accessTokenSecret = dependencies.appConfig.accessTokenSecret;
+    this.refreshTokenSecret = dependencies.appConfig.refreshTokenSecret;
+  }
 
-    getRefreshToken(payload: any){
-        return sign(payload, this.refreshTokenSecret, {expiresIn: "1d", noTimestamp: true});
-    }
+  getAccessToken(payload: any) {
+    return sign(payload, this.accessTokenSecret, { expiresIn: "10m", noTimestamp: true });
+  }
 
-    public verifyAccessToken(token: string) {
-        return this.verify(token, this.accessTokenSecret);
-    }
-    
-    public async verifyRefreshToken(token: string) {
-        return this.verify(token, this.refreshTokenSecret);
-      }
-      
-      private verify(token: string, tokenSecret: string) {
-          const {exp, ...rest} = verify(token, tokenSecret) as any;
-          return rest;
-      }
+  getRefreshToken(payload: any) {
+    return sign(payload, this.refreshTokenSecret, { expiresIn: "24h", noTimestamp: true });
+  }
 
+  public verifyAccessToken(token: string) {
+    return this.verify(token, this.accessTokenSecret);
+  }
+
+  public verifyRefreshToken(token: string) {
+    return this.verify(token, this.refreshTokenSecret);
+  }
+
+  private verify(token: string, tokenSecret: string) {
+    // eslint-disable-next-line
+    const { exp, ...rest } = verify(token, tokenSecret) as any;
+    return rest;
+  }
 }

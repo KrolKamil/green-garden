@@ -11,7 +11,7 @@ export type QueryContext = {
   queryBus: QueryBus;
 };
 
-interface ResolversDependencies { }
+interface ResolversDependencies {}
 
 export const createResolvers = (_dependencies: ResolversDependencies): Resolvers => {
   // Provide resolver functions for your schema fields

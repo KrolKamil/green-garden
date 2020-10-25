@@ -3,14 +3,15 @@ import { Event } from "../../../../shared/event-dispatcher/index";
 import { RegisterManagerCommandPayload } from "../commands/register-manager.command";
 
 export default class RegisterManagerEvent implements Event {
-    static eventName: string = "RegisterManager";
-    public payload: Command<RegisterManagerCommandPayload>;
-    
-    get name() {
-        return RegisterManagerEvent.eventName;
-    }
+  static eventName: string = "RegisterManager";
 
-    public constructor(command: Command<RegisterManagerCommandPayload>) {
-        this.payload = command;
-    }
+  public payload: Command<RegisterManagerCommandPayload>;
+
+  get name() {
+    return RegisterManagerEvent.eventName;
   }
+
+  public constructor(command: Command<RegisterManagerCommandPayload>) {
+    this.payload = command;
+  }
+}

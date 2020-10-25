@@ -15,8 +15,8 @@ export const registerManagerActionValidation = celebrate(
     body: {
       email: Joi.string().email().required(),
       password: Joi.string().min(6).max(80).required(),
-      workspaceName: Joi.string().min(3).required()
-    }
+      workspaceName: Joi.string().min(3).required(),
+    },
   },
   { abortEarly: false },
 );
@@ -47,7 +47,7 @@ class RegisterManagerAction implements Action {
   async invoke({ body }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
       new RegisterManagerCommand({
-        ...body
+        ...body,
       }),
     );
 

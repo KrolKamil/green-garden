@@ -1,5 +1,6 @@
-import { AwilixContainer } from "awilix";
+// eslint-disable-next-line
 import * as awilix from "awilix";
+import { AwilixContainer } from "awilix";
 import { asArray } from "../shared/awilix-resolvers";
 
 // SUBSCRIBERS_IMPORTS

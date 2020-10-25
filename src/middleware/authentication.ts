@@ -12,8 +12,11 @@ export interface makeAuthenticationMiddlewareProps {
   allowMissingAuthenicationToken: boolean;
 }
 
-export const makeAuthenticationMiddleware = ({ tokenService }: makeAuthenticationMiddlewareDependencies) => 
-async <T>(req: Request, res: Response, next: NextFunction) => {
+export const makeAuthenticationMiddleware = ({ tokenService }: makeAuthenticationMiddlewareDependencies) => async <T>(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.split(" ")[1];

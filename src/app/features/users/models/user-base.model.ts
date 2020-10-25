@@ -10,26 +10,25 @@ interface UserBaseModelProps {
 }
 
 export enum UserBaseType {
-  MANAGER = 'MANAGER',
-  USER = 'USER'
+  MANAGER = "MANAGER",
+  USER = "USER",
 }
 
 @Entity({
-  name: "user_base"
+  name: "user_base",
 })
 export class UserBaseModel {
-
   public static create(data: UserBaseModelProps): UserBaseModel {
     const entity = new UserBaseModel();
     Object.assign(entity, data);
-    return entity
+    return entity;
   }
 
   @PrimaryColumn()
   id: string;
 
   @Column({
-    unique: true
+    unique: true,
   })
   email: string;
 
@@ -37,17 +36,17 @@ export class UserBaseModel {
   password: string;
 
   @Column({
-    nullable: true
+    nullable: true,
   })
   name: string;
 
   @Column({
-    nullable: true
+    nullable: true,
   })
   surname: string;
 
   @Column({
-    nullable: true
+    nullable: true,
   })
   phone: string;
 
@@ -55,5 +54,5 @@ export class UserBaseModel {
   type: UserBaseType;
 
   @ManyToOne(() => WorkspaceModel)
-  workspace: WorkspaceModel
+  workspace: WorkspaceModel;
 }

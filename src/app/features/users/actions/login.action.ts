@@ -16,7 +16,7 @@ export const loginActionValidation = celebrate(
       email: Joi.string().email().required(),
       password: Joi.string().min(6).max(80).required(),
       workspaceId: Joi.string().required(),
-    }
+    },
   },
   { abortEarly: false },
 );
@@ -26,7 +26,7 @@ export const loginActionValidation = celebrate(
   name: "users",
 })
 class LoginAction implements Action {
-  constructor(private dependencies: LoginActionDependencies) { }
+  constructor(private dependencies: LoginActionDependencies) {}
 
   @ApiOperationPost({
     path: "/users/login",
@@ -45,9 +45,7 @@ class LoginAction implements Action {
     },
   })
   async invoke({ body }: Request, res: Response) {
-    const commandResult = await this.dependencies.commandBus.execute(
-      new LoginCommand({...body}),
-    );
+    const commandResult = await this.dependencies.commandBus.execute(new LoginCommand({ ...body }));
 
     res.json(commandResult.result);
   }

@@ -1,4 +1,4 @@
-import { AwilixContainer, asClass } from "awilix";
+import { AwilixContainer } from "awilix";
 import * as awilix from "awilix";
 import { Logger } from "winston";
 import { createConnection, ConnectionOptions } from "typeorm";
@@ -27,5 +27,5 @@ export async function registerDatabase(container: AwilixContainer, dependencies?
   container.register({
     userBaseRepository: awilix.asValue(dbConnection.getCustomRepository(UserBaseRepository)),
     workspaceRepository: awilix.asValue(dbConnection.getCustomRepository(WorkspaceRepository)),
-  })
+  });
 }

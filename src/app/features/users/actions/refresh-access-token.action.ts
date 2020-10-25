@@ -13,8 +13,8 @@ export const refreshAccessTokenActionValidation = celebrate(
   {
     headers: Joi.object(),
     body: {
-      refreshToken: Joi.string().required()
-    }
+      refreshToken: Joi.string().required(),
+    },
   },
   { abortEarly: false },
 );
@@ -45,7 +45,7 @@ class RefreshAccessTokenAction implements Action {
   async invoke({ body }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
       new RefreshAccessTokenCommand({
-        ...body
+        ...body,
       }),
     );
 

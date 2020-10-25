@@ -6,21 +6,20 @@ interface WorkspaceModelProps {
 }
 
 @Entity({
-  name: "workspace"
+  name: "workspace",
 })
 export class WorkspaceModel {
-
   public static create(data: WorkspaceModelProps): WorkspaceModel {
     const entity = new WorkspaceModel();
     Object.assign(entity, data);
-    return entity
+    return entity;
   }
 
   @PrimaryColumn()
   id: string;
 
   @Column({
-    unique: true
+    unique: true,
   })
   name: string;
 }

@@ -1,23 +1,23 @@
-import {hash, compare} from 'bcryptjs';
-import { AppConfig } from '../../../config/app';
+import { hash, compare } from "bcryptjs";
+import { AppConfig } from "../../../config/app";
 
 interface HashServiceDependencies {
-    appConfig: AppConfig;
+  appConfig: AppConfig;
 }
 
 export class HashService {
-    constructor(private dependencies: HashServiceDependencies){}
+  constructor(private dependencies: HashServiceDependencies) {}
 
-    hash(target: string){
-        const {hashRounds} = this.dependencies.appConfig;
-        return hash(target, hashRounds);
-    }
+  hash(target: string) {
+    const { hashRounds } = this.dependencies.appConfig;
+    return hash(target, hashRounds);
+  }
 
-    async compare(target: string, hash: string){
-        try {
-            return compare(target, hash)
-        } catch (e){
-            return false;
-        }
+  async compare(target: string, hashed: string) {
+    try {
+      return compare(target, hashed);
+    } catch (e) {
+      return false;
     }
+  }
 }

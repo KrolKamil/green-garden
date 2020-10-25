@@ -2,7 +2,6 @@ import { AwilixContainer } from "awilix";
 import * as awilix from "awilix";
 import { asArray } from "../shared/awilix-resolvers";
 
-
 import LoginCommandHandler from "../app/features/users/handlers/login.handler";
 // import RegisterCommandHandler from "../app/features/users/handlers/register.handler";
 import RegisterUserCommandHandler from "../app/features/users/handlers/register-user.handler";
