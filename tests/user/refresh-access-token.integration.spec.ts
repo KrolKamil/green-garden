@@ -10,7 +10,6 @@ import { createUserBaseDTO } from "../../src/app/features/users/models/user-base
 describe("/users/refresh-access-token integration", () => {
   it("refreshes access token", async () => {
     const { users } = await seedApplication(global.container, {
-      workspacesAmount: 1,
       usersAmount: 1,
     });
     const user = users.find((singleUser) => singleUser.type === UserBaseType.USER)!;

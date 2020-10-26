@@ -15,7 +15,6 @@ export const registerManagerActionValidation = celebrate(
     body: {
       email: Joi.string().email().required(),
       password: Joi.string().min(6).max(80).required(),
-      workspaceName: Joi.string().min(3).required(),
     },
   },
   { abortEarly: false },

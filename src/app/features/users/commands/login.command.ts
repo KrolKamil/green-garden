@@ -5,7 +5,7 @@ export const LOGIN_COMMAND_TYPE = "users/LOGIN";
 export interface LoginCommandPayload {
   email: string;
   password: string;
-  workspaceId: string;
+  userType: string;
 }
 
 export class LoginCommand implements Command<LoginCommandPayload> {

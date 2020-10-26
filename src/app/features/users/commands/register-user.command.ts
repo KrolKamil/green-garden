@@ -5,7 +5,6 @@ export const REGISTER_USER_COMMAND_TYPE = "users/REGISTER_USER";
 export interface RegisterUserCommandPayload {
   email: string;
   password: string;
-  workspaceId: string;
 }
 
 export class RegisterUserCommand implements Command<RegisterUserCommandPayload> {

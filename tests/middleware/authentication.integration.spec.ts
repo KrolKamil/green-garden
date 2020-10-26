@@ -33,7 +33,6 @@ describe("authenicationMiddleware integration", () => {
   });
   it("allow acces on valid Bearer token", async () => {
     const { users } = await seedApplication(global.container, {
-      workspacesAmount: 1,
       usersAmount: 1,
     });
     const { accessToken } = loginHelper(global.container, users[0]);

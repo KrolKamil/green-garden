@@ -15,7 +15,6 @@ export const registerUserActionValidation = celebrate(
     body: {
       email: Joi.string().email().required(),
       password: Joi.string().min(6).max(80).required(),
-      workspaceId: Joi.string().required(),
     },
   },
   { abortEarly: false },

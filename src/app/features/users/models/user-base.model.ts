@@ -1,12 +1,11 @@
 import { Column, Entity, PrimaryColumn, ManyToOne } from "typeorm";
-import { WorkspaceModel } from "../../workspace/models/workspace.model";
 
 interface UserBaseModelProps {
   id: string;
   email: string;
   password: string;
   type: UserBaseType;
-  workspace: WorkspaceModel;
+  active?: boolean;
 }
 
 export enum UserBaseType {
@@ -53,6 +52,8 @@ export class UserBaseModel {
   @Column()
   type: UserBaseType;
 
-  @ManyToOne(() => WorkspaceModel)
-  workspace: WorkspaceModel;
+  @Column({
+    default: true
+  })
+  active: boolean;
 }

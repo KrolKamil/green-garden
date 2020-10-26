@@ -5,7 +5,6 @@ export const REGISTER_MANAGER_COMMAND_TYPE = "users/REGISTER_MANAGER";
 export interface RegisterManagerCommandPayload {
   email: string;
   password: string;
-  workspaceName: string;
 }
 
 export class RegisterManagerCommand implements Command<RegisterManagerCommandPayload> {

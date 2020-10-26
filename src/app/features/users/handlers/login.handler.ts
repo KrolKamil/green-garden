@@ -2,14 +2,13 @@ import { CommandHandler } from "../../../../shared/command-bus";
 import { LOGIN_COMMAND_TYPE, LoginCommand } from "../commands/login.command";
 import { TokenService } from "../../../services/token.service";
 import { UserBaseRepository } from "../repositories/user-base.repository";
-import { WorkspaceRepository } from "../repositories/workspace.repository";
-import { WorkspaceNotExistsError } from "../../../../errors/workspace-not-exists.error";
 import { LoginError } from "../../../../errors/login.error";
 import { HashService } from "../../../services/hash.service";
 import { createUserBaseDTO } from "../models/user-base.dto";
+import { HttpError } from "../../../../../src/errors/http.error";
+import { FORBIDDEN } from "http-status-codes";
 
 export interface LoginHandlerDependencies {
-  workspaceRepository: WorkspaceRepository;
   userBaseRepository: UserBaseRepository;
   tokenService: TokenService;
   hashService: HashService;
@@ -21,16 +20,16 @@ export default class LoginHandler implements CommandHandler<LoginCommand> {
   constructor(private dependencies: LoginHandlerDependencies) {}
 
   async execute(command: LoginCommand) {
-    const { workspaceRepository, userBaseRepository, tokenService, hashService } = this.dependencies;
-    const { email, password, workspaceId } = command.payload;
+    const { userBaseRepository, tokenService, hashService } = this.dependencies;
+    const { email, password, userType } = command.payload;
 
-    const workspace = await workspaceRepository.findOne({ id: workspaceId });
-    if (!workspace) {
-      throw new WorkspaceNotExistsError();
-    }
-    const user = await userBaseRepository.findOne({ where: { email, workspace }, relations: ["workspace"] });
+    const user = await userBaseRepository.findOne({ where: { email, type: userType }, relations: ["workspace"] });
     if (!user) {
       throw new LoginError();
+    }
+
+    if(user.active === false){
+      throw new HttpError("User inactive", FORBIDDEN);
     }
 
     const passwordIsValid = await hashService.compare(password, user.password);

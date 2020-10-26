@@ -4,6 +4,7 @@ import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 import { CommandBus } from "../../../../shared/command-bus";
 import { LoginCommand } from "../commands/login.command";
 import { Action } from "../../../../shared/http/types";
+import { UserBaseType } from "../models/user-base.model";
 
 export interface LoginActionDependencies {
   commandBus: CommandBus;
@@ -15,7 +16,7 @@ export const loginActionValidation = celebrate(
     body: {
       email: Joi.string().email().required(),
       password: Joi.string().min(6).max(80).required(),
-      workspaceId: Joi.string().required(),
+      userType: Joi.string().valid(UserBaseType)
     },
   },
   { abortEarly: false },

@@ -8,8 +8,7 @@ import { TokenService } from "../../src/app/services/token.service";
 describe("/users/login integration", () => {
   it("login as user", async () => {
     const tokenService: TokenService = global.container.resolve("tokenService");
-    const { users, workspaces } = await seedApplication(global.container, {
-      workspacesAmount: 1,
+    const { users } = await seedApplication(global.container, {
       usersAmount: 1,
     });
 
@@ -19,7 +18,7 @@ describe("/users/login integration", () => {
       .send({
         email: user.email,
         password: "123456",
-        workspaceId: workspaces[0].id,
+        userType: UserBaseType.USER
       })
       .then(async (res) => {
         const userDTO = await tokenService.verifyAccessToken(res.body.accessToken);
@@ -30,8 +29,7 @@ describe("/users/login integration", () => {
   });
   it("login as manager", async () => {
     const tokenService: TokenService = global.container.resolve("tokenService");
-    const { users, workspaces } = await seedApplication(global.container, {
-      workspacesAmount: 1,
+    const { users } = await seedApplication(global.container, {
       usersAmount: 1,
     });
 
@@ -41,7 +39,7 @@ describe("/users/login integration", () => {
       .send({
         email: user.email,
         password: "123456",
-        workspaceId: workspaces[0].id,
+        userType: UserBaseType.MANAGER
       })
       .then(async (res) => {
         const userDTO = await tokenService.verifyAccessToken(res.body.accessToken);

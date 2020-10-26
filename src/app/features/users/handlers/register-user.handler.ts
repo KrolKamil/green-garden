@@ -6,10 +6,8 @@ import { UserBaseRepository } from "../repositories/user-base.repository";
 import { HttpError } from "../../../../errors/http.error";
 import { HashService } from "../../../services/hash.service";
 import { UserBaseModel, UserBaseType } from "../models/user-base.model";
-import { WorkspaceRepository } from "../repositories/workspace.repository";
 
 export interface RegisterUserHandlerDependencies {
-  workspaceRepository: WorkspaceRepository;
   userBaseRepository: UserBaseRepository;
   hashService: HashService;
 }
@@ -20,15 +18,12 @@ export default class RegisterUserHandler implements CommandHandler<RegisterUserC
   constructor(private dependencies: RegisterUserHandlerDependencies) {}
 
   async execute(command: RegisterUserCommand) {
-    const { workspaceRepository, userBaseRepository, hashService } = this.dependencies;
-    const { email, password, workspaceId } = command.payload;
-    const existingWorkspace = await workspaceRepository.findOne({ id: workspaceId });
-    if (!existingWorkspace) throw new HttpError("Invalid workspace id", BAD_REQUEST);
+    const { userBaseRepository, hashService } = this.dependencies;
+    const { email, password } = command.payload;
 
     const existingUser = await userBaseRepository.findOne({
       email,
       type: UserBaseType.USER,
-      workspace: existingWorkspace,
     });
     if (existingUser) throw new HttpError("Email is occupied", BAD_REQUEST);
 
@@ -40,7 +35,6 @@ export default class RegisterUserHandler implements CommandHandler<RegisterUserC
         email,
         password: hashedPassword,
         type: UserBaseType.USER,
-        workspace: existingWorkspace,
       }),
     );
 
