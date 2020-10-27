@@ -14,8 +14,8 @@ describe("/users/register-user integration", () => {
     });
 
     const user = await userBaseRepository.findOne({ type: UserBaseType.USER });
-    // eslint-disable-next-line
     expect(user?.active).to.be.equal(true);
+    // eslint-disable-next-line
     expect(user).to.not.be.undefined;
   });
 });

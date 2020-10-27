@@ -35,6 +35,7 @@ export default class RegisterUserHandler implements CommandHandler<RegisterUserC
         email,
         password: hashedPassword,
         type: UserBaseType.USER,
+        active: true,
       }),
     );
 

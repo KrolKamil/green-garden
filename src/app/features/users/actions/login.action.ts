@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
-import { ApiOperationPost, ApiPath } from "swagger-express-ts";
+import { ApiOperationPost, ApiPath, ApiModel, ApiModelProperty } from "swagger-express-ts";
 import { CommandBus } from "../../../../shared/command-bus";
 import { LoginCommand } from "../commands/login.command";
 import { Action } from "../../../../shared/http/types";
@@ -16,7 +16,7 @@ export const loginActionValidation = celebrate(
     body: {
       email: Joi.string().email().required(),
       password: Joi.string().min(6).max(80).required(),
-      userType: Joi.string().valid(UserBaseType)
+      userType: Joi.string().valid(...Object.values(UserBaseType)),
     },
   },
   { abortEarly: false },
@@ -32,10 +32,13 @@ class LoginAction implements Action {
   @ApiOperationPost({
     path: "/users/login",
     description: "Description",
-    parameters: {},
+    parameters: {
+      body: { model: "LoginRequestModel" },
+    },
     responses: {
       200: {
         description: "Success",
+        model: "LoginResponseModel",
       },
       400: {
         description: "Validation error",
@@ -52,3 +55,39 @@ class LoginAction implements Action {
   }
 }
 export default LoginAction;
+
+@ApiModel({
+  name: "LoginRequestModel",
+})
+export class LoginRequestModel {
+  @ApiModelProperty({
+    required: true,
+  })
+  email: string;
+
+  @ApiModelProperty({
+    required: true,
+  })
+  password: string;
+
+  @ApiModelProperty({
+    required: true,
+    enum: [...Object.values(UserBaseType)],
+  })
+  userType: UserBaseType;
+}
+
+@ApiModel({
+  name: "LoginResponseModel",
+})
+export class LoginResponseModel {
+  @ApiModelProperty({
+    required: true,
+  })
+  accessToken: string;
+
+  @ApiModelProperty({
+    required: true,
+  })
+  refreshToken: string;
+}

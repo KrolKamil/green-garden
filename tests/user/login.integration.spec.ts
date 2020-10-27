@@ -18,7 +18,7 @@ describe("/users/login integration", () => {
       .send({
         email: user.email,
         password: "123456",
-        userType: UserBaseType.USER
+        userType: UserBaseType.USER,
       })
       .then(async (res) => {
         const userDTO = await tokenService.verifyAccessToken(res.body.accessToken);
@@ -39,7 +39,7 @@ describe("/users/login integration", () => {
       .send({
         email: user.email,
         password: "123456",
-        userType: UserBaseType.MANAGER
+        userType: UserBaseType.MANAGER,
       })
       .then(async (res) => {
         const userDTO = await tokenService.verifyAccessToken(res.body.accessToken);

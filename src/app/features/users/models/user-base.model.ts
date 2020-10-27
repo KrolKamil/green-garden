@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn, ManyToOne } from "typeorm";
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
 interface UserBaseModelProps {
   id: string;
@@ -53,7 +53,7 @@ export class UserBaseModel {
   type: UserBaseType;
 
   @Column({
-    default: true
+    default: true,
   })
   active: boolean;
 }

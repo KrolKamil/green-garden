@@ -1,3 +1,4 @@
+import { FORBIDDEN } from "http-status-codes";
 import { CommandHandler } from "../../../../shared/command-bus";
 import { LOGIN_COMMAND_TYPE, LoginCommand } from "../commands/login.command";
 import { TokenService } from "../../../services/token.service";
@@ -5,8 +6,7 @@ import { UserBaseRepository } from "../repositories/user-base.repository";
 import { LoginError } from "../../../../errors/login.error";
 import { HashService } from "../../../services/hash.service";
 import { createUserBaseDTO } from "../models/user-base.dto";
-import { HttpError } from "../../../../../src/errors/http.error";
-import { FORBIDDEN } from "http-status-codes";
+import { HttpError } from "../../../../errors/http.error";
 
 export interface LoginHandlerDependencies {
   userBaseRepository: UserBaseRepository;
@@ -23,12 +23,12 @@ export default class LoginHandler implements CommandHandler<LoginCommand> {
     const { userBaseRepository, tokenService, hashService } = this.dependencies;
     const { email, password, userType } = command.payload;
 
-    const user = await userBaseRepository.findOne({ where: { email, type: userType }, relations: ["workspace"] });
+    const user = await userBaseRepository.findOne({ where: { email, type: userType, active: true } });
     if (!user) {
       throw new LoginError();
     }
 
-    if(user.active === false){
+    if (user.active === false) {
       throw new HttpError("User inactive", FORBIDDEN);
     }
 

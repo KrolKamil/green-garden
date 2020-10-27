@@ -12,11 +12,10 @@ describe("/users/register-manager integration", () => {
       .send({
         email: "example-email@test.com",
         password: "123456",
-        workspaceName: "garden",
       })
       .expect(200)
       .then(async () => {
-        const registeredManager = await userBaseRepository.findOneOrFail({ relations: ["workspace"] });
+        const registeredManager = await userBaseRepository.findOneOrFail();
         expect(registeredManager.type).to.be.equal(UserBaseType.MANAGER);
         expect(registeredManager.active).to.be.equal(false);
       });

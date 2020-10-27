@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
-import { ApiOperationPost, ApiPath } from "swagger-express-ts";
+import { ApiOperationPost, ApiPath, ApiModel, ApiModelProperty } from "swagger-express-ts";
 import { CommandBus } from "../../../../shared/command-bus";
 import { RegisterUserCommand } from "../commands/register-user.command";
 import { Action } from "../../../../shared/http/types";
@@ -30,7 +30,9 @@ class RegisterUserAction implements Action {
   @ApiOperationPost({
     path: "/users/register-user",
     description: "Description",
-    parameters: {},
+    parameters: {
+      body: { model: "RegisterUserRequestModel" },
+    },
     responses: {
       200: {
         description: "Success",
@@ -54,3 +56,18 @@ class RegisterUserAction implements Action {
   }
 }
 export default RegisterUserAction;
+
+@ApiModel({
+  name: "RegisterUserRequestModel",
+})
+export class RegisterUserRequestModel {
+  @ApiModelProperty({
+    required: true,
+  })
+  email: string;
+
+  @ApiModelProperty({
+    required: true,
+  })
+  password: string;
+}

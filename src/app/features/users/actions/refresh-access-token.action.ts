@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
-import { ApiOperationPost, ApiPath } from "swagger-express-ts";
+import { ApiOperationPost, ApiPath, ApiModel, ApiModelProperty } from "swagger-express-ts";
 import { CommandBus } from "../../../../shared/command-bus";
 import { RefreshAccessTokenCommand } from "../commands/refresh-access-token.command";
 import { Action } from "../../../../shared/http/types";
@@ -29,10 +29,13 @@ class RefreshAccessTokenAction implements Action {
   @ApiOperationPost({
     path: "/users/refresh-access-token",
     description: "Description",
-    parameters: {},
+    parameters: {
+      body: { model: "RefreshAccessTokenRequestModel" },
+    },
     responses: {
       200: {
         description: "Success",
+        model: "RefreshAccessTokenResponseModel",
       },
       400: {
         description: "Validation error",
@@ -53,3 +56,28 @@ class RefreshAccessTokenAction implements Action {
   }
 }
 export default RefreshAccessTokenAction;
+
+@ApiModel({
+  name: "RefreshAccessTokenRequestModel",
+})
+export class RefreshAccessTokenRequestModel {
+  @ApiModelProperty({
+    required: true,
+  })
+  refreshToken: string;
+}
+
+@ApiModel({
+  name: "RefreshAccessTokenResponseModel",
+})
+export class RefreshAccessTokenResponseModel {
+  @ApiModelProperty({
+    required: true,
+  })
+  accessToken: string;
+
+  @ApiModelProperty({
+    required: true,
+  })
+  refreshToken: string;
+}

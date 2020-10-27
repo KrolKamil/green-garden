@@ -16,25 +16,25 @@ export async function seedUsers(container: AwilixContainer<any>, config: SeedUse
 
   const hashedPassword = await hashService.hash("123456");
 
+  users.push(
+    UserBaseModel.create({
+      id: uuid(),
+      email: "manager@test.com",
+      password: hashedPassword,
+      type: UserBaseType.MANAGER,
+    }),
+  );
+  // eslint-disable-next-line
+    for (let i = 0; i < usersAmount; i++) {
     users.push(
       UserBaseModel.create({
         id: uuid(),
-        email: `manager@test.com`,
+        email: `user+${i}@test.com`,
         password: hashedPassword,
-        type: UserBaseType.MANAGER,
+        type: UserBaseType.USER,
       }),
     );
-    // eslint-disable-next-line
-    for (let i = 0; i < usersAmount; i++) {
-      users.push(
-        UserBaseModel.create({
-          id: uuid(),
-          email: `user+${i}@test.com`,
-          password: hashedPassword,
-          type: UserBaseType.USER,
-        }),
-      );
-    }
+  }
 
   return userBaseRepository.save(users);
 }

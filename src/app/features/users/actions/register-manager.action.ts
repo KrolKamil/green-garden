@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
-import { ApiOperationPost, ApiPath } from "swagger-express-ts";
+import { ApiOperationPost, ApiPath, ApiModel, ApiModelProperty } from "swagger-express-ts";
 import { CommandBus } from "../../../../shared/command-bus";
 import { RegisterManagerCommand } from "../commands/register-manager.command";
 import { Action } from "../../../../shared/http/types";
@@ -30,7 +30,9 @@ class RegisterManagerAction implements Action {
   @ApiOperationPost({
     path: "/users/register-manager",
     description: "Description",
-    parameters: {},
+    parameters: {
+      body: { model: "RegisterManagerRequestModel" },
+    },
     responses: {
       200: {
         description: "Success",
@@ -54,3 +56,18 @@ class RegisterManagerAction implements Action {
   }
 }
 export default RegisterManagerAction;
+
+@ApiModel({
+  name: "RegisterManagerRequestModel",
+})
+export class RegisterManagerRequestModel {
+  @ApiModelProperty({
+    required: true,
+  })
+  email: string;
+
+  @ApiModelProperty({
+    required: true,
+  })
+  password: string;
+}

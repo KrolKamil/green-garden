@@ -34,7 +34,7 @@ export default class RegisterManagerHandler implements CommandHandler<RegisterMa
         email,
         password: hashedPassword,
         type: UserBaseType.MANAGER,
-        active: false
+        active: false,
       }),
     );
 

@@ -12,6 +12,7 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+    "max-classes-per-file": "off",
     "no-console": "error",
     "import/prefer-default-export": "off",
     "no-empty-pattern": "off",

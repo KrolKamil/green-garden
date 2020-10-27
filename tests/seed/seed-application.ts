@@ -6,7 +6,7 @@ type SeedConfig = {
 };
 
 export async function seedApplication(container: AwilixContainer<any>, config: SeedConfig) {
-  const {  usersAmount } = config;
+  const { usersAmount } = config;
   const users = await seedUsers(container, {
     usersAmount,
   });
