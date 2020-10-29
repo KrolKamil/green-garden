@@ -8,10 +8,6 @@ interface makeAuthenticationMiddlewareDependencies {
   tokenService: TokenService;
 }
 
-export interface makeAuthenticationMiddlewareProps {
-  allowMissingAuthenicationToken: boolean;
-}
-
 export const makeAuthenticationMiddleware = ({ tokenService }: makeAuthenticationMiddlewareDependencies) => async <T>(
   req: Request,
   res: Response,

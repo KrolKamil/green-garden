@@ -8,6 +8,7 @@ import { refreshAccessTokenActionValidation } from "./actions/refresh-access-tok
 import { updateActionValidation } from "./actions/update.action";
 import { MiddlewareType } from "../../../../src/shared/middleware-type/middleware.type";
 import { detailsActionValidation } from "./actions/details.action";
+import { listActionValidation } from "./actions/list.action";
 // VALIDATION_IMPORTS
 
 export interface UsersRoutingDependencies {
@@ -18,6 +19,7 @@ export interface UsersRoutingDependencies {
   updateAction: Action;
   authenticationMiddleware: MiddlewareType;
   detailsAction: Action;
+  listAction: Action;
   // ACTIONS_IMPORTS
 }
 
@@ -44,6 +46,7 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
   
   router.post("/update", [authenticationMiddleware, updateActionValidation], actions.updateAction.invoke.bind(actions.updateAction));
   router.get("/details", [authenticationMiddleware, detailsActionValidation], actions.detailsAction.invoke.bind(actions.detailsAction));
+  router.get("/list", [listActionValidation], actions.listAction.invoke.bind(actions.listAction));
   // ACTIONS_SETUP
 
   return router;
