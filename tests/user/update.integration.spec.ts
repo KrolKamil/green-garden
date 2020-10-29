@@ -7,7 +7,7 @@ import { loginHelper } from "../helpers/login.helper";
 import { UserBaseRepository } from "../../src/app/features/users/repositories/user-base.repository";
 
 describe("/users/update integration", () => {
-  it.only("updates self details", async () => {
+  it("updates self details", async () => {
     const { users } = await seedApplication(global.container, {
       usersAmount: 1,
     });
@@ -26,7 +26,7 @@ describe("/users/update integration", () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send(toUpdate)
       .expect(200)
-      .then(async (res) => {
+      .then(async () => {
         const userBaseRepository: UserBaseRepository = global.container.resolve('userBaseRepository');
         const updatedUser = await userBaseRepository.findOneOrFail(user.id);
         const {name, surname, phone} = updatedUser;

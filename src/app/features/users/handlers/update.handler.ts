@@ -15,9 +15,7 @@ export default class UpdateHandler implements CommandHandler<UpdateCommand> {
   async execute(command: UpdateCommand) {
     const {userId, ...rest} = command.payload;
     const {userBaseRepository} = this.dependencies;
-
-    console.log('KEKUS');
-    console.log(userId);
+    
     await userBaseRepository.update({id: userId}, {...rest});
 
     return {

@@ -7,6 +7,7 @@ import { registerManagerActionValidation } from "./actions/register-manager.acti
 import { refreshAccessTokenActionValidation } from "./actions/refresh-access-token.action";
 import { updateActionValidation } from "./actions/update.action";
 import { MiddlewareType } from "../../../../src/shared/middleware-type/middleware.type";
+import { detailsActionValidation } from "./actions/details.action";
 // VALIDATION_IMPORTS
 
 export interface UsersRoutingDependencies {
@@ -16,6 +17,7 @@ export interface UsersRoutingDependencies {
   refreshAccessTokenAction: Action;
   updateAction: Action;
   authenticationMiddleware: MiddlewareType;
+  detailsAction: Action;
   // ACTIONS_IMPORTS
 }
 
@@ -39,7 +41,9 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
     [refreshAccessTokenActionValidation],
     actions.refreshAccessTokenAction.invoke.bind(actions.refreshAccessTokenAction),
   );
+  
   router.post("/update", [authenticationMiddleware, updateActionValidation], actions.updateAction.invoke.bind(actions.updateAction));
+  router.get("/details", [authenticationMiddleware, detailsActionValidation], actions.detailsAction.invoke.bind(actions.detailsAction));
   // ACTIONS_SETUP
 
   return router;
