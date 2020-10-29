@@ -5,6 +5,8 @@ import { loginActionValidation } from "./actions/login.action";
 import { registerUserActionValidation } from "./actions/register-user.action";
 import { registerManagerActionValidation } from "./actions/register-manager.action";
 import { refreshAccessTokenActionValidation } from "./actions/refresh-access-token.action";
+import { updateActionValidation } from "./actions/update.action";
+import { MiddlewareType } from "../../../../src/shared/middleware-type/middleware.type";
 // VALIDATION_IMPORTS
 
 export interface UsersRoutingDependencies {
@@ -12,10 +14,13 @@ export interface UsersRoutingDependencies {
   registerUserAction: Action;
   registerManagerAction: Action;
   refreshAccessTokenAction: Action;
+  updateAction: Action;
+  authenticationMiddleware: MiddlewareType;
   // ACTIONS_IMPORTS
 }
 
 export const usersRouting = (actions: UsersRoutingDependencies) => {
+  const {authenticationMiddleware} = actions;
   const router = express.Router();
 
   router.post("/login", [loginActionValidation], actions.loginAction.invoke.bind(actions.loginAction));
@@ -34,6 +39,7 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
     [refreshAccessTokenActionValidation],
     actions.refreshAccessTokenAction.invoke.bind(actions.refreshAccessTokenAction),
   );
+  router.post("/update", [authenticationMiddleware, updateActionValidation], actions.updateAction.invoke.bind(actions.updateAction));
   // ACTIONS_SETUP
 
   return router;

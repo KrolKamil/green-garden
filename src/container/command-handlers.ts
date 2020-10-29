@@ -7,6 +7,7 @@ import LoginCommandHandler from "../app/features/users/handlers/login.handler";
 import RegisterUserCommandHandler from "../app/features/users/handlers/register-user.handler";
 import RegisterManagerCommandHandler from "../app/features/users/handlers/register-manager.handler";
 import RefreshAccessTokenCommandHandler from "../app/features/users/handlers/refresh-access-token.handler";
+import UpdateCommandHandler from "../app/features/users/handlers/update.handler";
 // HANDLERS_IMPORTS
 
 export async function registerCommandHandlers(container: AwilixContainer) {
@@ -17,6 +18,7 @@ export async function registerCommandHandlers(container: AwilixContainer) {
       awilix.asClass(RegisterUserCommandHandler),
       awilix.asClass(RegisterManagerCommandHandler),
       awilix.asClass(RefreshAccessTokenCommandHandler),
+      awilix.asClass(UpdateCommandHandler),
       // COMMAND_HANDLERS_SETUP
     ]),
   });

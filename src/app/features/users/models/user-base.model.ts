@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 interface UserBaseModelProps {
   id: string;
@@ -56,4 +56,10 @@ export class UserBaseModel {
     default: true,
   })
   active: boolean;
+
+  @CreateDateColumn({type: "timestamp"})
+  createdAt: Date;
+
+  @UpdateDateColumn({type: "timestamp"})
+  updatedAt: Date;
 }
