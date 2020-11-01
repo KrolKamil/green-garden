@@ -60,7 +60,7 @@ export class UserBaseModel {
 
   @OneToOne(() => UserNoteModel)
   @JoinColumn({name: 'user_note_id'})
-  userNote: string;
+  userNote: UserNoteModel;
 
   @CreateDateColumn({type: "timestamp"})
   createdAt: Date;

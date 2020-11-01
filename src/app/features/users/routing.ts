@@ -11,6 +11,7 @@ import { detailsActionValidation } from "./actions/details.action";
 import { listActionValidation } from "./actions/list.action";
 import { CreateAuthorizationMiddleware } from "../../../../src/middleware/authorization";
 import { UserBaseType } from "./models/user-base.model";
+import { setNoteActionValidation } from "./actions/set-note.action";
 // VALIDATION_IMPORTS
 
 export interface UsersRoutingDependencies {
@@ -23,6 +24,7 @@ export interface UsersRoutingDependencies {
   updateAction: Action;
   detailsAction: Action;
   listAction: Action;
+  setNoteAction: Action;
   // ACTIONS_IMPORTS
 }
 
@@ -50,6 +52,7 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
   router.post("/update", [authenticationMiddleware, updateActionValidation], actions.updateAction.invoke.bind(actions.updateAction));
   router.get("/details", [authenticationMiddleware, detailsActionValidation], actions.detailsAction.invoke.bind(actions.detailsAction));
   router.get("/list", [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]) ,listActionValidation], actions.listAction.invoke.bind(actions.listAction));
+  router.post("/set-note", [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]) ,setNoteActionValidation], actions.setNoteAction.invoke.bind(actions.setNoteAction));
   // ACTIONS_SETUP
 
   return router;
