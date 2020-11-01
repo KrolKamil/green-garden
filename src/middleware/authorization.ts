@@ -1,38 +1,30 @@
-// @todo
+import { Request, Response, NextFunction } from "express";
+import { FORBIDDEN } from "http-status-codes";
+import { AppError } from "../errors/app.error";
+import { HttpError } from "../errors/http.error";
+import { UserBaseType } from "../../src/app/features/users/models/user-base.model";
+import { MiddlewareType } from "../../src/shared/middleware-type/middleware.type";
 
-// import { Request, Response, NextFunction } from "express";
-// import { UNAUTHORIZED } from "http-status-codes";
-// import { AppError } from "../errors/app.error";
-// import { HttpError } from "../errors/http.error";
-// import { UserBaseType } from "../../src/app/features/users/models/user-base.model";
+interface CreateAuthorizationMiddlewareProps{
+    allowAccessUserTypes: UserBaseType[];
+}
 
-// interface MakeAuthorizationMiddlewareProps{
-//     allowAccess?: UserBaseType[];
-//     denyAccess?: UserBaseType[];
-// }
+export type CreateAuthorizationMiddleware = (allowAccessUserTypes: UserBaseType[]) => MiddlewareType;
 
-// export const makeAuthorizationMiddleware = () => (props: MakeAuthorizationMiddlewareProps) => async <T>(
-//   req: Request,
-//   res: Response,
-//   next: NextFunction,
-// ) => {
-//   const {allowAccess, denyAccess} = props;
-//   try {
-//     const authHeader = req.headers.authorization;
-//     const token = authHeader && authHeader.split(" ")[1];
-//     if (!token) {
-//       return next(new HttpError("Missing token", UNAUTHORIZED));
-//     }
-//     try {
-//       const verified = tokenService.verifyAccessToken(token);
-//       // eslint-disable-next-line no-param-reassign
-//       res.locals.userDTO = verified;
+export const makeCreateAuthorizationMiddleware = () => (allowAccessUserTypes: UserBaseType[]) => async <T>(
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+    const userBaseType = res.locals?.userDTO?.type as UserBaseType | null;
+    if (!userBaseType) {
+        return next(new AppError("Internal error"));
+    }
+    const hasAccess = allowAccessUserTypes.includes(userBaseType);
+    
+    if(hasAccess){
+        return next();
+    }
 
-//       return next();
-//     } catch (e) {
-//       return next(new HttpError("Invalid token", UNAUTHORIZED));
-//     }
-//   } catch (e) {
-//     return next(new AppError("Internal error"));
-//   }
-// };
+    return next(new HttpError("Access denied", FORBIDDEN));
+};

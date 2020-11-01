@@ -6,7 +6,7 @@ import { seedApplication } from "../seed/seed-application";
 import { TokenService } from "../../src/app/services/token.service";
 import { loginHelper } from "../helpers/login.helper";
 
-describe.only("/users/details integration", () => {
+describe("/users/details integration", () => {
   it("gets self details", async () => {
     const { users } = await seedApplication(global.container, {
       usersAmount: 1,
