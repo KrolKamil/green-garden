@@ -6,9 +6,9 @@ import { registerUserActionValidation } from "./actions/register-user.action";
 import { registerManagerActionValidation } from "./actions/register-manager.action";
 import { refreshAccessTokenActionValidation } from "./actions/refresh-access-token.action";
 import { updateActionValidation } from "./actions/update.action";
-import { MiddlewareType } from "../../../../src/shared/middleware-type/middleware.type";
+import { MiddlewareType } from "../../../shared/middleware-type/middleware.type";
 import { listActionValidation } from "./actions/list.action";
-import { CreateAuthorizationMiddleware } from "../../../../src/middleware/authorization";
+import { CreateAuthorizationMiddleware } from "../../../middleware/authorization";
 import { UserBaseType } from "./models/user-base.model";
 import { setNoteActionValidation } from "./actions/set-note.action";
 import { meActionValidation } from "./actions/me.action";
@@ -31,7 +31,7 @@ export interface UsersRoutingDependencies {
 }
 
 export const usersRouting = (actions: UsersRoutingDependencies) => {
-  const {authenticationMiddleware, createAuthorizationMiddleware} = actions;
+  const { authenticationMiddleware, createAuthorizationMiddleware } = actions;
   const router = express.Router();
 
   router.post("/login", [loginActionValidation], actions.loginAction.invoke.bind(actions.loginAction));
@@ -50,12 +50,28 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
     [refreshAccessTokenActionValidation],
     actions.refreshAccessTokenAction.invoke.bind(actions.refreshAccessTokenAction),
   );
-  
-  router.post("/update", [authenticationMiddleware, updateActionValidation], actions.updateAction.invoke.bind(actions.updateAction));
-  router.get("/list", [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]) ,listActionValidation], actions.listAction.invoke.bind(actions.listAction));
-  router.post("/set-note", [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]) ,setNoteActionValidation], actions.setNoteAction.invoke.bind(actions.setNoteAction));
+
+  router.post(
+    "/update",
+    [authenticationMiddleware, updateActionValidation],
+    actions.updateAction.invoke.bind(actions.updateAction),
+  );
+  router.get(
+    "/list",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), listActionValidation],
+    actions.listAction.invoke.bind(actions.listAction),
+  );
+  router.post(
+    "/set-note",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), setNoteActionValidation],
+    actions.setNoteAction.invoke.bind(actions.setNoteAction),
+  );
   router.get("/me", [authenticationMiddleware, meActionValidation], actions.meAction.invoke.bind(actions.meAction));
-  router.get("/:userId/details", [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), detailsActionValidation], actions.detailsAction.invoke.bind(actions.detailsAction));
+  router.get(
+    "/:userId/details",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), detailsActionValidation],
+    actions.detailsAction.invoke.bind(actions.detailsAction),
+  );
   // ACTIONS_SETUP
 
   return router;

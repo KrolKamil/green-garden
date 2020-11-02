@@ -14,8 +14,8 @@ export const setNoteActionValidation = celebrate(
     headers: Joi.object(),
     body: {
       userId: Joi.string().required(),
-      content: Joi.string().max(200).required()
-    }
+      content: Joi.string().max(200).required(),
+    },
   },
   { abortEarly: false },
 );
@@ -34,7 +34,7 @@ class SetNoteAction implements Action {
     responses: {
       200: {
         description: "Success",
-        model: 'SetNoteActionRequestModel'
+        model: "SetNoteActionRequestModel",
       },
       400: {
         description: "Validation error",
@@ -47,7 +47,7 @@ class SetNoteAction implements Action {
   async invoke({ body }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
       new SetNoteCommand({
-        ...body
+        ...body,
       }),
     );
 
@@ -55,7 +55,6 @@ class SetNoteAction implements Action {
   }
 }
 export default SetNoteAction;
-
 
 @ApiModel({
   name: "SetNoteActionRequestModel",

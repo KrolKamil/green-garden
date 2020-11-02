@@ -11,7 +11,9 @@ use(chaiAsPromised);
 
 describe("authorizationMiddleware integration", () => {
   it("throws app error on missing userDTO", async () => {
-    const createAuthorizationMiddleware: CreateAuthorizationMiddleware = global.container.resolve("createAuthorizationMiddleware");
+    const createAuthorizationMiddleware: CreateAuthorizationMiddleware = global.container.resolve(
+      "createAuthorizationMiddleware",
+    );
     const authorizationMiddleware = createAuthorizationMiddleware([UserBaseType.MANAGER]);
     const req = { headers: {} } as any;
     const res = {} as any;
@@ -21,17 +23,19 @@ describe("authorizationMiddleware integration", () => {
     await authorizationMiddleware(req, res, next);
   });
   it("throws http error on user with wrong type", async () => {
-    const {users} = await seedApplication(global.container, {usersAmount: 1});
+    const { users } = await seedApplication(global.container, { usersAmount: 1 });
     const user = users.find((singleUser) => singleUser.type === UserBaseType.USER)!;
-    const userDTO = createUserBaseDTO(user)
+    const userDTO = createUserBaseDTO(user);
 
-    const createAuthorizationMiddleware: CreateAuthorizationMiddleware = global.container.resolve("createAuthorizationMiddleware");
+    const createAuthorizationMiddleware: CreateAuthorizationMiddleware = global.container.resolve(
+      "createAuthorizationMiddleware",
+    );
     const authorizationMiddleware = createAuthorizationMiddleware([UserBaseType.MANAGER]);
     const req = { headers: {} } as any;
     const res = {
-        locals: {
-            userDTO
-        }
+      locals: {
+        userDTO,
+      },
     } as any;
     const next = (err: any) => {
       expect(err).to.be.instanceOf(AppError);
@@ -39,17 +43,19 @@ describe("authorizationMiddleware integration", () => {
     await authorizationMiddleware(req, res, next);
   });
   it("allows access for valid user type", async () => {
-    const {users} = await seedApplication(global.container, {usersAmount: 1});
+    const { users } = await seedApplication(global.container, { usersAmount: 1 });
     const user = users.find((singleUser) => singleUser.type === UserBaseType.USER)!;
-    const userDTO = createUserBaseDTO(user)
+    const userDTO = createUserBaseDTO(user);
 
-    const createAuthorizationMiddleware: CreateAuthorizationMiddleware = global.container.resolve("createAuthorizationMiddleware");
+    const createAuthorizationMiddleware: CreateAuthorizationMiddleware = global.container.resolve(
+      "createAuthorizationMiddleware",
+    );
     const authorizationMiddleware = createAuthorizationMiddleware([UserBaseType.USER]);
     const req = { headers: {} } as any;
     const res = {
-        locals: {
-            userDTO
-        }
+      locals: {
+        userDTO,
+      },
     } as any;
     const next = (err: any) => {
       expect(err).to.be.equal(undefined);

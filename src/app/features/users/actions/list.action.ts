@@ -30,7 +30,7 @@ class ListAction implements Action {
       200: {
         description: "Success",
         type: SwaggerDefinitionConstant.Response.Type.ARRAY,
-        model: 'ListActionResponseModel'
+        model: "ListActionResponseModel",
       },
       400: {
         description: "Validation error",
@@ -51,7 +51,6 @@ class ListAction implements Action {
   }
 }
 export default ListAction;
-
 
 @ApiModel({
   name: "ListActionResponseModel",

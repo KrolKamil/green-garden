@@ -15,8 +15,8 @@ export const updateActionValidation = celebrate(
     body: Joi.object({
       name: Joi.string().max(60).optional(),
       surname: Joi.string().max(60).optional(),
-      phone: Joi.string().max(20).optional()
-    }).min(1)
+      phone: Joi.string().max(20).optional(),
+    }).min(1),
   },
   { abortEarly: false },
 );
@@ -32,7 +32,7 @@ class UpdateAction implements Action {
     path: "/users/update",
     description: "Description",
     parameters: {
-      body: {model: 'UpdateRequestModel'}
+      body: { model: "UpdateRequestModel" },
     },
     responses: {
       200: {
@@ -50,7 +50,7 @@ class UpdateAction implements Action {
     const commandResult = await this.dependencies.commandBus.execute(
       new UpdateCommand({
         userId: res.locals.userDTO.id,
-        ...body
+        ...body,
       }),
     );
 

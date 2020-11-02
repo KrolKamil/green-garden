@@ -29,7 +29,7 @@ class MeAction implements Action {
     responses: {
       200: {
         description: "Success",
-        model: 'MeActionResponseModel'
+        model: "MeActionResponseModel",
       },
       400: {
         description: "Validation error",
@@ -42,7 +42,7 @@ class MeAction implements Action {
   async invoke(_req: Request, res: Response) {
     const queryResult = await this.dependencies.queryBus.execute(
       new MeQuery({
-        userId: res.locals.userDTO.id
+        userId: res.locals.userDTO.id,
       }),
     );
 

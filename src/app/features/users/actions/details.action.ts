@@ -30,7 +30,7 @@ class DetailsAction implements Action {
     responses: {
       200: {
         description: "Success",
-        model: 'DetailsActionResponseModel'
+        model: "DetailsActionResponseModel",
       },
       400: {
         description: "Validation error",
@@ -43,7 +43,7 @@ class DetailsAction implements Action {
   async invoke(req: Request, res: Response) {
     const queryResult = await this.dependencies.queryBus.execute(
       new DetailsQuery({
-        userId: req.params.userId
+        userId: req.params.userId,
       }),
     );
 
@@ -51,7 +51,6 @@ class DetailsAction implements Action {
   }
 }
 export default DetailsAction;
-
 
 export class DetailsActionResponseModel {
   @ApiModelProperty({})
@@ -82,5 +81,5 @@ export class DetailsActionResponseModel {
   updatedAt: string;
 
   @ApiModelProperty({})
-  userNote: UserNoteModel
+  userNote: UserNoteModel;
 }

@@ -6,14 +6,13 @@ interface UserNoteModelProps {
 }
 
 @Entity({
-  name: "user_note"
+  name: "user_note",
 })
 export class UserNoteModel {
-
   public static create(data: UserNoteModelProps): UserNoteModel {
     const entity = new UserNoteModel();
     Object.assign(entity, data);
-    return entity
+    return entity;
   }
 
   @PrimaryColumn()
@@ -22,9 +21,9 @@ export class UserNoteModel {
   @Column()
   content: string;
 
-  @CreateDateColumn({type: "timestamp"})
+  @CreateDateColumn({ type: "timestamp" })
   createdAt: Date;
 
-  @UpdateDateColumn({type: "timestamp"})
+  @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
 }
