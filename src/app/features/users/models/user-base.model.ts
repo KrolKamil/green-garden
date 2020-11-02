@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from "typeorm";
+import { UserNoteModel } from "./user-note.model";
 
 interface UserBaseModelProps {
   id: string;
@@ -56,4 +57,14 @@ export class UserBaseModel {
     default: true,
   })
   active: boolean;
+
+  @OneToOne(() => UserNoteModel)
+  @JoinColumn({ name: "user_note_id" })
+  userNote: UserNoteModel | null;
+
+  @CreateDateColumn({ type: "timestamp" })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: "timestamp" })
+  updatedAt: Date;
 }
