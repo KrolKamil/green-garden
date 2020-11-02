@@ -4,9 +4,8 @@ import "mocha";
 import * as request from "supertest";
 import { UserBaseRepository } from "../../src/app/features/users/repositories/user-base.repository";
 import { UserBaseType } from "../../src/app/features/users/models/user-base.model";
-import { seedApplication } from "../../tests/seed/seed-application";
-import e = require("express");
-import { loginHelper } from "../../tests/helpers/login.helper";
+import { seedApplication } from "../seed/seed-application";
+import { loginHelper } from "../helpers/login.helper";
 import { UserNoteModel } from "../../src/app/features/users/models/user-note.model";
 import { Repository } from 'typeorm';
 
@@ -16,15 +15,16 @@ describe("/users/:id/details integration", () => {
 
     const manager = users.find((user) => user.type === UserBaseType.MANAGER)!;
     const user = users.find((user) => user.type === UserBaseType.USER)!;
-    const {password, ...rest} = user;
     const {accessToken} = loginHelper(global.container, manager);
 
+    const {password, ...rest} = user;
+    rest.userNote = null;
     await request(global.container.resolve("app"))
     .get(`/api/users/${user.id}/details`)
     .set('Authorization', `Bearer ${accessToken}`)
     .expect(200)
-    .then((res) => {
-        expect(res.body).to.be.deep.equal(rest);
+    .then(async (res) => {
+      expect(res.body).to.be.deep.equal(JSON.parse(JSON.stringify(rest)));
     });
   });
   it("gets user details with note by manager", async () => {
@@ -44,15 +44,15 @@ describe("/users/:id/details integration", () => {
     await userNoteRepository.save(userNote);
     await userBaseRepository.save(user);
 
-    const {password, ...rest} = user;
     const {accessToken} = loginHelper(global.container, manager);
 
+    const {password, ...rest} = user;
     await request(global.container.resolve("app"))
     .get(`/api/users/${user.id}/details`)
     .set('Authorization', `Bearer ${accessToken}`)
     .expect(200)
     .then((res) => {
-        expect(res.body).to.be.deep.equal(rest);
+        expect(res.body).to.be.deep.equal(JSON.parse(JSON.stringify(rest)));
     });
   });
 });

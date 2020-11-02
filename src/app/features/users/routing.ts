@@ -7,11 +7,12 @@ import { registerManagerActionValidation } from "./actions/register-manager.acti
 import { refreshAccessTokenActionValidation } from "./actions/refresh-access-token.action";
 import { updateActionValidation } from "./actions/update.action";
 import { MiddlewareType } from "../../../../src/shared/middleware-type/middleware.type";
-import { detailsActionValidation } from "./actions/details.action";
 import { listActionValidation } from "./actions/list.action";
 import { CreateAuthorizationMiddleware } from "../../../../src/middleware/authorization";
 import { UserBaseType } from "./models/user-base.model";
 import { setNoteActionValidation } from "./actions/set-note.action";
+import { meActionValidation } from "./actions/me.action";
+import { detailsActionValidation } from "./actions/details.action";
 // VALIDATION_IMPORTS
 
 export interface UsersRoutingDependencies {
@@ -22,9 +23,10 @@ export interface UsersRoutingDependencies {
   registerManagerAction: Action;
   refreshAccessTokenAction: Action;
   updateAction: Action;
-  detailsAction: Action;
   listAction: Action;
   setNoteAction: Action;
+  meAction: Action;
+  detailsAction: Action;
   // ACTIONS_IMPORTS
 }
 
@@ -50,9 +52,10 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
   );
   
   router.post("/update", [authenticationMiddleware, updateActionValidation], actions.updateAction.invoke.bind(actions.updateAction));
-  router.get("/details", [authenticationMiddleware, detailsActionValidation], actions.detailsAction.invoke.bind(actions.detailsAction));
   router.get("/list", [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]) ,listActionValidation], actions.listAction.invoke.bind(actions.listAction));
   router.post("/set-note", [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]) ,setNoteActionValidation], actions.setNoteAction.invoke.bind(actions.setNoteAction));
+  router.get("/me", [authenticationMiddleware, meActionValidation], actions.meAction.invoke.bind(actions.meAction));
+  router.get("/:userId/details", [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), detailsActionValidation], actions.detailsAction.invoke.bind(actions.detailsAction));
   // ACTIONS_SETUP
 
   return router;

@@ -4,10 +4,9 @@ import * as request from "supertest";
 import { UserBaseRepository } from "../../src/app/features/users/repositories/user-base.repository";
 import { UserBaseType } from "../../src/app/features/users/models/user-base.model";
 import { seedApplication } from "../../tests/seed/seed-application";
-import e = require("express");
 import { loginHelper } from "../../tests/helpers/login.helper";
 
-describe.only("/users/set-note integration", () => {
+describe("/users/set-note integration", () => {
   it("sets user note", async () => {
     const content = 'abc';
     const {users} = await seedApplication(global.container, {usersAmount: 1});
@@ -31,7 +30,7 @@ describe.only("/users/set-note integration", () => {
       relations: ['userNote']
     });
 
-    expect(userWithNote.userNote.content).to.be.equal(content);
+    expect(userWithNote?.userNote?.content).to.be.equal(content);
   });
   it("updates user note", async () => {
     const content = 'abc';
@@ -65,6 +64,6 @@ describe.only("/users/set-note integration", () => {
       relations: ['userNote']
     });
 
-    expect(userWithNote.userNote.content).to.be.equal(updatedContent);
+    expect(userWithNote?.userNote?.content).to.be.equal(updatedContent);
   });
 });

@@ -1,16 +1,15 @@
 import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
-import { ApiOperationGet, ApiPath, ApiModelProperty } from "swagger-express-ts";
+import { ApiOperationGet, ApiPath, ApiModel, ApiModelProperty } from "swagger-express-ts";
 import { QueryBus } from "../../../../shared/query-bus";
-import { DetailsQuery } from "../queries/details";
+import { MeQuery } from "../queries/me";
 import { Action } from "../../../../shared/http/types";
-import { UserNoteModel } from "../models/user-note.model";
 
-export interface DetailsActionDependencies {
+export interface MeActionDependencies {
   queryBus: QueryBus;
 }
 
-export const detailsActionValidation = celebrate(
+export const meActionValidation = celebrate(
   {
     headers: Joi.object(),
   },
@@ -21,16 +20,16 @@ export const detailsActionValidation = celebrate(
   path: "/api",
   name: "users",
 })
-class DetailsAction implements Action {
-  constructor(private dependencies: DetailsActionDependencies) {}
+class MeAction implements Action {
+  constructor(private dependencies: MeActionDependencies) {}
 
   @ApiOperationGet({
-    path: "/users/{userId}/details",
+    path: "/users/me",
     description: "Description",
     responses: {
       200: {
         description: "Success",
-        model: 'DetailsActionResponseModel'
+        model: 'MeActionResponseModel'
       },
       400: {
         description: "Validation error",
@@ -40,20 +39,22 @@ class DetailsAction implements Action {
       },
     },
   })
-  async invoke(req: Request, res: Response) {
+  async invoke(_req: Request, res: Response) {
     const queryResult = await this.dependencies.queryBus.execute(
-      new DetailsQuery({
-        userId: req.params.userId
+      new MeQuery({
+        userId: res.locals.userDTO.id
       }),
     );
 
     res.json(queryResult.result);
   }
 }
-export default DetailsAction;
+export default MeAction;
 
-
-export class DetailsActionResponseModel {
+@ApiModel({
+  name: "MeActionResponseModel",
+})
+export class MeActionResponseModel {
   @ApiModelProperty({})
   id: string;
 
@@ -80,7 +81,4 @@ export class DetailsActionResponseModel {
 
   @ApiModelProperty({})
   updatedAt: string;
-
-  @ApiModelProperty({})
-  userNote: UserNoteModel
 }

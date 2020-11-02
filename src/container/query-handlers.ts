@@ -3,15 +3,17 @@ import * as awilix from "awilix";
 import { AwilixContainer } from "awilix";
 import { asArray } from "../shared/awilix-resolvers";
 
-import DetailsQueryHandler from "../app/features/users/query-handlers/details.query.handler";
 import ListQueryHandler from "../app/features/users/query-handlers/list.query.handler";
+import MeQueryHandler from "../app/features/users/query-handlers/me.query.handler";
+import DetailsQueryHandler from "../app/features/users/query-handlers/details.query.handler";
 // HANDLERS_IMPORTS
 
 export async function registerQueryHandlers(container: AwilixContainer) {
   container.register({
     queryHandlers: asArray<any>([
-      awilix.asClass(DetailsQueryHandler),
       awilix.asClass(ListQueryHandler),
+      awilix.asClass(MeQueryHandler),
+      awilix.asClass(DetailsQueryHandler),
       // QUERY_HANDLERS_SETUP
     ]),
   });
