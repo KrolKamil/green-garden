@@ -18,7 +18,6 @@ export default class ListQueryHandler implements QueryHandler<ListQuery, ListQue
       select: ["id", "email", "name", "surname"],
       where: {
         type: UserBaseType.USER,
-        active: true,
       },
     });
 

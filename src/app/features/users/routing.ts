@@ -13,6 +13,7 @@ import { UserBaseType } from "./models/user-base.model";
 import { setNoteActionValidation } from "./actions/set-note.action";
 import { meActionValidation } from "./actions/me.action";
 import { detailsActionValidation } from "./actions/details.action";
+import { setActiveActionValidation } from "./actions/set-active.action";
 // VALIDATION_IMPORTS
 
 export interface UsersRoutingDependencies {
@@ -27,6 +28,7 @@ export interface UsersRoutingDependencies {
   setNoteAction: Action;
   meAction: Action;
   detailsAction: Action;
+  setActiveAction: Action;
   // ACTIONS_IMPORTS
 }
 
@@ -71,6 +73,11 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
     "/:userId/details",
     [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), detailsActionValidation],
     actions.detailsAction.invoke.bind(actions.detailsAction),
+  );
+  router.post(
+    "/set-active",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), setActiveActionValidation],
+    actions.setActiveAction.invoke.bind(actions.setActiveAction),
   );
   // ACTIONS_SETUP
 
