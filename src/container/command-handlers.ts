@@ -11,6 +11,7 @@ import UpdateCommandHandler from "../app/features/users/handlers/update.handler"
 import SetNoteCommandHandler from "../app/features/users/handlers/set-note.handler";
 import SetActiveCommandHandler from "../app/features/users/handlers/set-active.handler";
 import CreateGardenCommandHandler from "../app/features/gardens/handlers/create-garden.handler";
+import EditGardenCommandHandler from "../app/features/gardens/handlers/edit-garden.handler";
 // HANDLERS_IMPORTS
 
 export async function registerCommandHandlers(container: AwilixContainer) {
@@ -25,6 +26,7 @@ export async function registerCommandHandlers(container: AwilixContainer) {
       awilix.asClass(SetNoteCommandHandler),
       awilix.asClass(SetActiveCommandHandler),
       awilix.asClass(CreateGardenCommandHandler),
+      awilix.asClass(EditGardenCommandHandler),
       // COMMAND_HANDLERS_SETUP
     ]),
   });

@@ -2,17 +2,18 @@ import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
 import { ApiOperationPost, ApiPath, ApiModel, ApiModelProperty } from "swagger-express-ts";
 import { CommandBus } from "../../../../shared/command-bus";
-import { CreateGardenCommand } from "../commands/create-garden.command";
+import { EditGardenCommand } from "../commands/edit-garden.command";
 import { Action } from "../../../../shared/http/types";
 
-export interface CreateGardenActionDependencies {
+export interface EditGardenActionDependencies {
   commandBus: CommandBus;
 }
 
-export const createGardenActionValidation = celebrate(
+export const editGardenActionValidation = celebrate(
   {
     headers: Joi.object(),
     body: {
+      id: Joi.string().required(),
       publicId: Joi.string().required(),
       surfaceInSquareMeters: Joi.number().min(0).required(),
       includeWater: Joi.boolean().optional(),
@@ -27,15 +28,15 @@ export const createGardenActionValidation = celebrate(
   path: "/api",
   name: "gardens",
 })
-class CreateGardenAction implements Action {
-  constructor(private dependencies: CreateGardenActionDependencies) {}
+class EditGardenAction implements Action {
+  constructor(private dependencies: EditGardenActionDependencies) {}
 
   @ApiOperationPost({
-    path: "/gardens/create-garden",
+    path: "/gardens/edit-garden",
     description: "Description",
     parameters: {
       body: {
-        model: 'CreateGardenActionRequestModel'
+        model: 'EditGardenActionRequestModel'
       }
     },
     responses: {
@@ -52,46 +53,40 @@ class CreateGardenAction implements Action {
   })
   async invoke({ body }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
-      new CreateGardenCommand({
+      new EditGardenCommand({
+        id: body.id,
         publicId: body.publicId,
         surfaceInSquareMeters: body.surfaceInSquareMeters,
-        includeWater: body.includeWater || false,
-        includeElectricity: body.includeElectricity || false,
-        includeGas: body.includeGas || false
+        includeWater: body.includeWater,
+        includeElectricity: body.includeElectricity,
+        includeGas: body.includeGas
       }),
     );
 
     res.json(commandResult.result);
   }
 }
-export default CreateGardenAction;
+export default EditGardenAction;
 
 @ApiModel({
-  name: "CreateGardenActionRequestModel",
+  name: "EditGardenActionRequestModel",
 })
-export class CreateGardenActionRequestModel {
-  @ApiModelProperty({
-    required: true
-  })
+export class EditGardenActionRequestModel {
+  @ApiModelProperty()
+  id: string;
+
+  @ApiModelProperty()
   publicId: string;
 
-  @ApiModelProperty({
-    required: true
-  })
+  @ApiModelProperty()
   surfaceInSquareMeters: number;
 
-  @ApiModelProperty({
-    required: false
-  })
+  @ApiModelProperty()
   includeWater: boolean;
 
-  @ApiModelProperty({
-    required: false
-  })
+  @ApiModelProperty()
   includeElectricity: boolean;
 
-  @ApiModelProperty({
-    required: false
-  })
+  @ApiModelProperty()
   includeGas: boolean;
 }

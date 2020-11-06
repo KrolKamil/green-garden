@@ -4,9 +4,9 @@ interface GardenModelProps {
   id: string;
   publicId: string;
   surfaceInSquareMeters: number;
-  includeWater: boolean;
-  includeElectricity: boolean;
-  includeGas: boolean;
+  includeWater?: boolean;
+  includeElectricity?: boolean;
+  includeGas?: boolean;
 }
 
 @Entity({
@@ -14,7 +14,7 @@ interface GardenModelProps {
 })
 export class GardenModel {
 
-  public static create(data: Partial<GardenModelProps>): GardenModel {
+  public static create(data: GardenModelProps): GardenModel {
     const entity = new GardenModel();
     Object.assign(entity, data);
     return entity
