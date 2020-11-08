@@ -1,8 +1,7 @@
-// @todo finish delete undefined props form object then finish this handler
-
 import { CommandHandler } from "../../../../shared/command-bus";
 import { EDIT_GARDEN_COMMAND_TYPE, EditGardenCommand } from "../commands/edit-garden.command";
 import { GardenRepository } from "../../users/repositories/garden.repository";
+import {deleteUndefinedProperties} from '../../../tools/delete-undefined-properties';
 
 
 export interface EditGardenHandlerDependencies {
@@ -17,8 +16,8 @@ export default class EditGardenHandler implements CommandHandler<EditGardenComma
   async execute(command: EditGardenCommand) {
     const {gardenRepository} = this.dependencies;
     const {id, ...rest} = command.payload;
-    console.log(rest);
-    await gardenRepository.update({id}, {...rest});
+    const gardenFieldsToUpdate = deleteUndefinedProperties(rest)
+    await gardenRepository.update({id}, {...gardenFieldsToUpdate});
     return {}
   };
 }

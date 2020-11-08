@@ -6,7 +6,7 @@ import { seedApplication } from "../seed/seed-application";
 import { loginHelper } from "../helpers/login.helper";
 import { GardenRepository } from "../../src/app/features/users/repositories/garden.repository";
 
-describe.only("/gardens/create-garden integration", () => {
+describe("/gardens/create-garden integration", () => {
   it("edits garden instance", async () => {
     const { users, gardens } = await seedApplication(global.container, { usersAmount: 1, gardensAmount: 1 });
     const gardenRepository: GardenRepository = global.container.resolve('gardenRepository');

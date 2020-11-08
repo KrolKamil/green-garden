@@ -1,9 +1,9 @@
-// @todo finish this funciton
-
 interface Target {
     [key: string]: any
 };
 
-function deleteUndefinedProperties(target: Target){
-
+export function deleteUndefinedProperties(target: Target){
+    const copy = {...target};
+    Object.keys(copy).forEach(key => copy[key] === undefined ? delete copy[key] : {});
+    return copy;
 }
