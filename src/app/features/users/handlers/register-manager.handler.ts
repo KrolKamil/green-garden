@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { BAD_REQUEST } from "http-status-codes";
+import { CONFLICT } from "http-status-codes";
 import { UserBaseRepository } from "../repositories/user-base.repository";
 import { HttpError } from "../../../../errors/http.error";
 import { HashService } from "../../../services/hash.service";
@@ -23,7 +23,7 @@ export default class RegisterManagerHandler implements CommandHandler<RegisterMa
 
     const existingUser = await userBaseRepository.findOne({ email, type: UserBaseType.MANAGER });
     if (existingUser) {
-      throw new HttpError("Email is occupied", BAD_REQUEST);
+      throw new HttpError("Email is occupied", CONFLICT);
     }
 
     const hashedPassword = await hashService.hash(password);

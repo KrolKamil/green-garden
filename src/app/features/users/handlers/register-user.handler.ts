@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { BAD_REQUEST } from "http-status-codes";
+import { CONFLICT } from "http-status-codes";
 import { CommandHandler } from "../../../../shared/command-bus";
 import { REGISTER_USER_COMMAND_TYPE, RegisterUserCommand } from "../commands/register-user.command";
 import { UserBaseRepository } from "../repositories/user-base.repository";
@@ -25,7 +25,7 @@ export default class RegisterUserHandler implements CommandHandler<RegisterUserC
       email,
       type: UserBaseType.USER,
     });
-    if (existingUser) throw new HttpError("Email is occupied", BAD_REQUEST);
+    if (existingUser) throw new HttpError("Email is occupied", CONFLICT);
 
     const hashedPassword = await hashService.hash(password);
 
