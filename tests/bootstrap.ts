@@ -12,10 +12,10 @@ import { AssignedGardensModel } from "../src/app/features/gardens/models/assigne
 use(chaiAsPromised);
 
 const clearDb = async (connection: Connection) => {
+  await connection.getRepository(AssignedGardensModel).delete({});
   await connection.getRepository(UserBaseModel).delete({});
   await connection.getRepository(UserNoteModel).delete({});
   await connection.getRepository(GardenModel).delete({});
-  await connection.getRepository(AssignedGardensModel).delete({});
 };
 
 before(async () => {

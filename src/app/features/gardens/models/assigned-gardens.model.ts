@@ -26,7 +26,7 @@ export class AssignedGardensModel {
   @ManyToOne(() => UserBaseModel)
   userBase: UserBaseModel;
 
-  @ManyToOne(() => UserBaseModel)
+  @ManyToOne(() => GardenModel)
   garden: GardenModel;
 
   @Column({
@@ -35,7 +35,8 @@ export class AssignedGardensModel {
   assignedAt: Date;
 
   @Column({
-    type: 'date'
+    type: 'date',
+    nullable: true
   })
   unassignedAt: Date;
 }

@@ -6,6 +6,7 @@ import { MiddlewareType } from "../../../shared/middleware-type/middleware.type"
 import { CreateAuthorizationMiddleware } from "../../../middleware/authorization";
 import { UserBaseType } from "../users/models/user-base.model";
 import { editGardenActionValidation } from "./actions/edit-garden.action";
+import { assignGardenActionValidation } from "./actions/assign-garden.action";
 // VALIDATION_IMPORTS
 
 export interface GardensRoutingDependencies {
@@ -13,6 +14,7 @@ export interface GardensRoutingDependencies {
   createAuthorizationMiddleware: CreateAuthorizationMiddleware;
   createGardenAction: Action;
   editGardenAction: Action;
+  assignGardenAction: Action;
 }
 
 export const gardensRouting = (actions: GardensRoutingDependencies) => {
@@ -25,6 +27,9 @@ export const gardensRouting = (actions: GardensRoutingDependencies) => {
   router.post("/edit-garden", [
     authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
     editGardenActionValidation], actions.editGardenAction.invoke.bind(actions.editGardenAction));
+  router.post("/assign-garden", [
+    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
+    assignGardenActionValidation], actions.assignGardenAction.invoke.bind(actions.assignGardenAction));
   // ACTIONS_SETUP
 
   return router;
