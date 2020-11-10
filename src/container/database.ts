@@ -7,6 +7,7 @@ import * as db from "../../config/db";
 import { UserBaseRepository } from "../app/features/users/repositories/user-base.repository";
 import { UserNoteModel } from "../app/features/users/models/user-note.model";
 import { GardenRepository } from "../../src/app/features/users/repositories/garden.repository";
+import { AssignedGardensModel } from "../app/features/gardens/models/assigned-gardens.model";
 // MODELS_IMPORTS
 
 export async function registerDatabase(container: AwilixContainer, dependencies?: ContainerDependencies) {
@@ -20,6 +21,7 @@ export async function registerDatabase(container: AwilixContainer, dependencies?
   container.register({
     dbConnection: awilix.asValue(dbConnection),
     userNoteRepository: awilix.asValue(dbConnection.getRepository(UserNoteModel)),
+    assignedGardensRepository: awilix.asValue(dbConnection.getRepository(AssignedGardensModel)),
     // MODELS_SETUP
   });
   container.register({

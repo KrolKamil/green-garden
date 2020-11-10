@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, OneToMany } from "typeorm";
 import { UserNoteModel } from "./user-note.model";
+import { AssignedGardensModel } from "../../gardens/models/assigned-gardens.model";
 
 interface UserBaseModelProps {
   id: string;
@@ -61,6 +62,9 @@ export class UserBaseModel {
   @OneToOne(() => UserNoteModel)
   @JoinColumn({ name: "user_note_id" })
   userNote: UserNoteModel | null;
+
+  @OneToMany(() => AssignedGardensModel, assignedGarden => assignedGarden.userBase)
+  assignedGardens: AssignedGardensModel[];
 
   @CreateDateColumn({ type: "timestamp" })
   createdAt: Date;

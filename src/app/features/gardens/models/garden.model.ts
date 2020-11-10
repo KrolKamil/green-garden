@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, OneToMany } from "typeorm";
+import { AssignedGardensModel } from "./assigned-gardens.model";
 
 interface GardenModelProps {
   id: string;
@@ -43,4 +44,12 @@ export class GardenModel {
     default: false
   })
   includeGas: boolean;
+
+  @Column({
+    default: true
+  })
+  active: boolean;
+
+  @OneToMany(() => AssignedGardensModel, assignedGarden => assignedGarden.garden)
+  assignedGardens: AssignedGardensModel[];
 }
