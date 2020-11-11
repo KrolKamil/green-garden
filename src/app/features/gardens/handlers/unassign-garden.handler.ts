@@ -1,26 +1,24 @@
-import {v4 as uuid} from 'uuid';
-import { BAD_REQUEST } from "http-status-codes";
 import { CommandHandler } from "../../../../shared/command-bus";
-import { ASSIGN_GARDEN_COMMAND_TYPE, AssignGardenCommand } from "../commands/assign-garden.command";
+import { UNASSIGN_GARDEN_COMMAND_TYPE, UnassignGardenCommand } from "../commands/unassign-garden.command";
 import { AssignedGardensRepository } from "../../users/repositories/assigned-gardens.repository";
 import { UserBaseRepository } from "../../users/repositories/user-base.repository";
 import { GardenRepository } from "../../users/repositories/garden.repository";
 import { HttpError } from "../../../../errors/http.error";
-import { AssignedGardensModel } from "../models/assigned-gardens.model";
-import { getManager } from 'typeorm';
+import { BAD_REQUEST } from "http-status-codes";
 
-export interface AssignGardenHandlerDependencies {
+
+export interface UnassignGardenHandlerDependencies {
   userBaseRepository: UserBaseRepository;
   gardenRepository: GardenRepository;
   assignedGardensRepository: AssignedGardensRepository;
 }
 
-export default class AssignGardenHandler implements CommandHandler<AssignGardenCommand> {
-  public commandType: string = ASSIGN_GARDEN_COMMAND_TYPE;
+export default class UnassignGardenHandler implements CommandHandler<UnassignGardenCommand> {
+  public commandType: string = UNASSIGN_GARDEN_COMMAND_TYPE;
   
-  constructor(private dependencies: AssignGardenHandlerDependencies) {}
+  constructor(private dependencies: UnassignGardenHandlerDependencies) {}
 
-  async execute(command: AssignGardenCommand) {
+  async execute(command: UnassignGardenCommand) {
     const {userBaseRepository, gardenRepository, assignedGardensRepository} = this.dependencies;
     const {userId, gardenId} = command.payload;
 
@@ -44,20 +42,17 @@ export default class AssignGardenHandler implements CommandHandler<AssignGardenC
       throw new HttpError('Garden does not exist', BAD_REQUEST);
     }
 
-    const gardenIsFree = await assignedGardensRepository.isGardenFree(gardenId);
+    const occupiedGarden = await assignedGardensRepository.getOccupiedGarden(gardenId, userId);
 
-    if(!gardenIsFree){
-      throw new HttpError("Garden is occupied", BAD_REQUEST);
+    if(!occupiedGarden) {
+      throw new HttpError('This garden is not occupied by this user', BAD_REQUEST);
     }
 
-    await assignedGardensRepository
-    .save(AssignedGardensModel.create({
-      id: uuid(),
-      userBase: user,
-      garden,
-      assignedAt: new Date()
-    }));
-    
+    occupiedGarden.unassignedAt = new Date();
+
+    await assignedGardensRepository.save(occupiedGarden);
+
     return {}
   };
+  
 }

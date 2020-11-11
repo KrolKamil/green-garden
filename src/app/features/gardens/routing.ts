@@ -7,6 +7,7 @@ import { CreateAuthorizationMiddleware } from "../../../middleware/authorization
 import { UserBaseType } from "../users/models/user-base.model";
 import { editGardenActionValidation } from "./actions/edit-garden.action";
 import { assignGardenActionValidation } from "./actions/assign-garden.action";
+import { unassignGardenActionValidation } from "./actions/unassign-garden.action";
 // VALIDATION_IMPORTS
 
 export interface GardensRoutingDependencies {
@@ -15,6 +16,7 @@ export interface GardensRoutingDependencies {
   createGardenAction: Action;
   editGardenAction: Action;
   assignGardenAction: Action;
+  unassignGardenAction: Action;
 }
 
 export const gardensRouting = (actions: GardensRoutingDependencies) => {
@@ -30,6 +32,9 @@ export const gardensRouting = (actions: GardensRoutingDependencies) => {
   router.post("/assign-garden", [
     authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
     assignGardenActionValidation], actions.assignGardenAction.invoke.bind(actions.assignGardenAction));
+  router.post("/unassign-garden", [
+    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
+    unassignGardenActionValidation], actions.unassignGardenAction.invoke.bind(actions.unassignGardenAction));
   // ACTIONS_SETUP
 
   return router;
