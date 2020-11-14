@@ -23,10 +23,10 @@ export class AssignedGardensModel {
   @PrimaryColumn()
   id: string;
 
-  @ManyToOne(() => UserBaseModel)
+  @ManyToOne(() => UserBaseModel, userBase => userBase.assignedGardens)
   userBase: UserBaseModel;
 
-  @ManyToOne(() => GardenModel)
+  @ManyToOne(() => GardenModel, garden => garden.assignedGardens)
   garden: GardenModel;
 
   @Column({

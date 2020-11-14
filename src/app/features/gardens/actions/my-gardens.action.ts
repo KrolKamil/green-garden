@@ -38,10 +38,10 @@ class MyGardensAction implements Action {
       },
     },
   })
-  async invoke(req: Request, res: Response) {
+  async invoke(_req: Request, res: Response) {
     const queryResult = await this.dependencies.queryBus.execute(
       new MyGardensQuery({
-        // query props
+        userId: res.locals.userDTO.id
       }),
     );
 
