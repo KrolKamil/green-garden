@@ -9,6 +9,7 @@ import { editGardenActionValidation } from "./actions/edit-garden.action";
 import { assignGardenActionValidation } from "./actions/assign-garden.action";
 import { unassignGardenActionValidation } from "./actions/unassign-garden.action";
 import { gardenSetActiveActionValidation } from "./actions/garden-set-active.action";
+import { gardenListActionValidation } from "./actions/garden-list.action";
 // VALIDATION_IMPORTS
 
 export interface GardensRoutingDependencies {
@@ -19,6 +20,7 @@ export interface GardensRoutingDependencies {
   assignGardenAction: Action;
   unassignGardenAction: Action;
   gardenSetActiveAction: Action;
+  gardenListAction: Action;
 }
 
 export const gardensRouting = (actions: GardensRoutingDependencies) => {
@@ -40,6 +42,9 @@ export const gardensRouting = (actions: GardensRoutingDependencies) => {
   router.post("/garden-set-active", [
     authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
     gardenSetActiveActionValidation], actions.gardenSetActiveAction.invoke.bind(actions.gardenSetActiveAction));
+  router.get("/garden-list", [
+    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
+    gardenListActionValidation], actions.gardenListAction.invoke.bind(actions.gardenListAction));
   // ACTIONS_SETUP
 
   return router;
