@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryColumn, OneToMany } from "typeorm";
+import { Column, Entity, PrimaryColumn, OneToMany, OneToOne, JoinColumn } from "typeorm";
 import { AssignedGardensModel } from "./assigned-gardens.model";
+import { GardenNoteModel } from "./garden-note.model";
 
 interface GardenModelProps {
   id: string;
@@ -49,6 +50,10 @@ export class GardenModel {
     default: true
   })
   active: boolean;
+
+  @OneToOne(() => GardenNoteModel)
+  @JoinColumn({ name: "garden_note_id" })
+  gardenNote: GardenNoteModel | null;
 
   @OneToMany(() => AssignedGardensModel, assignedGarden => assignedGarden.garden)
   assignedGardens: AssignedGardensModel[];
