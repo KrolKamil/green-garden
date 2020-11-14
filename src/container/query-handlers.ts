@@ -7,6 +7,7 @@ import ListQueryHandler from "../app/features/users/query-handlers/list.query.ha
 import MeQueryHandler from "../app/features/users/query-handlers/me.query.handler";
 import DetailsQueryHandler from "../app/features/users/query-handlers/details.query.handler";
 import GardenListQueryHandler from "../app/features/gardens/query-handlers/garden-list.query.handler";
+import MyGardensQueryHandler from "../app/features/gardens/query-handlers/my-gardens.query.handler";
 // HANDLERS_IMPORTS
 
 export async function registerQueryHandlers(container: AwilixContainer) {
@@ -16,6 +17,7 @@ export async function registerQueryHandlers(container: AwilixContainer) {
       awilix.asClass(MeQueryHandler),
       awilix.asClass(DetailsQueryHandler),
       awilix.asClass(GardenListQueryHandler),
+      awilix.asClass(MyGardensQueryHandler),
       // QUERY_HANDLERS_SETUP
     ]),
   });
