@@ -11,7 +11,7 @@ import { GardenNoteModel } from "../../src/app/features/gardens/models/garden-no
 import { Repository } from 'typeorm';
 import { GardenModel } from '../../src/app/features/gardens/models/garden.model';
 
-describe.only("/gardens/garden-details/{id} integration", () => {
+describe("/gardens/garden-details/{id} integration", () => {
     describe("user", () => {
         it("throws error when user is no assigned to garden", async () => {
             const { users, gardens } = await seedApplication(global.container, { usersAmount: 1, gardensAmount: 1 });
@@ -19,8 +19,8 @@ describe.only("/gardens/garden-details/{id} integration", () => {
             const garden = gardens![0];
             const { accessToken } = loginHelper(global.container, user);
 
-            await request(global.container.resolve("app"))
-            .get(`/api/gardens/garden-details/${garden.id}`)
+            request(global.container.resolve("app"))
+            .get(`/api/gardens/${garden.id}/garden-details`)
             .set("Authorization", `Bearer ${accessToken}`)
             .expect(400)
         })
@@ -34,7 +34,7 @@ describe.only("/gardens/garden-details/{id} integration", () => {
             await assignGardenHelper(global.container, user, garden);
 
             await request(global.container.resolve("app"))
-            .get(`/api/gardens/garden-details/${garden.id}`)
+            .get(`/api/gardens/${garden.id}/garden-details`)
             .set("Authorization", `Bearer ${accessToken}`)
             .expect(200)
             .then((res) => {
@@ -72,11 +72,11 @@ describe.only("/gardens/garden-details/{id} integration", () => {
             }
 
             await request(global.container.resolve("app"))
-            .get(`/api/gardens/garden-details/${garden.id}`)
+            .get(`/api/gardens/${garden.id}/garden-details`)
             .set("Authorization", `Bearer ${accessToken}`)
             .expect(200)
             .then((res) => {
-                expect(res.body).to.be.deep.equal(expectedResponse);
+                expect(res.body).to.be.deep.equal(JSON.parse(JSON.stringify(expectedResponse)));
             })
         })
     })

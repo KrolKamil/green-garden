@@ -57,7 +57,7 @@ export const gardensRouting = (actions: GardensRoutingDependencies) => {
   router.get("/my-gardens", [
     authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.USER]),
     myGardensActionValidation], actions.myGardensAction.invoke.bind(actions.myGardensAction));
-  router.get("/garden-details", [
+  router.get("/:gardenId/garden-details", [
     authenticationMiddleware,
     gardenDetailsActionValidation], actions.gardenDetailsAction.invoke.bind(actions.gardenDetailsAction));
   // ACTIONS_SETUP

@@ -11,7 +11,7 @@ export interface GardenDetailsActionDependencies {
 
 export const gardenDetailsActionValidation = celebrate(
   {
-    headers: Joi.object(),
+    headers: Joi.object()
   },
   { abortEarly: false },
 );
@@ -41,7 +41,8 @@ class GardenDetailsAction implements Action {
   async invoke(req: Request, res: Response) {
     const queryResult = await this.dependencies.queryBus.execute(
       new GardenDetailsQuery({
-        // query props
+        gardenId: req.params.gardenId,
+        userDTO: res.locals.userDTO
       }),
     );
 
