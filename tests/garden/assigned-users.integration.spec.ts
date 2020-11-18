@@ -7,40 +7,45 @@ import { loginHelper } from "../helpers/login.helper";
 import { assignGardenHelper } from "../../tests/helpers/assign-garden.helper";
 import { unassignGardenHelper } from "../../tests/helpers/unassign-garden.helper";
 
-describe("/users/:userId/assigned-gardens integration", () => {
-  it("gets user presently assigned gardens", async () => {
-    const { users, gardens } = await seedApplication(global.container, { usersAmount: 1, gardensAmount: 3 });
+describe("/gardens/:gardenId/assigned-user integration", () => {
+  it("gets garden presently assigned user", async () => {
+    const { users, gardens } = await seedApplication(global.container, { usersAmount: 2, gardensAmount: 3 });
     const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
     const user = users.find((singleUser) => singleUser.type === UserBaseType.USER)!;
+    delete user.password;
     const { accessToken } = loginHelper(global.container, manager);
-
+    
     await assignGardenHelper(global.container, user, gardens![0]);
     await unassignGardenHelper(global.container, user, gardens![0]);
-    await assignGardenHelper(global.container, user, gardens![1]);
+    await assignGardenHelper(global.container, user, gardens![0]);
 
     await request(global.container.resolve("app"))
-    .get(`/api/users/${user.id}/assigned-gardens`)
+    .get(`/api/gardens/${gardens![0].id}/assigned-user`)
     .set("Authorization", `Bearer ${accessToken}`)
     .expect(200)
     .then(async (res) => {
         expect(res.body[0].assignedGardens[0].id).to.be.not.equal(undefined);
         expect(res.body[0].assignedGardens[0].unassignedAt).to.be.equal(null);
         delete res.body[0].assignedGardens;
-        expect(res.body[0]).to.be.deep.equal(gardens![1]);
+        expect(res.body[0]).to.be.deep.equal(JSON.parse(JSON.stringify(user)));
     });
 });
-  it("gets user historically assigned gardens", async () => {
-    const { users, gardens } = await seedApplication(global.container, { usersAmount: 1, gardensAmount: 3 });
+  it("gets garden historically assigned users", async () => {
+    const { users, gardens } = await seedApplication(global.container, { usersAmount: 2, gardensAmount: 3 });
     const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
-    const user = users.find((singleUser) => singleUser.type === UserBaseType.USER)!;
     const { accessToken } = loginHelper(global.container, manager);
+    
+    const [oldOnwer, newOwner] = users.filter((singleUser) => singleUser.type === UserBaseType.USER)!;
 
-    await assignGardenHelper(global.container, user, gardens![0]);
-    await unassignGardenHelper(global.container, user, gardens![0]);
-    await assignGardenHelper(global.container, user, gardens![1]);
+    delete oldOnwer.password;
+    delete newOwner.password;
+    
+    await assignGardenHelper(global.container, oldOnwer, gardens![0]);
+    await unassignGardenHelper(global.container, oldOnwer, gardens![0]);
+    await assignGardenHelper(global.container, newOwner, gardens![0]);
 
     await request(global.container.resolve("app"))
-    .get(`/api/users/${user.id}/assigned-gardens?filter=historical`)
+    .get(`/api/gardens/${gardens![0].id}/assigned-user?filter=historical`)
     .set("Authorization", `Bearer ${accessToken}`)
     .expect(200)
     .then(async (res) => {
@@ -50,7 +55,7 @@ describe("/users/:userId/assigned-gardens integration", () => {
       expect(res.body[1].assignedGardens[0].id).to.be.not.equal(undefined);
       expect(res.body[1].assignedGardens[0].unassignedAt).to.be.equal(null);
       delete res.body[1].assignedGardens;
-        expect(res.body).to.be.deep.equal([gardens![0], gardens![1]]);
+        expect(res.body).to.be.deep.equal([JSON.parse(JSON.stringify(oldOnwer)), JSON.parse(JSON.stringify(newOwner))]);
     });
   })
 });

@@ -1,11 +1,9 @@
 import { QueryHandler } from "../../../../shared/query-bus";
 import { ASSIGNED_GARDENS_QUERY_TYPE, AssignedGardensQuery, AssignedGardensQueryResult } from "../queries/assigned-gardens";
-import { AssignedGardensRepository } from "../repositories/assigned-gardens.repository";
 import { AssignedGardensFilter } from "../actions/assigned-gardens.action";
 import { GardenRepository } from "../repositories/garden.repository";
 
 interface AssignedGardensQueryHandlerDependencies {
-  assignedGardensRepository: AssignedGardensRepository;
   gardenRepository: GardenRepository;
 }
 
