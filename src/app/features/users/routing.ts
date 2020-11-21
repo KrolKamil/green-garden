@@ -14,6 +14,7 @@ import { setNoteActionValidation } from "./actions/set-note.action";
 import { meActionValidation } from "./actions/me.action";
 import { detailsActionValidation } from "./actions/details.action";
 import { setActiveActionValidation } from "./actions/set-active.action";
+import { assignedGardensActionValidation } from "./actions/assigned-gardens.action";
 // VALIDATION_IMPORTS
 
 export interface UsersRoutingDependencies {
@@ -29,6 +30,7 @@ export interface UsersRoutingDependencies {
   meAction: Action;
   detailsAction: Action;
   setActiveAction: Action;
+  assignedGardensAction: Action;
   // ACTIONS_IMPORTS
 }
 
@@ -78,6 +80,11 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
     "/set-active",
     [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), setActiveActionValidation],
     actions.setActiveAction.invoke.bind(actions.setActiveAction),
+  );
+  router.get(
+    "/:userId/assigned-gardens",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), assignedGardensActionValidation],
+    actions.assignedGardensAction.invoke.bind(actions.assignedGardensAction),
   );
   // ACTIONS_SETUP
 

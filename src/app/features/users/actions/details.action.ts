@@ -13,6 +13,9 @@ export interface DetailsActionDependencies {
 export const detailsActionValidation = celebrate(
   {
     headers: Joi.object(),
+    params: {
+      userId: Joi.string().required(),
+    },
   },
   { abortEarly: false },
 );

@@ -30,11 +30,14 @@ class SetNoteAction implements Action {
   @ApiOperationPost({
     path: "/users/set-note",
     description: "Description",
-    parameters: {},
+    parameters: {
+      body: {
+        model: "SetNoteActionRequestModel",
+      },
+    },
     responses: {
       200: {
         description: "Success",
-        model: "SetNoteActionRequestModel",
       },
       400: {
         description: "Validation error",
