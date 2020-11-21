@@ -9,7 +9,7 @@ import { GardenRepository } from "../../src/app/features/users/repositories/gard
 describe("/gardens/create-garden integration", () => {
   it("edits garden instance", async () => {
     const { users, gardens } = await seedApplication(global.container, { usersAmount: 1, gardensAmount: 1 });
-    const gardenRepository: GardenRepository = global.container.resolve('gardenRepository');
+    const gardenRepository: GardenRepository = global.container.resolve("gardenRepository");
 
     const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
     const { accessToken } = loginHelper(global.container, manager);
@@ -17,21 +17,27 @@ describe("/gardens/create-garden integration", () => {
     const garden = gardens![0];
 
     const payload = {
-        id: garden.id,
-        publicId: 'abc',
-        surfaceInSquareMeters: 10,
-        includeWater: true,
-        includeElectricity: false
-    }
+      id: garden.id,
+      publicId: "abc",
+      surfaceInSquareMeters: 10,
+      includeWater: true,
+      includeElectricity: false,
+    };
 
     await request(global.container.resolve("app"))
-      .post(`/api/gardens/edit-garden`)
+      .post("/api/gardens/edit-garden")
       .send(payload)
       .set("Authorization", `Bearer ${accessToken}`)
       .expect(200);
 
-    const {publicId, surfaceInSquareMeters, includeWater, includeElectricity, includeGas} = await gardenRepository.findOneOrFail();
-    
+    const {
+      publicId,
+      surfaceInSquareMeters,
+      includeWater,
+      includeElectricity,
+      includeGas,
+    } = await gardenRepository.findOneOrFail();
+
     expect(publicId).to.be.equal(payload.publicId);
     expect(surfaceInSquareMeters).to.be.equal(payload.surfaceInSquareMeters);
     expect(includeWater).to.be.equal(payload.includeWater);

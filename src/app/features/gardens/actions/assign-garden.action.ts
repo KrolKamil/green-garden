@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
-import { ApiOperationPost, ApiPath } from "swagger-express-ts";
+import { ApiOperationPost, ApiPath, ApiModel, ApiModelProperty } from "swagger-express-ts";
 import { CommandBus } from "../../../../shared/command-bus";
 import { AssignGardenCommand } from "../commands/assign-garden.command";
 import { Action } from "../../../../shared/http/types";
@@ -14,8 +14,8 @@ export const assignGardenActionValidation = celebrate(
     headers: Joi.object(),
     body: {
       userId: Joi.string().required(),
-      gardenId: Joi.string().required()
-    }
+      gardenId: Joi.string().required(),
+    },
   },
   { abortEarly: false },
 );
@@ -30,7 +30,11 @@ class AssignGardenAction implements Action {
   @ApiOperationPost({
     path: "/gardens/assign-garden",
     description: "Description",
-    parameters: {},
+    parameters: {
+      body: {
+        model: "AssignGardenActionRequest",
+      },
+    },
     responses: {
       200: {
         description: "Success",
@@ -46,7 +50,7 @@ class AssignGardenAction implements Action {
   async invoke({ body }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
       new AssignGardenCommand({
-        ...body
+        ...body,
       }),
     );
 
@@ -54,3 +58,18 @@ class AssignGardenAction implements Action {
   }
 }
 export default AssignGardenAction;
+
+@ApiModel({
+  name: "AssignGardenActionRequest",
+})
+export class AssignGardenActionRequest {
+  @ApiModelProperty({
+    required: true,
+  })
+  userId: string;
+
+  @ApiModelProperty({
+    required: true,
+  })
+  gardenId: string;
+}

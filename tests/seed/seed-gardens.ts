@@ -10,16 +10,19 @@ interface SeedGardensConfig {
 export async function seedGardens(container: AwilixContainer<any>, config: SeedGardensConfig) {
   const { gardensAmount } = config;
 
-  const gardenRepository: GardenRepository = container.resolve('gardenRepository');
+  const gardenRepository: GardenRepository = container.resolve("gardenRepository");
 
   const gardens: GardenModel[] = [];
 
-  for(let i=0; i<gardensAmount; i++){
-    gardens.push(GardenModel.create({
+  // eslint-disable-next-line
+  for (let i = 0; i < gardensAmount; i++) {
+    gardens.push(
+      GardenModel.create({
         id: uuid(),
         publicId: uuid(),
-        surfaceInSquareMeters: i
-    }));
+        surfaceInSquareMeters: i,
+      }),
+    );
   }
   return gardenRepository.save(gardens);
 }

@@ -10,7 +10,7 @@ import { AssignedGardensRepository } from "../../src/app/features/users/reposito
 
 use(chaiAsPromised);
 
-describe("/gardens/assign-garden integration", () => { 
+describe("/gardens/assign-garden integration", () => {
   it("throws error on invalid user", async () => {
     const { users, gardens } = await seedApplication(global.container, { usersAmount: 1, gardensAmount: 1 });
     const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
@@ -18,35 +18,35 @@ describe("/gardens/assign-garden integration", () => {
     const garden = gardens![0];
 
     request(global.container.resolve("app"))
-    .post(`/api/gardens/assign-garden`)
-    .send({
-        userId: 'invalid_user_id',
-        gardenId: garden.id
-    })
-    .set("Authorization", `Bearer ${accessToken}`)
-    .expect(400)
-    .then((res) => {
+      .post("/api/gardens/assign-garden")
+      .send({
+        userId: "invalid_user_id",
+        gardenId: garden.id,
+      })
+      .set("Authorization", `Bearer ${accessToken}`)
+      .expect(400)
+      .then((res) => {
         expect(res).to.be.instanceOf(HttpError);
-    })
-  })
-  it("throws error on invalid garden",async () => {
+      });
+  });
+  it("throws error on invalid garden", async () => {
     const { users } = await seedApplication(global.container, { usersAmount: 1, gardensAmount: 1 });
     const user = users.find((singleUser) => singleUser.type === UserBaseType.USER)!;
     const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
     const { accessToken } = loginHelper(global.container, manager);
 
     request(global.container.resolve("app"))
-    .post(`/api/gardens/assign-garden`)
-    .send({
+      .post("/api/gardens/assign-garden")
+      .send({
         userId: user.id,
-        gardenId: 'invalid_garden_id'
-    })
-    .set("Authorization", `Bearer ${accessToken}`)
-    .expect(400)
-    .then((res) => {
+        gardenId: "invalid_garden_id",
+      })
+      .set("Authorization", `Bearer ${accessToken}`)
+      .expect(400)
+      .then((res) => {
         expect(res).to.be.instanceOf(HttpError);
-    })
-  })
+      });
+  });
   it("assign user to garden", async () => {
     const { users, gardens } = await seedApplication(global.container, { usersAmount: 1, gardensAmount: 1 });
     const user = users.find((singleUser) => singleUser.type === UserBaseType.USER)!;
@@ -55,17 +55,17 @@ describe("/gardens/assign-garden integration", () => {
     const garden = gardens![0];
 
     await request(global.container.resolve("app"))
-    .post(`/api/gardens/assign-garden`)
-    .send({
+      .post("/api/gardens/assign-garden")
+      .send({
         userId: user.id,
-        gardenId: garden.id
-    })
-    .set("Authorization", `Bearer ${accessToken}`)
-    .expect(200);
+        gardenId: garden.id,
+      })
+      .set("Authorization", `Bearer ${accessToken}`)
+      .expect(200);
 
-    const assignedGardensRepository: AssignedGardensRepository = global.container.resolve('assignedGardensRepository');
+    const assignedGardensRepository: AssignedGardensRepository = global.container.resolve("assignedGardensRepository");
     const assignedGardens = await assignedGardensRepository.findOne({
-        relations: ['userBase', 'garden']
+      relations: ["userBase", "garden"],
     });
     expect(assignedGardens?.userBase.id).to.be.equal(user.id);
     expect(assignedGardens?.garden.id).to.be.equal(garden.id);
@@ -78,24 +78,24 @@ describe("/gardens/assign-garden integration", () => {
     const garden = gardens![0];
 
     await request(global.container.resolve("app"))
-    .post(`/api/gardens/assign-garden`)
-    .send({
+      .post("/api/gardens/assign-garden")
+      .send({
         userId: user.id,
-        gardenId: garden.id
-    })
-    .set("Authorization", `Bearer ${accessToken}`)
-    .expect(200);
+        gardenId: garden.id,
+      })
+      .set("Authorization", `Bearer ${accessToken}`)
+      .expect(200);
 
     request(global.container.resolve("app"))
-    .post(`/api/gardens/assign-garden`)
-    .send({
+      .post("/api/gardens/assign-garden")
+      .send({
         userId: user.id,
-        gardenId: garden.id
-    })
-    .set("Authorization", `Bearer ${accessToken}`)
-    .expect(400)
-    .then((res) => {
+        gardenId: garden.id,
+      })
+      .set("Authorization", `Bearer ${accessToken}`)
+      .expect(400)
+      .then((res) => {
         expect(res).to.be.instanceOf(HttpError);
-    })
+      });
   });
 });

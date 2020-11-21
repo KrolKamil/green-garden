@@ -17,8 +17,8 @@ export const createGardenActionValidation = celebrate(
       surfaceInSquareMeters: Joi.number().min(0).required(),
       includeWater: Joi.boolean().optional(),
       includeElectricity: Joi.boolean().optional(),
-      includeGas: Joi.boolean().optional() 
-    }
+      includeGas: Joi.boolean().optional(),
+    },
   },
   { abortEarly: false },
 );
@@ -35,8 +35,8 @@ class CreateGardenAction implements Action {
     description: "Description",
     parameters: {
       body: {
-        model: 'CreateGardenActionRequestModel'
-      }
+        model: "CreateGardenActionRequestModel",
+      },
     },
     responses: {
       200: {
@@ -57,7 +57,7 @@ class CreateGardenAction implements Action {
         surfaceInSquareMeters: body.surfaceInSquareMeters,
         includeWater: body.includeWater || false,
         includeElectricity: body.includeElectricity || false,
-        includeGas: body.includeGas || false
+        includeGas: body.includeGas || false,
       }),
     );
 
@@ -71,27 +71,27 @@ export default CreateGardenAction;
 })
 export class CreateGardenActionRequestModel {
   @ApiModelProperty({
-    required: true
+    required: true,
   })
   publicId: string;
 
   @ApiModelProperty({
-    required: true
+    required: true,
   })
   surfaceInSquareMeters: number;
 
   @ApiModelProperty({
-    required: false
+    required: false,
   })
   includeWater: boolean;
 
   @ApiModelProperty({
-    required: false
+    required: false,
   })
   includeElectricity: boolean;
 
   @ApiModelProperty({
-    required: false
+    required: false,
   })
   includeGas: boolean;
 }

@@ -10,33 +10,32 @@ interface AssignedGardensModelProps {
 }
 
 @Entity({
-  name: "assigned_gardens"
+  name: "assigned_gardens",
 })
 export class AssignedGardensModel {
-
   public static create(data: AssignedGardensModelProps): AssignedGardensModel {
     const entity = new AssignedGardensModel();
     Object.assign(entity, data);
-    return entity
+    return entity;
   }
 
   @PrimaryColumn()
   id: string;
 
-  @ManyToOne(() => UserBaseModel, userBase => userBase.assignedGardens)
+  @ManyToOne(() => UserBaseModel, (userBase) => userBase.assignedGardens)
   userBase: UserBaseModel;
 
-  @ManyToOne(() => GardenModel, garden => garden.assignedGardens)
+  @ManyToOne(() => GardenModel, (garden) => garden.assignedGardens)
   garden: GardenModel;
 
   @Column({
-    type: 'date'
+    type: "date",
   })
   assignedAt: Date;
 
   @Column({
-    type: 'date',
-    nullable: true
+    type: "date",
+    nullable: true,
   })
   unassignedAt: Date;
 }

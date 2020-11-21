@@ -81,9 +81,11 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
     [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), setActiveActionValidation],
     actions.setActiveAction.invoke.bind(actions.setActiveAction),
   );
-  router.get("/:userId/assigned-gardens", [
-    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
-    assignedGardensActionValidation], actions.assignedGardensAction.invoke.bind(actions.assignedGardensAction));
+  router.get(
+    "/:userId/assigned-gardens",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), assignedGardensActionValidation],
+    actions.assignedGardensAction.invoke.bind(actions.assignedGardensAction),
+  );
   // ACTIONS_SETUP
 
   return router;

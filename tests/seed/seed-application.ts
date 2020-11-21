@@ -1,7 +1,6 @@
 import { AwilixContainer } from "awilix";
 import { seedUsers } from "./seed-users";
-import {seedGardens} from './seed-gardens';
-import { GardenModel } from "../../src/app/features/gardens/models/garden.model";
+import { seedGardens } from "./seed-gardens";
 
 type SeedConfig = {
   usersAmount: number;
@@ -16,12 +15,12 @@ export async function seedApplication(container: AwilixContainer<any>, config: S
 
   let gardens;
 
-  if(gardensAmount){
-    gardens = await seedGardens(container, {gardensAmount})
+  if (gardensAmount) {
+    gardens = await seedGardens(container, { gardensAmount });
   }
 
   return {
     users,
-    gardens
+    gardens,
   };
 }

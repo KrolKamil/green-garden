@@ -18,8 +18,8 @@ export const editGardenActionValidation = celebrate(
       surfaceInSquareMeters: Joi.number().min(0).required(),
       includeWater: Joi.boolean().optional(),
       includeElectricity: Joi.boolean().optional(),
-      includeGas: Joi.boolean().optional() 
-    }
+      includeGas: Joi.boolean().optional(),
+    },
   },
   { abortEarly: false },
 );
@@ -36,8 +36,8 @@ class EditGardenAction implements Action {
     description: "Description",
     parameters: {
       body: {
-        model: 'EditGardenActionRequestModel'
-      }
+        model: "EditGardenActionRequestModel",
+      },
     },
     responses: {
       200: {
@@ -59,7 +59,7 @@ class EditGardenAction implements Action {
         surfaceInSquareMeters: body.surfaceInSquareMeters,
         includeWater: body.includeWater,
         includeElectricity: body.includeElectricity,
-        includeGas: body.includeGas
+        includeGas: body.includeGas,
       }),
     );
 

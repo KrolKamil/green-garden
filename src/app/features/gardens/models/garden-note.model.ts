@@ -6,14 +6,13 @@ interface GardenNoteModelProps {
 }
 
 @Entity({
-  name: "garden_note"
+  name: "garden_note",
 })
 export class GardenNoteModel {
-
   public static create(data: GardenNoteModelProps): GardenNoteModel {
     const entity = new GardenNoteModel();
     Object.assign(entity, data);
-    return entity
+    return entity;
   }
 
   @PrimaryColumn()

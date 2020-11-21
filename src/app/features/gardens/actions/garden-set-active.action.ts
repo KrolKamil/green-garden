@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
-import { ApiOperationPost, ApiPath } from "swagger-express-ts";
+import { ApiOperationPost, ApiPath, ApiModel, ApiModelProperty } from "swagger-express-ts";
 import { CommandBus } from "../../../../shared/command-bus";
 import { GardenSetActiveCommand } from "../commands/garden-set-active.command";
 import { Action } from "../../../../shared/http/types";
@@ -14,8 +14,8 @@ export const gardenSetActiveActionValidation = celebrate(
     headers: Joi.object(),
     body: {
       gardenId: Joi.string().required(),
-      active: Joi.boolean().required()
-    }
+      active: Joi.boolean().required(),
+    },
   },
   { abortEarly: false },
 );
@@ -30,7 +30,11 @@ class GardenSetActiveAction implements Action {
   @ApiOperationPost({
     path: "/gardens/garden-set-active",
     description: "Description",
-    parameters: {},
+    parameters: {
+      body: {
+        model: "GardenSetActiveActionRequest",
+      },
+    },
     responses: {
       200: {
         description: "Success",
@@ -46,7 +50,7 @@ class GardenSetActiveAction implements Action {
   async invoke({ body }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
       new GardenSetActiveCommand({
-        ...body
+        ...body,
       }),
     );
 
@@ -54,3 +58,14 @@ class GardenSetActiveAction implements Action {
   }
 }
 export default GardenSetActiveAction;
+
+@ApiModel({
+  name: "GardenSetActiveActionRequest",
+})
+export class GardenSetActiveActionRequest {
+  @ApiModelProperty({})
+  gardenId: string;
+
+  @ApiModelProperty({})
+  active: boolean;
+}

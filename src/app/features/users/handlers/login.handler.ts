@@ -23,14 +23,13 @@ export default class LoginHandler implements CommandHandler<LoginCommand> {
     const { userBaseRepository, tokenService, hashService } = this.dependencies;
     const { email, password, userType } = command.payload;
 
-    const user = await 
-    userBaseRepository
-    .createQueryBuilder('u')
-    .addSelect('u.password')
-    .where('email=:email',{email})
-    .andWhere('type=:type',{type: userType})
-    .andWhere('active is true')
-    .getOne();
+    const user = await userBaseRepository
+      .createQueryBuilder("u")
+      .addSelect("u.password")
+      .where("email=:email", { email })
+      .andWhere("type=:type", { type: userType })
+      .andWhere("active is true")
+      .getOne();
 
     if (!user) {
       throw new LoginError();

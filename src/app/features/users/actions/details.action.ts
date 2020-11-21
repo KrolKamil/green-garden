@@ -14,8 +14,8 @@ export const detailsActionValidation = celebrate(
   {
     headers: Joi.object(),
     params: {
-      userId: Joi.string().required()
-    }
+      userId: Joi.string().required(),
+    },
   },
   { abortEarly: false },
 );

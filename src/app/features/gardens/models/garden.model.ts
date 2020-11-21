@@ -1,4 +1,13 @@
-import { Column, Entity, PrimaryColumn, OneToMany, OneToOne, JoinColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  PrimaryColumn,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { AssignedGardensModel } from "./assigned-gardens.model";
 import { GardenNoteModel } from "./garden-note.model";
 
@@ -12,42 +21,41 @@ interface GardenModelProps {
 }
 
 @Entity({
-  name: "garden"
+  name: "garden",
 })
 export class GardenModel {
-
   public static create(data: GardenModelProps): GardenModel {
     const entity = new GardenModel();
     Object.assign(entity, data);
-    return entity
+    return entity;
   }
 
   @PrimaryColumn()
   id: string;
 
-  @Column({unique: true})
+  @Column({ unique: true })
   publicId: string;
 
   @Column()
   surfaceInSquareMeters: number;
 
   @Column({
-    default: false
+    default: false,
   })
   includeWater: boolean;
 
   @Column({
-    default: false
+    default: false,
   })
   includeElectricity: boolean;
 
   @Column({
-    default: false
+    default: false,
   })
   includeGas: boolean;
 
   @Column({
-    default: true
+    default: true,
   })
   active: boolean;
 
@@ -55,6 +63,12 @@ export class GardenModel {
   @JoinColumn({ name: "garden_note_id" })
   gardenNote: GardenNoteModel | null;
 
-  @OneToMany(() => AssignedGardensModel, assignedGarden => assignedGarden.garden)
+  @OneToMany(() => AssignedGardensModel, (assignedGarden) => assignedGarden.garden)
   assignedGardens: AssignedGardensModel[];
+
+  @CreateDateColumn({ type: "timestamp" })
+  createdAt: Date;
+
+  @UpdateDateColumn({ type: "timestamp" })
+  updatedAt: Date;
 }

@@ -1,5 +1,5 @@
 import { Query } from "../../../../../shared/query-bus";
-import {AssignedGardensFilter} from '../../actions/assigned-gardens.action'
+import { AssignedGardensFilter } from "../../actions/assigned-gardens.action";
 
 export const ASSIGNED_GARDENS_QUERY_TYPE = "users/ASSIGNED_GARDENS";
 

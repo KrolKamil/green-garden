@@ -3,14 +3,15 @@ import { Event } from "../../../../shared/event-dispatcher/index";
 import { GardenSetNoteCommandPayload } from "../commands/garden-set-note.command";
 
 export default class GardenSetNoteEvent implements Event {
-    static eventName: string = "GardenSetNote";
-    public payload: Command<GardenSetNoteCommandPayload>;
-    
-    get name() {
-        return GardenSetNoteEvent.eventName;
-    }
+  static eventName: string = "GardenSetNote";
 
-    public constructor(command: Command<GardenSetNoteCommandPayload>) {
-        this.payload = command;
-    }
+  public payload: Command<GardenSetNoteCommandPayload>;
+
+  get name() {
+    return GardenSetNoteEvent.eventName;
   }
+
+  public constructor(command: Command<GardenSetNoteCommandPayload>) {
+    this.payload = command;
+  }
+}

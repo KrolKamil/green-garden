@@ -32,39 +32,59 @@ export interface GardensRoutingDependencies {
 }
 
 export const gardensRouting = (actions: GardensRoutingDependencies) => {
-  const {authenticationMiddleware, createAuthorizationMiddleware} = actions;
+  const { authenticationMiddleware, createAuthorizationMiddleware } = actions;
   const router = express.Router();
-  
-  router.post("/create-garden", [
-    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
-    createGardenActionValidation], actions.createGardenAction.invoke.bind(actions.createGardenAction));
-  router.post("/edit-garden", [
-    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
-    editGardenActionValidation], actions.editGardenAction.invoke.bind(actions.editGardenAction));
-  router.post("/assign-garden", [
-    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
-    assignGardenActionValidation], actions.assignGardenAction.invoke.bind(actions.assignGardenAction));
-  router.post("/unassign-garden", [
-    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
-    unassignGardenActionValidation], actions.unassignGardenAction.invoke.bind(actions.unassignGardenAction));
-  router.post("/garden-set-active", [
-    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
-    gardenSetActiveActionValidation], actions.gardenSetActiveAction.invoke.bind(actions.gardenSetActiveAction));
-  router.get("/garden-list", [
-    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
-    gardenListActionValidation], actions.gardenListAction.invoke.bind(actions.gardenListAction));
-  router.post("/garden-set-note", [
-    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
-    gardenSetNoteActionValidation], actions.gardenSetNoteAction.invoke.bind(actions.gardenSetNoteAction));
-  router.get("/my-gardens", [
-    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.USER]),
-    myGardensActionValidation], actions.myGardensAction.invoke.bind(actions.myGardensAction));
-  router.get("/:gardenId/garden-details", [
-    authenticationMiddleware,
-    gardenDetailsActionValidation], actions.gardenDetailsAction.invoke.bind(actions.gardenDetailsAction));
-  router.get("/:gardenId/assigned-user", [
-    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
-    assignedUserActionValidation], actions.assignedUserAction.invoke.bind(actions.assignedUserAction));
+
+  router.post(
+    "/create-garden",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), createGardenActionValidation],
+    actions.createGardenAction.invoke.bind(actions.createGardenAction),
+  );
+  router.post(
+    "/edit-garden",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), editGardenActionValidation],
+    actions.editGardenAction.invoke.bind(actions.editGardenAction),
+  );
+  router.post(
+    "/assign-garden",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), assignGardenActionValidation],
+    actions.assignGardenAction.invoke.bind(actions.assignGardenAction),
+  );
+  router.post(
+    "/unassign-garden",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), unassignGardenActionValidation],
+    actions.unassignGardenAction.invoke.bind(actions.unassignGardenAction),
+  );
+  router.post(
+    "/garden-set-active",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), gardenSetActiveActionValidation],
+    actions.gardenSetActiveAction.invoke.bind(actions.gardenSetActiveAction),
+  );
+  router.get(
+    "/garden-list",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), gardenListActionValidation],
+    actions.gardenListAction.invoke.bind(actions.gardenListAction),
+  );
+  router.post(
+    "/garden-set-note",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), gardenSetNoteActionValidation],
+    actions.gardenSetNoteAction.invoke.bind(actions.gardenSetNoteAction),
+  );
+  router.get(
+    "/my-gardens",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.USER]), myGardensActionValidation],
+    actions.myGardensAction.invoke.bind(actions.myGardensAction),
+  );
+  router.get(
+    "/:gardenId/garden-details",
+    [authenticationMiddleware, gardenDetailsActionValidation],
+    actions.gardenDetailsAction.invoke.bind(actions.gardenDetailsAction),
+  );
+  router.get(
+    "/:gardenId/assigned-user",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), assignedUserActionValidation],
+    actions.assignedUserAction.invoke.bind(actions.assignedUserAction),
+  );
   // ACTIONS_SETUP
 
   return router;

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
-import { ApiOperationGet, ApiPath } from "swagger-express-ts";
+import { ApiOperationGet, ApiPath, ApiModel, ApiModelProperty } from "swagger-express-ts";
 import { QueryBus } from "../../../../shared/query-bus";
 import { GardenDetailsQuery } from "../queries/garden-details";
 import { Action } from "../../../../shared/http/types";
@@ -11,7 +11,7 @@ export interface GardenDetailsActionDependencies {
 
 export const gardenDetailsActionValidation = celebrate(
   {
-    headers: Joi.object()
+    headers: Joi.object(),
   },
   { abortEarly: false },
 );
@@ -24,11 +24,12 @@ class GardenDetailsAction implements Action {
   constructor(private dependencies: GardenDetailsActionDependencies) {}
 
   @ApiOperationGet({
-    path: "/gardens/garden-details",
+    path: "/gardens/{gardenId}/garden-details",
     description: "Description",
     responses: {
       200: {
         description: "Success",
+        model: "GardenDetailsActionResponse",
       },
       400: {
         description: "Validation error",
@@ -42,7 +43,7 @@ class GardenDetailsAction implements Action {
     const queryResult = await this.dependencies.queryBus.execute(
       new GardenDetailsQuery({
         gardenId: req.params.gardenId,
-        userDTO: res.locals.userDTO
+        userDTO: res.locals.userDTO,
       }),
     );
 
@@ -50,3 +51,38 @@ class GardenDetailsAction implements Action {
   }
 }
 export default GardenDetailsAction;
+
+@ApiModel({
+  name: "GardenDetailsActionResponse",
+})
+export class GardenDetailsActionResponse {
+  @ApiModelProperty({})
+  id: string;
+
+  @ApiModelProperty({})
+  publicId: string;
+
+  @ApiModelProperty({})
+  surfaceInSquareMeters: number;
+
+  @ApiModelProperty({})
+  includeWater: boolean;
+
+  @ApiModelProperty({})
+  includeElectricity: boolean;
+
+  @ApiModelProperty({})
+  includeGas: boolean;
+
+  @ApiModelProperty({})
+  assignedUser: Object;
+
+  @ApiModelProperty({})
+  gardenNote: Object;
+
+  @ApiModelProperty({})
+  createdAt: string;
+
+  @ApiModelProperty({})
+  updatedAt: string;
+}

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
-import { ApiOperationGet, ApiPath } from "swagger-express-ts";
+import { ApiOperationGet, ApiPath, ApiModel, ApiModelProperty, SwaggerDefinitionConstant } from "swagger-express-ts";
 import { QueryBus } from "../../../../shared/query-bus";
 import { GardenListQuery } from "../queries/garden-list";
 import { Action } from "../../../../shared/http/types";
@@ -29,6 +29,8 @@ class GardenListAction implements Action {
     responses: {
       200: {
         description: "Success",
+        model: "GardenListActionResponse",
+        type: SwaggerDefinitionConstant.ARRAY,
       },
       400: {
         description: "Validation error",
@@ -39,11 +41,41 @@ class GardenListAction implements Action {
     },
   })
   async invoke(_req: Request, res: Response) {
-    const queryResult = await this.dependencies.queryBus.execute(
-      new GardenListQuery({}),
-    );
+    const queryResult = await this.dependencies.queryBus.execute(new GardenListQuery({}));
 
     res.json(queryResult.result);
   }
 }
 export default GardenListAction;
+
+@ApiModel({
+  name: "GardenListActionResponse",
+})
+export class GardenListActionResponse {
+  @ApiModelProperty({})
+  id: string;
+
+  @ApiModelProperty({})
+  publicId: string;
+
+  @ApiModelProperty({})
+  surfaceInSquareMeters: number;
+
+  @ApiModelProperty({})
+  includeWater: boolean;
+
+  @ApiModelProperty({})
+  includeElectricity: boolean;
+
+  @ApiModelProperty({})
+  includeGas: boolean;
+
+  @ApiModelProperty({})
+  createdAt: string;
+
+  @ApiModelProperty({})
+  updatedAt: string;
+
+  @ApiModelProperty({})
+  isOccupied: boolean;
+}
