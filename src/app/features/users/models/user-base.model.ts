@@ -37,9 +37,7 @@ export class UserBaseModel {
   @PrimaryColumn()
   id: string;
 
-  @Column({
-    unique: true,
-  })
+  @Column()
   email: string;
 
   @Column({

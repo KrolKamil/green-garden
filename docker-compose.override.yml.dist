@@ -19,6 +19,7 @@ services:
     depends_on:
       - adminer
       - postgres
+      - mailhog
 
   adminer:
     image: adminer
@@ -29,3 +30,13 @@ services:
       - 8080:8080
     networks:
       - app
+
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog
+    restart: always
+    networks:
+      - app
+    ports:
+      - 1025:1025
+      - 8025:8025

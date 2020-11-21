@@ -2,20 +2,19 @@ import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
 import { ApiOperationPost, ApiPath, ApiModel, ApiModelProperty } from "swagger-express-ts";
 import { CommandBus } from "../../../../shared/command-bus";
-import { RegisterUserCommand } from "../commands/register-user.command";
+import { InviteUserCommand } from "../commands/invite-user.command";
 import { Action } from "../../../../shared/http/types";
 
-export interface RegisterUserActionDependencies {
+export interface InviteUserActionDependencies {
   commandBus: CommandBus;
 }
 
-export const registerUserActionValidation = celebrate(
+export const inviteUserActionValidation = celebrate(
   {
     headers: Joi.object(),
     body: {
       email: Joi.string().email({tlds: {allow: false}}).required(),
-      password: Joi.string().min(6).max(80).required(),
-    },
+    }
   },
   { abortEarly: false },
 );
@@ -24,14 +23,16 @@ export const registerUserActionValidation = celebrate(
   path: "/api",
   name: "users",
 })
-class RegisterUserAction implements Action {
-  constructor(private dependencies: RegisterUserActionDependencies) {}
+class InviteUserAction implements Action {
+  constructor(private dependencies: InviteUserActionDependencies) {}
 
   @ApiOperationPost({
-    path: "/users/register-user",
+    path: "/users/invite-user",
     description: "Description",
     parameters: {
-      body: { model: "RegisterUserRequestModel" },
+      body: {
+        model: 'InviteUserActionRequest'
+      }
     },
     responses: {
       200: {
@@ -47,27 +48,22 @@ class RegisterUserAction implements Action {
   })
   async invoke({ body }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
-      new RegisterUserCommand({
-        ...body,
+      new InviteUserCommand({
+        ...body
       }),
     );
 
     res.json(commandResult.result);
   }
 }
-export default RegisterUserAction;
+export default InviteUserAction;
+
+
 
 @ApiModel({
-  name: "RegisterUserRequestModel",
+  name: "InviteUserActionRequest",
 })
-export class RegisterUserRequestModel {
-  @ApiModelProperty({
-    required: true,
-  })
+export class InviteUserActionRequest {
+  @ApiModelProperty({})
   email: string;
-
-  @ApiModelProperty({
-    required: true,
-  })
-  password: string;
 }
