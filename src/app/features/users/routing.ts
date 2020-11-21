@@ -17,6 +17,7 @@ import { setActiveActionValidation } from "./actions/set-active.action";
 import { assignedGardensActionValidation } from "./actions/assigned-gardens.action";
 import { inviteUserActionValidation } from "./actions/invite-user.action";
 import { pendingUserActionValidation } from "./actions/pending-user.action";
+import { registerActionValidation } from "./actions/register.action";
 // VALIDATION_IMPORTS
 
 export interface UsersRoutingDependencies {
@@ -35,6 +36,7 @@ export interface UsersRoutingDependencies {
   assignedGardensAction: Action;
   inviteUserAction: Action;
   pendingUserAction: Action;
+  registerAction: Action;
   // ACTIONS_IMPORTS
 }
 
@@ -95,6 +97,7 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
     inviteUserActionValidation], actions.inviteUserAction.invoke.bind(actions.inviteUserAction));
   router.get("/:userId/pending-user", [pendingUserActionValidation,
     authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER])], actions.pendingUserAction.invoke.bind(actions.pendingUserAction));
+  router.post("/register", [registerActionValidation], actions.registerAction.invoke.bind(actions.registerAction));
   // ACTIONS_SETUP
 
   return router;

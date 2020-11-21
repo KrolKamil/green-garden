@@ -9,7 +9,7 @@ import { HttpError } from "../../src/errors/http.error";
 import { Repository } from "typeorm";
 import { PendingUserModel } from "../../src/app/features/users/models/pending-user.model";
 
-describe.only("/users/pending-user integration", () => {
+describe("/users/pending-user integration", () => {
   it("thows error when pending user does not exist", async () => {
     const { users } = await seedApplication(global.container, { usersAmount: 1 });
     const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
@@ -24,7 +24,7 @@ describe.only("/users/pending-user integration", () => {
       });
   });
 
-  it.only("returns pending user", async () => {
+  it("returns pending user", async () => {
     const pendingUserRepository: Repository<PendingUserModel> = global.container.resolve('pendingUserRepository');
     const { users } = await seedApplication(global.container, { usersAmount: 1 });
     const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
