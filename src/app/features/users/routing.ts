@@ -37,6 +37,7 @@ export interface UsersRoutingDependencies {
   inviteUserAction: Action;
   pendingUserAction: Action;
   registerAction: Action;
+  inviteManagerAction: Action;
   // ACTIONS_IMPORTS
 }
 

@@ -43,6 +43,7 @@ describe("/users/invite-user integration", () => {
       .then(async () => {
         const pendingUser = await pendingUserRepository.findOne({});
         expect(pendingUser?.email).to.be.equal(email);
+        expect(pendingUser?.type).to.be.equal(UserBaseType.USER)
       })
   })
   it("resends email", async () => {
@@ -62,6 +63,7 @@ describe("/users/invite-user integration", () => {
       .then(async () => {
         const pendingUser = await pendingUserRepository.findOne({});
         expect(pendingUser?.email).to.be.equal(email);
+        expect(pendingUser?.type).to.be.equal(UserBaseType.USER)
       })
 
       await request(global.container.resolve("app"))
