@@ -44,7 +44,7 @@ export async function createContainer(dependencies?: ContainerDependencies): Pro
 
   container.register({
     commandLineInterface: awilix.asClass(CommandLineInterface)
-  })
+  });
 
   container.register({
     app: awilix.asFunction(createApp).singleton(),

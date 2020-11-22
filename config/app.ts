@@ -21,5 +21,5 @@ export const appConfigFactory = (env: any): AppConfig => ({
   mailHost: env.MAIL_HOST ?? "",
   mailPort: env.MAIL_PORT ?? 0,
   mailFrom: env.MAIL_FROM ?? "",
-  frontendRegisterUserLink: env.FRONTEND_REGISTER_USER_LINK ?? ""
+  frontendRegisterUserLink: env.FRONTEND_REGISTER_USER_LINK ?? "",
 });

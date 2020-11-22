@@ -30,7 +30,7 @@ class PendingUserAction implements Action {
     responses: {
       200: {
         description: "Success",
-        model: 'PendingUserActionResponse'
+        model: "PendingUserActionResponse",
       },
       400: {
         description: "Validation error",
@@ -43,7 +43,7 @@ class PendingUserAction implements Action {
   async invoke(req: Request, res: Response) {
     const queryResult = await this.dependencies.queryBus.execute(
       new PendingUserQuery({
-        userId: req.params.userId
+        userId: req.params.userId,
       }),
     );
 

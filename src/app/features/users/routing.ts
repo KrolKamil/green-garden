@@ -93,11 +93,16 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
     [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), assignedGardensActionValidation],
     actions.assignedGardensAction.invoke.bind(actions.assignedGardensAction),
   );
-  router.post("/invite-user", [
-    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
-    inviteUserActionValidation], actions.inviteUserAction.invoke.bind(actions.inviteUserAction));
-  router.get("/:userId/pending-user", [pendingUserActionValidation,
-    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER])], actions.pendingUserAction.invoke.bind(actions.pendingUserAction));
+  router.post(
+    "/invite-user",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), inviteUserActionValidation],
+    actions.inviteUserAction.invoke.bind(actions.inviteUserAction),
+  );
+  router.get(
+    "/:userId/pending-user",
+    [pendingUserActionValidation, authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER])],
+    actions.pendingUserAction.invoke.bind(actions.pendingUserAction),
+  );
   router.post("/register", [registerActionValidation], actions.registerAction.invoke.bind(actions.registerAction));
   // ACTIONS_SETUP
 

@@ -8,14 +8,13 @@ interface PendingUserModelProps {
 }
 
 @Entity({
-  name: "pending_user"
+  name: "pending_user",
 })
 export class PendingUserModel {
-
   public static create(data: PendingUserModelProps): PendingUserModel {
     const entity = new PendingUserModel();
     Object.assign(entity, data);
-    return entity
+    return entity;
   }
 
   @PrimaryColumn()

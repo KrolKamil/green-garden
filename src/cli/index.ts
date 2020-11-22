@@ -16,7 +16,6 @@ import { CommandLineInterface } from "./command-line-interface";
     }
     process.exit(1);
   });
-  console.log("WELCOME");
-  const cli: CommandLineInterface = container.resolve("commandLineInterface")
+  const cli: CommandLineInterface = container.resolve("commandLineInterface");
   await cli.run();
 })();

@@ -15,7 +15,7 @@ export const registerActionValidation = celebrate(
     body: {
       userId: Joi.string().required(),
       password: Joi.string().min(6).max(80).required(),
-    }
+    },
   },
   { abortEarly: false },
 );
@@ -32,8 +32,8 @@ class RegisterAction implements Action {
     description: "Description",
     parameters: {
       body: {
-        model: 'RegisterActionRequest'
-      }
+        model: "RegisterActionRequest",
+      },
     },
     responses: {
       200: {
@@ -50,7 +50,7 @@ class RegisterAction implements Action {
   async invoke({ body }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
       new RegisterCommand({
-        ...body
+        ...body,
       }),
     );
 
@@ -58,7 +58,6 @@ class RegisterAction implements Action {
   }
 }
 export default RegisterAction;
-
 
 @ApiModel({
   name: "RegisterActionRequest",

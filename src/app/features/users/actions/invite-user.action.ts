@@ -13,8 +13,10 @@ export const inviteUserActionValidation = celebrate(
   {
     headers: Joi.object(),
     body: {
-      email: Joi.string().email({tlds: {allow: false}}).required(),
-    }
+      email: Joi.string()
+        .email({ tlds: { allow: false } })
+        .required(),
+    },
   },
   { abortEarly: false },
 );
@@ -31,8 +33,8 @@ class InviteUserAction implements Action {
     description: "Description",
     parameters: {
       body: {
-        model: 'InviteUserActionRequest'
-      }
+        model: "InviteUserActionRequest",
+      },
     },
     responses: {
       200: {
@@ -49,7 +51,7 @@ class InviteUserAction implements Action {
   async invoke({ body }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
       new InviteUserCommand({
-        ...body
+        ...body,
       }),
     );
 
@@ -57,8 +59,6 @@ class InviteUserAction implements Action {
   }
 }
 export default InviteUserAction;
-
-
 
 @ApiModel({
   name: "InviteUserActionRequest",
