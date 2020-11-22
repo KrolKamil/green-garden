@@ -2,8 +2,6 @@ import * as express from "express";
 import { Action } from "../../../shared/http/types";
 
 import { loginActionValidation } from "./actions/login.action";
-import { registerUserActionValidation } from "./actions/register-user.action";
-import { registerManagerActionValidation } from "./actions/register-manager.action";
 import { refreshAccessTokenActionValidation } from "./actions/refresh-access-token.action";
 import { updateActionValidation } from "./actions/update.action";
 import { MiddlewareType } from "../../../shared/middleware-type/middleware.type";
@@ -24,8 +22,6 @@ export interface UsersRoutingDependencies {
   authenticationMiddleware: MiddlewareType;
   createAuthorizationMiddleware: CreateAuthorizationMiddleware;
   loginAction: Action;
-  registerUserAction: Action;
-  registerManagerAction: Action;
   refreshAccessTokenAction: Action;
   updateAction: Action;
   listAction: Action;
@@ -46,22 +42,12 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
   const router = express.Router();
 
   router.post("/login", [loginActionValidation], actions.loginAction.invoke.bind(actions.loginAction));
-  router.post(
-    "/register-user",
-    [registerUserActionValidation],
-    actions.registerUserAction.invoke.bind(actions.registerUserAction),
-  );
-  router.post(
-    "/register-manager",
-    [registerManagerActionValidation],
-    actions.registerManagerAction.invoke.bind(actions.registerManagerAction),
-  );
+  router.post("/register", [registerActionValidation], actions.registerAction.invoke.bind(actions.registerAction));
   router.post(
     "/refresh-access-token",
     [refreshAccessTokenActionValidation],
     actions.refreshAccessTokenAction.invoke.bind(actions.refreshAccessTokenAction),
   );
-
   router.post(
     "/update",
     [authenticationMiddleware, updateActionValidation],
@@ -103,7 +89,6 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
     [pendingUserActionValidation, authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER])],
     actions.pendingUserAction.invoke.bind(actions.pendingUserAction),
   );
-  router.post("/register", [registerActionValidation], actions.registerAction.invoke.bind(actions.registerAction));
   // ACTIONS_SETUP
 
   return router;
