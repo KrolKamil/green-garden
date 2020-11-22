@@ -2,8 +2,6 @@ import * as express from "express";
 import { Action } from "../../../shared/http/types";
 
 import { loginActionValidation } from "./actions/login.action";
-import { registerUserActionValidation } from "./actions/register-user.action";
-import { registerManagerActionValidation } from "./actions/register-manager.action";
 import { refreshAccessTokenActionValidation } from "./actions/refresh-access-token.action";
 import { updateActionValidation } from "./actions/update.action";
 import { MiddlewareType } from "../../../shared/middleware-type/middleware.type";
@@ -15,14 +13,15 @@ import { meActionValidation } from "./actions/me.action";
 import { detailsActionValidation } from "./actions/details.action";
 import { setActiveActionValidation } from "./actions/set-active.action";
 import { assignedGardensActionValidation } from "./actions/assigned-gardens.action";
+import { inviteUserActionValidation } from "./actions/invite-user.action";
+import { pendingUserActionValidation } from "./actions/pending-user.action";
+import { registerActionValidation } from "./actions/register.action";
 // VALIDATION_IMPORTS
 
 export interface UsersRoutingDependencies {
   authenticationMiddleware: MiddlewareType;
   createAuthorizationMiddleware: CreateAuthorizationMiddleware;
   loginAction: Action;
-  registerUserAction: Action;
-  registerManagerAction: Action;
   refreshAccessTokenAction: Action;
   updateAction: Action;
   listAction: Action;
@@ -31,6 +30,10 @@ export interface UsersRoutingDependencies {
   detailsAction: Action;
   setActiveAction: Action;
   assignedGardensAction: Action;
+  inviteUserAction: Action;
+  pendingUserAction: Action;
+  registerAction: Action;
+  inviteManagerAction: Action;
   // ACTIONS_IMPORTS
 }
 
@@ -39,22 +42,12 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
   const router = express.Router();
 
   router.post("/login", [loginActionValidation], actions.loginAction.invoke.bind(actions.loginAction));
-  router.post(
-    "/register-user",
-    [registerUserActionValidation],
-    actions.registerUserAction.invoke.bind(actions.registerUserAction),
-  );
-  router.post(
-    "/register-manager",
-    [registerManagerActionValidation],
-    actions.registerManagerAction.invoke.bind(actions.registerManagerAction),
-  );
+  router.post("/register", [registerActionValidation], actions.registerAction.invoke.bind(actions.registerAction));
   router.post(
     "/refresh-access-token",
     [refreshAccessTokenActionValidation],
     actions.refreshAccessTokenAction.invoke.bind(actions.refreshAccessTokenAction),
   );
-
   router.post(
     "/update",
     [authenticationMiddleware, updateActionValidation],
@@ -85,6 +78,16 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
     "/:userId/assigned-gardens",
     [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), assignedGardensActionValidation],
     actions.assignedGardensAction.invoke.bind(actions.assignedGardensAction),
+  );
+  router.post(
+    "/invite-user",
+    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), inviteUserActionValidation],
+    actions.inviteUserAction.invoke.bind(actions.inviteUserAction),
+  );
+  router.get(
+    "/:userId/pending-user",
+    [pendingUserActionValidation, authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER])],
+    actions.pendingUserAction.invoke.bind(actions.pendingUserAction),
   );
   // ACTIONS_SETUP
 

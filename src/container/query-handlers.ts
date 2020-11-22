@@ -11,6 +11,7 @@ import MyGardensQueryHandler from "../app/features/gardens/query-handlers/my-gar
 import GardenDetailsQueryHandler from "../app/features/gardens/query-handlers/garden-details.query.handler";
 import AssignedGardensQueryHandler from "../app/features/users/query-handlers/assigned-gardens.query.handler";
 import AssignedUserQueryHandler from "../app/features/gardens/query-handlers/assigned-user.query.handler";
+import PendingUserQueryHandler from "../app/features/users/query-handlers/pending-user.query.handler";
 // HANDLERS_IMPORTS
 
 export async function registerQueryHandlers(container: AwilixContainer) {
@@ -24,6 +25,7 @@ export async function registerQueryHandlers(container: AwilixContainer) {
       awilix.asClass(GardenDetailsQueryHandler),
       awilix.asClass(AssignedGardensQueryHandler),
       awilix.asClass(AssignedUserQueryHandler),
+      awilix.asClass(PendingUserQueryHandler),
       // QUERY_HANDLERS_SETUP
     ]),
   });

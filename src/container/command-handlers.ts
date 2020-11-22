@@ -3,9 +3,6 @@ import * as awilix from "awilix";
 import { asArray } from "../shared/awilix-resolvers";
 
 import LoginCommandHandler from "../app/features/users/handlers/login.handler";
-// import RegisterCommandHandler from "../app/features/users/handlers/register.handler";
-import RegisterUserCommandHandler from "../app/features/users/handlers/register-user.handler";
-import RegisterManagerCommandHandler from "../app/features/users/handlers/register-manager.handler";
 import RefreshAccessTokenCommandHandler from "../app/features/users/handlers/refresh-access-token.handler";
 import UpdateCommandHandler from "../app/features/users/handlers/update.handler";
 import SetNoteCommandHandler from "../app/features/users/handlers/set-note.handler";
@@ -16,15 +13,16 @@ import AssignGardenCommandHandler from "../app/features/gardens/handlers/assign-
 import UnassignGardenCommandHandler from "../app/features/gardens/handlers/unassign-garden.handler";
 import GardenSetActiveCommandHandler from "../app/features/gardens/handlers/garden-set-active.handler";
 import GardenSetNoteCommandHandler from "../app/features/gardens/handlers/garden-set-note.handler";
+import InviteUserCommandHandler from "../app/features/users/handlers/invite-user.handler";
+import RegisterCommandHandler from "../app/features/users/handlers/register.handler";
+import InviteManagerCommandHandler from "../app/features/users/handlers/invite-manager.handler";
 // HANDLERS_IMPORTS
 
 export async function registerCommandHandlers(container: AwilixContainer) {
   container.register({
     commandHandlers: asArray<any>([
       awilix.asClass(LoginCommandHandler),
-      // awilix.asClass(RegisterCommandHandler),
-      awilix.asClass(RegisterUserCommandHandler),
-      awilix.asClass(RegisterManagerCommandHandler),
+      awilix.asClass(RegisterCommandHandler),
       awilix.asClass(RefreshAccessTokenCommandHandler),
       awilix.asClass(UpdateCommandHandler),
       awilix.asClass(SetNoteCommandHandler),
@@ -35,6 +33,8 @@ export async function registerCommandHandlers(container: AwilixContainer) {
       awilix.asClass(UnassignGardenCommandHandler),
       awilix.asClass(GardenSetActiveCommandHandler),
       awilix.asClass(GardenSetNoteCommandHandler),
+      awilix.asClass(InviteUserCommandHandler),
+      awilix.asClass(InviteManagerCommandHandler),
       // COMMAND_HANDLERS_SETUP
     ]),
   });

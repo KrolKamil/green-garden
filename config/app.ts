@@ -5,6 +5,10 @@ export interface AppConfig {
   hashRounds: number;
   accessTokenSecret: string;
   refreshTokenSecret: string;
+  mailHost: string;
+  mailPort: number;
+  mailFrom: string;
+  frontendRegisterUserLink: string;
 }
 
 export const appConfigFactory = (env: any): AppConfig => ({
@@ -14,4 +18,8 @@ export const appConfigFactory = (env: any): AppConfig => ({
   hashRounds: parseInt(env.HASH_ROUNDS || 8, 10),
   accessTokenSecret: env.ACCESS_TOKEN_SECRET ?? "",
   refreshTokenSecret: env.REFRESH_TOKEN_SECRET ?? "",
+  mailHost: env.MAIL_HOST ?? "",
+  mailPort: env.MAIL_PORT ?? 0,
+  mailFrom: env.MAIL_FROM ?? "",
+  frontendRegisterUserLink: env.FRONTEND_REGISTER_USER_LINK ?? "",
 });

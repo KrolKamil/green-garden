@@ -14,7 +14,9 @@ export const loginActionValidation = celebrate(
   {
     headers: Joi.object(),
     body: {
-      email: Joi.string().email().required(),
+      email: Joi.string()
+        .email({ tlds: { allow: false } })
+        .required(),
       password: Joi.string().min(6).max(80).required(),
       userType: Joi.string().valid(...Object.values(UserBaseType)),
     },
