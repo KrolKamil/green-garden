@@ -1,5 +1,6 @@
 import * as inquirer from 'inquirer';
 import { CommandBus } from "../../src/shared";
+import { InviteManagerCommand } from '../../src/app/features/users/commands/invite-manager.command';
 
 enum Choices {
   INVITE_MANAGER = 'Invite manager',
@@ -18,8 +19,13 @@ export class CommandLineInterface{
     try {
       const {choice} = await this.getChoice();
       await this.route(choice);
+      console.log('Success');
     } catch(e){
-      console.log(e);
+      console.log('Error:');
+      console.log(e.message);
+    }
+    finally{
+      process.exit();
     }
   }
 
@@ -38,11 +44,27 @@ export class CommandLineInterface{
   private async route(choice: Choices){
     switch (choice) {
       case Choices.INVITE_MANAGER:
-        return;
+        return this.inviteManager();
       case Choices.SELECT_MANAGER:
         return;
       default:
         throw new Error("Unknown action")
     };
+  }
+
+  private async inviteManager(){
+    const {email} = await inquirer
+    .prompt([
+      {
+        type: 'input',
+        name: 'email',
+        message: 'Insert manager email',
+      },
+    ]);
+    return this.dependencies.commandBus.execute(
+      new InviteManagerCommand({
+        email
+      })
+    )
   }
 }

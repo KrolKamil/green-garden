@@ -23,7 +23,7 @@ export default class InviteManagerHandler implements CommandHandler<InviteManage
     const {userBaseRepository, mailService} = this.dependencies;
     const {email} = command.payload;
 
-    const managerExists = await userBaseRepository.findOne({email, type: UserBaseType.USER });
+    const managerExists = await userBaseRepository.findOne({email, type: UserBaseType.MANAGER });
     if(managerExists){
       throw new Error('Email is occupied');
     }
@@ -31,7 +31,7 @@ export default class InviteManagerHandler implements CommandHandler<InviteManage
     const pendingManager = await this.findPendingManager(email) || await this.createPendingManager(email);
     await mailService.sendInviteMail(pendingManager.email, pendingManager.id);
 
-    return {result: 'Success'}
+    return {}
   };
 
   private findPendingManager(email: string){

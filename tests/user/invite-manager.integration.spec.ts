@@ -11,11 +11,11 @@ describe("/users/invite-manager integration", () => {
   it("thows error when email is occupied", async () => {
     const commandBus: CommandBus = global.container.resolve('commandBus');
     const { users } = await seedApplication(global.container, { usersAmount: 1 });
-    const user = users.find((singleUser) => singleUser.type === UserBaseType.USER)!;
+    const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
 
-    commandBus.execute(
+    await commandBus.execute(
         new InviteManagerCommand({
-            email: user.email
+            email: manager.email
         }),
       ).catch((err) => expect(err).to.be.instanceOf(Error));
   });
@@ -29,7 +29,6 @@ describe("/users/invite-manager integration", () => {
             email
         }),
       ).then(async (res) => {
-        expect(res.result).to.be.equal('Success');
         const pendingUser = await pendingUserRepository.findOne({});
         expect(pendingUser?.email).to.be.equal(email);
         expect(pendingUser?.type).to.be.equal(UserBaseType.MANAGER)
@@ -45,7 +44,6 @@ describe("/users/invite-manager integration", () => {
             email
         }),
       ).then(async (res) => {
-        expect(res.result).to.be.equal('Success');
         const pendingUser = await pendingUserRepository.findOne({});
         expect(pendingUser?.email).to.be.equal(email);
         expect(pendingUser?.type).to.be.equal(UserBaseType.MANAGER)
@@ -56,7 +54,6 @@ describe("/users/invite-manager integration", () => {
             email
         }),
       ).then(async (res) => {
-        expect(res.result).to.be.equal('Success');
         const pendingUser = await pendingUserRepository.findOne({});
         expect(pendingUser?.email).to.be.equal(email);
         expect(pendingUser?.type).to.be.equal(UserBaseType.MANAGER);
