@@ -20,9 +20,9 @@ describe("/users/list integration", () => {
       .set("Authorization", `Bearer ${accessToken}`)
       .then(async (res) => {
         expect(res.body.length).to.be.equal(usersAmount);
-        const singleUser = users.find((singleUser) => singleUser.type === UserBaseType.USER)!;
-        delete singleUser.password;
-        expect(res.body[0]).to.be.deep.equal(JSON.parse(JSON.stringify(singleUser)));
+        const expectedUser = users.find((singleUser) => singleUser.type === UserBaseType.USER)!;
+        delete expectedUser.password;
+        expect(res.body[0]).to.be.deep.equal(JSON.parse(JSON.stringify(expectedUser)));
       });
   });
 });

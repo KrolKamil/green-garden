@@ -17,9 +17,9 @@ export default class ListQueryHandler implements QueryHandler<ListQuery, ListQue
     const userList = await userBaseRepository.find({
       where: {
         type: UserBaseType.USER,
-      }
+      },
     });
-    
+
     return new ListQueryResult(userList);
   }
 }
