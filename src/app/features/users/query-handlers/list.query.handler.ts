@@ -15,12 +15,11 @@ export default class ListQueryHandler implements QueryHandler<ListQuery, ListQue
   async execute(_query: ListQuery): Promise<ListQueryResult> {
     const { userBaseRepository } = this.dependencies;
     const userList = await userBaseRepository.find({
-      select: ["id", "email", "name", "surname"],
       where: {
         type: UserBaseType.USER,
-      },
+      }
     });
-
+    
     return new ListQueryResult(userList);
   }
 }
