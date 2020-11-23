@@ -4,6 +4,7 @@ import { ApiOperationGet, ApiPath, ApiModel, ApiModelProperty, SwaggerDefinition
 import { QueryBus } from "../../../../shared/query-bus";
 import { ListQuery } from "../queries/list";
 import { Action } from "../../../../shared/http/types";
+import { UserBaseType } from "../models/user-base.model";
 
 export interface ListActionDependencies {
   queryBus: QueryBus;
@@ -67,4 +68,19 @@ export class ListActionResponseModel {
 
   @ApiModelProperty({})
   surname: string;
+
+  @ApiModelProperty({})
+  phone: string;
+
+  @ApiModelProperty({})
+  type: UserBaseType;
+
+  @ApiModelProperty({})
+  active: boolean;
+
+  @ApiModelProperty({})
+  createdAt: string;
+
+  @ApiModelProperty({})
+  updatedAt: string;
 }
