@@ -3,6 +3,10 @@ import { UserBaseModel } from "../../users/models/user-base.model";
 
 interface NoticeModelProps {
   id: string;
+  title: string;
+  content: string;
+  type: NoticeType;
+  creator: UserBaseModel | string;
 }
 
 export enum NoticeType {

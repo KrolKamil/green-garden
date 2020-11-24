@@ -4,6 +4,7 @@ import { ApiOperationPost, ApiPath } from "swagger-express-ts";
 import { CommandBus } from "../../../../shared/command-bus";
 import { PublishNoticeCommand } from "../commands/publish-notice.command";
 import { Action } from "../../../../shared/http/types";
+import { NoticeType } from "../models/notice.model";
 
 export interface PublishNoticeActionDependencies {
   commandBus: CommandBus;
@@ -12,6 +13,11 @@ export interface PublishNoticeActionDependencies {
 export const publishNoticeActionValidation = celebrate(
   {
     headers: Joi.object(),
+    body: {
+      title: Joi.string().min(1).max(50).required(),
+      content: Joi.string().min(1).max(1000).required(),
+      type: Joi.string().valid(...Object.values(NoticeType)).optional()
+    }
   },
   { abortEarly: false },
 );
@@ -42,7 +48,10 @@ class PublishNoticeAction implements Action {
   async invoke({ body }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
       new PublishNoticeCommand({
-        // command props
+        title: body.title,
+        content: body.content,
+        type: body.type || NoticeType.NORMAL,
+        creatorDTO: res.locals.userDTO
       }),
     );
 
