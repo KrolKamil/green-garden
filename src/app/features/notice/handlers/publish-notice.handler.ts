@@ -1,16 +1,17 @@
 import {v4 as uuid} from 'uuid';
 import { CommandHandler } from "../../../../shared/command-bus";
 import { PUBLISH_NOTICE_COMMAND_TYPE, PublishNoticeCommand } from "../commands/publish-notice.command";
-import { EventDispatcher } from "../../../../shared/event-dispatcher";
-import PublishNoticeEvent from "../events/publish-notice.event";
 import { Repository } from "typeorm";
-import { NoticeModel } from "../models/notice.model";
-import { UserBaseRepository } from "../../users/repositories/user-base.repository";
+import { NoticeModel, NoticeType } from "../models/notice.model";
+import { UserBaseRepository } from '../../users/repositories/user-base.repository';
+import { UserBaseType } from '../../users/models/user-base.model';
+import { MailService } from '../../../../../src/app/services/mail.service';
 
 
 export interface PublishNoticeHandlerDependencies {
   noticeRepository: Repository<NoticeModel>;
-  eventDispatcher: EventDispatcher;
+  userBaseRepository: UserBaseRepository;
+  mailService: MailService;
 }
 
 export default class PublishNoticeHandler implements CommandHandler<PublishNoticeCommand> {
@@ -21,7 +22,6 @@ export default class PublishNoticeHandler implements CommandHandler<PublishNotic
   async execute(command: PublishNoticeCommand) {
     const {noticeRepository} = this.dependencies;
     const {title, content, type, creatorDTO } = command.payload;
-    console.log(command.payload);
     await noticeRepository.save(NoticeModel.create({
       id: uuid(),
       title,
@@ -30,9 +30,15 @@ export default class PublishNoticeHandler implements CommandHandler<PublishNotic
       creator: creatorDTO.id
     }));
     
-    await this.dependencies.eventDispatcher.dispatch(new PublishNoticeEvent(command))
-    return {
-      result: command
+    if(type === NoticeType.IMPORTANT){
+      await this.notifyUsersByMail(title);
     }
+    return {}
   };
+
+  private async notifyUsersByMail(title: string){
+    const {userBaseRepository, mailService} = this.dependencies;
+    const activeUsers = await userBaseRepository.find({active: true, type: UserBaseType.USER});
+    await Promise.all(activeUsers.map((activeUser) => mailService.sendNoticeMail(activeUser.email, title)));
+  }
 }

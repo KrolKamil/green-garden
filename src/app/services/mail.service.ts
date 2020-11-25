@@ -32,6 +32,15 @@ export class MailService {
     });
   }
 
+  sendNoticeMail(email: string, title: string){
+    return this.transporter.sendMail({
+      from: this.mailFrom,
+      to: email,
+      subject: "Green Garden important notice",
+      text: `Important notice of title: "${title}" has been added. Please log in to application and check content of it.`,
+    });
+  }
+
   sendTestMail() {
     return this.transporter.sendMail({
       from: "test@test.com",

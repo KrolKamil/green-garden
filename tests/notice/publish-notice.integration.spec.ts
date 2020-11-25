@@ -8,7 +8,7 @@ import { Repository } from "typeorm";
 import { NoticeModel, NoticeType } from "../../src/app/features/notice/models/notice.model";
 
 describe("/notice/publish-notice integration", () => {
-    it.only("publish new notice", async () => {
+    it("publish new notice", async () => {
         const noticeRepository: Repository<NoticeModel> = global.container.resolve('noticeRepository');
         const { users } = await seedApplication(global.container, { usersAmount: 1});
         const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
@@ -31,10 +31,9 @@ describe("/notice/publish-notice integration", () => {
         delete manager.password;
         expect(notice.creator).to.be.deep.equal(manager);
     })
-    // figure out how to test if mail has been send
     it("publish new notice and sends mail to users where notice type is important", async () => {
         const noticeRepository: Repository<NoticeModel> = global.container.resolve('noticeRepository');
-        const { users } = await seedApplication(global.container, { usersAmount: 1});
+        const { users } = await seedApplication(global.container, { usersAmount: 10});
         const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
         const { accessToken } = loginHelper(global.container, manager);
         
@@ -54,6 +53,6 @@ describe("/notice/publish-notice integration", () => {
         expect(notice.content).to.be.equal(payload.content);
         expect(notice.type).to.be.equal(payload.type);
         delete manager.password;
-        expect(notice.creator).to.be.deep.equal(JSON.parse(JSON.stringify(manager)));
+        expect(notice.creator).to.be.deep.equal(manager);
     });
 });

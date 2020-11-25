@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
-import { ApiOperationPost, ApiPath } from "swagger-express-ts";
+import { ApiOperationPost, ApiPath, ApiModel, ApiModelProperty } from "swagger-express-ts";
 import { CommandBus } from "../../../../shared/command-bus";
 import { PublishNoticeCommand } from "../commands/publish-notice.command";
 import { Action } from "../../../../shared/http/types";
@@ -32,7 +32,11 @@ class PublishNoticeAction implements Action {
   @ApiOperationPost({
     path: "/notice/publish-notice",
     description: "Description",
-    parameters: {},
+    parameters: {
+      body: {
+        model: 'PublishNoticeActionRequest'
+      }
+    },
     responses: {
       200: {
         description: "Success",
@@ -59,3 +63,20 @@ class PublishNoticeAction implements Action {
   }
 }
 export default PublishNoticeAction;
+
+
+@ApiModel({
+  name: "PublishNoticeActionRequest",
+})
+export class PublishNoticeActionRequest {
+  @ApiModelProperty({})
+  title: string;
+
+  @ApiModelProperty({})
+  content: string;
+
+  @ApiModelProperty({
+    enum: [...Object.values(NoticeType)],
+  })
+  type: NoticeType;
+}
