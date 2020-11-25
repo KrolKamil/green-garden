@@ -77,5 +77,5 @@ export class GardenListActionResponse {
   updatedAt: string;
 
   @ApiModelProperty({})
-  isOccupied: boolean;
+  assignedUser: object;
 }

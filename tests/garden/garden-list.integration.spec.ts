@@ -43,7 +43,7 @@ describe("/gardens/garden-list integration", () => {
         expect(firstGarden).to.haveOwnProperty("includeWater");
         expect(firstGarden).to.haveOwnProperty("includeElectricity");
         expect(firstGarden).to.haveOwnProperty("includeGas");
-        expect(firstGarden).to.haveOwnProperty("isOccupied", false);
+        expect(firstGarden).to.haveOwnProperty("assignedUser", null);
       });
   });
   it("returns garden list with one assigned garden", async () => {
@@ -69,14 +69,15 @@ describe("/gardens/garden-list integration", () => {
       .expect(200)
       .then((res) => {
         expect(res.body.length).to.be.equal(10);
-        const firstGarden = res.body.find((singleUser: any) => singleUser.isOccupied);
+        const firstGarden = res.body.find((singleGarden: any) => singleGarden.assignedUser);
         expect(firstGarden).to.haveOwnProperty("id");
         expect(firstGarden).to.haveOwnProperty("publicId");
         expect(firstGarden).to.haveOwnProperty("surfaceInSquareMeters");
         expect(firstGarden).to.haveOwnProperty("includeWater");
         expect(firstGarden).to.haveOwnProperty("includeElectricity");
         expect(firstGarden).to.haveOwnProperty("includeGas");
-        expect(firstGarden).to.haveOwnProperty("isOccupied", true);
+        delete user.password;
+        expect(firstGarden.assignedUser).to.be.deep.equal(JSON.parse(JSON.stringify(user)));
       });
   });
 });
