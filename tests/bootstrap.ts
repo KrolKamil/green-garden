@@ -14,12 +14,12 @@ import { NoticeModel } from "../src/app/features/notice/models/notice.model";
 use(chaiAsPromised);
 
 const clearDb = async (connection: Connection) => {
+  await connection.getRepository(NoticeModel).delete({});
   await connection.getRepository(AssignedGardensModel).delete({});
   await connection.getRepository(UserBaseModel).delete({});
   await connection.getRepository(UserNoteModel).delete({});
   await connection.getRepository(GardenModel).delete({});
   await connection.getRepository(PendingUserModel).delete({});
-  await connection.getRepository(NoticeModel).delete({});
 };
 
 before(async () => {
