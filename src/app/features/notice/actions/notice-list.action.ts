@@ -1,21 +1,18 @@
 import { Request, Response } from "express";
 import { celebrate, Joi } from "celebrate";
-import { ApiOperationGet, ApiPath, ApiModel, ApiModelProperty } from "swagger-express-ts";
+import { ApiOperationGet, ApiPath, ApiModel, ApiModelProperty, SwaggerDefinitionConstant } from "swagger-express-ts";
 import { QueryBus } from "../../../../shared/query-bus";
-import { GetNoticeQuery } from "../queries/get-notice";
+import { NoticeListQuery } from "../queries/notice-list";
 import { Action } from "../../../../shared/http/types";
 import { NoticeType } from "../models/notice.model";
 
-export interface GetNoticeActionDependencies {
+export interface NoticeListActionDependencies {
   queryBus: QueryBus;
 }
 
-export const getNoticeActionValidation = celebrate(
+export const noticeListActionValidation = celebrate(
   {
     headers: Joi.object(),
-    body: {
-      noticeId: Joi.string().required(),
-    },
   },
   { abortEarly: false },
 );
@@ -24,16 +21,17 @@ export const getNoticeActionValidation = celebrate(
   path: "/api",
   name: "notice",
 })
-class GetNoticeAction implements Action {
-  constructor(private dependencies: GetNoticeActionDependencies) {}
+class NoticeListAction implements Action {
+  constructor(private dependencies: NoticeListActionDependencies) {}
 
   @ApiOperationGet({
-    path: "/notice/get-notice",
+    path: "/notice/notice-list",
     description: "Description",
     responses: {
       200: {
         description: "Success",
-        model: "GetNoticeActionResponse",
+        model: "NoticeListActionResponse",
+        type: SwaggerDefinitionConstant.ARRAY,
       },
       400: {
         description: "Validation error",
@@ -43,22 +41,22 @@ class GetNoticeAction implements Action {
       },
     },
   })
-  async invoke(req: Request, res: Response) {
+  async invoke(_req: Request, res: Response) {
     const queryResult = await this.dependencies.queryBus.execute(
-      new GetNoticeQuery({
-        noticeId: req.params.noticeId,
+      new NoticeListQuery({
+        // query props
       }),
     );
 
     res.json(queryResult.result);
   }
 }
-export default GetNoticeAction;
+export default NoticeListAction;
 
 @ApiModel({
-  name: "GetNoticeActionResponse",
+  name: "NoticeListActionResponse",
 })
-export class GetNoticeActionResponse {
+export class NoticeListActionResponse {
   @ApiModelProperty({})
   id: string;
 

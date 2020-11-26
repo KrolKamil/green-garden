@@ -32,7 +32,7 @@ export class MailService {
     });
   }
 
-  sendNoticeMail(email: string, title: string){
+  sendNoticeMail(email: string, title: string) {
     return this.transporter.sendMail({
       from: this.mailFrom,
       to: email,

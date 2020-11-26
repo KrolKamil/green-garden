@@ -15,8 +15,8 @@ export const editNoticeActionValidation = celebrate(
     body: Joi.object({
       noticeId: Joi.string().required(),
       title: Joi.string().optional(),
-      content: Joi.string().optional()
-    }).or('title', 'content')
+      content: Joi.string().optional(),
+    }).or("title", "content"),
   },
   { abortEarly: false },
 );
@@ -33,8 +33,8 @@ class EditNoticeAction implements Action {
     description: "Description",
     parameters: {
       body: {
-        model: 'EditNoticeActionRequest'
-      }
+        model: "EditNoticeActionRequest",
+      },
     },
     responses: {
       200: {
@@ -54,7 +54,7 @@ class EditNoticeAction implements Action {
         noticeId: body.noticeId,
         title: body.title || null,
         content: body.content || null,
-        creatorDTO: res.locals.userDTO
+        creatorDTO: res.locals.userDTO,
       }),
     );
 
@@ -62,7 +62,6 @@ class EditNoticeAction implements Action {
   }
 }
 export default EditNoticeAction;
-
 
 @ApiModel({
   name: "EditNoticeActionRequest",

@@ -19,7 +19,7 @@ export async function registerRouting(container: AwilixContainer) {
     usersRouting: awilix.asFunction(usersRouting),
     gardensRouting: awilix.asFunction(gardensRouting),
     noticeRouting: awilix.asFunction(noticeRouting),
-  // ROUTING_SETUP
+    // ROUTING_SETUP
   });
 
   return container;

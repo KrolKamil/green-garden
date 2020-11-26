@@ -10,19 +10,18 @@ interface NoticeModelProps {
 }
 
 export enum NoticeType {
-  NORMAL = 'NORMAL',
-  IMPORTANT = 'IMPORTNAT'
+  NORMAL = "NORMAL",
+  IMPORTANT = "IMPORTNAT",
 }
 
 @Entity({
-  name: "notice"
+  name: "notice",
 })
 export class NoticeModel {
-
   public static create(data: NoticeModelProps): NoticeModel {
     const entity = new NoticeModel();
     Object.assign(entity, data);
-    return entity
+    return entity;
   }
 
   @PrimaryColumn()

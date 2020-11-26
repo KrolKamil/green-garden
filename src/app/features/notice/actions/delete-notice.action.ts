@@ -13,8 +13,8 @@ export const deleteNoticeActionValidation = celebrate(
   {
     headers: Joi.object(),
     body: {
-      noticeId: Joi.string().required()
-    }
+      noticeId: Joi.string().required(),
+    },
   },
   { abortEarly: false },
 );
@@ -31,8 +31,8 @@ class DeleteNoticeAction implements Action {
     description: "Description",
     parameters: {
       body: {
-        model: 'EditNoticeActionRequest'
-      }
+        model: "EditNoticeActionRequest",
+      },
     },
     responses: {
       200: {
@@ -49,7 +49,7 @@ class DeleteNoticeAction implements Action {
   async invoke({ body }: Request, res: Response) {
     const commandResult = await this.dependencies.commandBus.execute(
       new DeleteNoticeCommand({
-        noticeId: body.noticeId
+        noticeId: body.noticeId,
       }),
     );
 

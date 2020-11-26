@@ -16,8 +16,10 @@ export const publishNoticeActionValidation = celebrate(
     body: {
       title: Joi.string().min(1).max(50).required(),
       content: Joi.string().min(1).max(1000).required(),
-      type: Joi.string().valid(...Object.values(NoticeType)).optional()
-    }
+      type: Joi.string()
+        .valid(...Object.values(NoticeType))
+        .optional(),
+    },
   },
   { abortEarly: false },
 );
@@ -34,8 +36,8 @@ class PublishNoticeAction implements Action {
     description: "Description",
     parameters: {
       body: {
-        model: 'PublishNoticeActionRequest'
-      }
+        model: "PublishNoticeActionRequest",
+      },
     },
     responses: {
       200: {
@@ -55,7 +57,7 @@ class PublishNoticeAction implements Action {
         title: body.title,
         content: body.content,
         type: body.type || NoticeType.NORMAL,
-        creatorDTO: res.locals.userDTO
+        creatorDTO: res.locals.userDTO,
       }),
     );
 
@@ -63,7 +65,6 @@ class PublishNoticeAction implements Action {
   }
 }
 export default PublishNoticeAction;
-
 
 @ApiModel({
   name: "PublishNoticeActionRequest",
