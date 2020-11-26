@@ -6,6 +6,7 @@ import { MiddlewareType } from "../../../../src/shared/middleware-type/middlewar
 import { CreateAuthorizationMiddleware } from "../../../../src/middleware/authorization";
 import { UserBaseType } from "../users/models/user-base.model";
 import { getNoticeActionValidation } from "./actions/get-notice.action";
+import { editNoticeActionValidation } from "./actions/edit-notice.action";
 // VALIDATION_IMPORTS
 
 export interface NoticeRoutingDependencies {
@@ -13,6 +14,7 @@ export interface NoticeRoutingDependencies {
   createAuthorizationMiddleware: CreateAuthorizationMiddleware;
   publishNoticeAction: Action;
   getNoticeAction: Action;
+  editNoticeAction: Action;
   // ACTIONS_IMPORTS
 }
 
@@ -24,6 +26,9 @@ export const noticeRouting = (actions: NoticeRoutingDependencies) => {
     authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
     publishNoticeActionValidation], actions.publishNoticeAction.invoke.bind(actions.publishNoticeAction));
   router.get("/:noticeId/get-notice", [authenticationMiddleware, getNoticeActionValidation], actions.getNoticeAction.invoke.bind(actions.getNoticeAction));
+  router.post("/edit-notice", [
+    authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
+    editNoticeActionValidation], actions.editNoticeAction.invoke.bind(actions.editNoticeAction));
   // ACTIONS_SETUP
 
   return router;

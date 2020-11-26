@@ -8,13 +8,13 @@ import { loginHelper } from "../helpers/login.helper";
 import { Repository } from "typeorm";
 import { NoticeModel, NoticeType } from "../../src/app/features/notice/models/notice.model";
 
-describe("/notice/get-notice integration", () => {
-    it("gets notice", async () => {
+describe("/notice/edit-notice integration", () => {
+    it("edits notice", async () => {
         const noticeRepository: Repository<NoticeModel> = global.container.resolve('noticeRepository');
         const { users } = await seedApplication(global.container, { usersAmount: 1});
         const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
         const { accessToken } = loginHelper(global.container, manager);
-        delete manager.password;
+        
         const notice = await noticeRepository.save(NoticeModel.create({
             id: uuid(),
             title: 'test title',
@@ -23,12 +23,20 @@ describe("/notice/get-notice integration", () => {
             creator: manager
         }));
 
+        const payload = {
+            noticeId: notice.id,
+            title: 'new title',
+            content: 'new content',
+        }
+
         await request(global.container.resolve("app"))
-        .get(`/api/notice/${notice.id}/get-notice`)
+        .post(`/api/notice/edit-notice`)
         .set("Authorization", `Bearer ${accessToken}`)
+        .send(payload)
         .expect(200)
-        .then(async(res) => {
-            expect(res.body).to.be.deep.equal(JSON.parse(JSON.stringify(notice)));
-        })
+
+        const updatedNotice = await noticeRepository.findOneOrFail(notice.id);
+        expect(updatedNotice.title).to.equal(payload.title);
+        expect(updatedNotice.content).to.equal(payload.content);
     });
 });

@@ -38,7 +38,7 @@ export class NoticeModel {
   type: NoticeType;
 
   @ManyToOne(() => UserBaseModel)
-  creator: UserBaseModel;
+  creator: UserBaseModel | string;
 
   @CreateDateColumn({ type: "timestamp" })
   createdAt: Date;
