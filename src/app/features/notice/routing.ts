@@ -7,6 +7,7 @@ import { CreateAuthorizationMiddleware } from "../../../../src/middleware/author
 import { UserBaseType } from "../users/models/user-base.model";
 import { getNoticeActionValidation } from "./actions/get-notice.action";
 import { editNoticeActionValidation } from "./actions/edit-notice.action";
+import { deleteNoticeActionValidation } from "./actions/delete-notice.action";
 // VALIDATION_IMPORTS
 
 export interface NoticeRoutingDependencies {
@@ -15,6 +16,7 @@ export interface NoticeRoutingDependencies {
   publishNoticeAction: Action;
   getNoticeAction: Action;
   editNoticeAction: Action;
+  deleteNoticeAction: Action;
   // ACTIONS_IMPORTS
 }
 
@@ -29,6 +31,7 @@ export const noticeRouting = (actions: NoticeRoutingDependencies) => {
   router.post("/edit-notice", [
     authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]),
     editNoticeActionValidation], actions.editNoticeAction.invoke.bind(actions.editNoticeAction));
+  router.post("/delete-notice", [deleteNoticeActionValidation], actions.deleteNoticeAction.invoke.bind(actions.deleteNoticeAction));
   // ACTIONS_SETUP
 
   return router;
