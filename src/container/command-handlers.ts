@@ -16,6 +16,9 @@ import GardenSetNoteCommandHandler from "../app/features/gardens/handlers/garden
 import InviteUserCommandHandler from "../app/features/users/handlers/invite-user.handler";
 import RegisterCommandHandler from "../app/features/users/handlers/register.handler";
 import InviteManagerCommandHandler from "../app/features/users/handlers/invite-manager.handler";
+import PublishNoticeCommandHandler from "../app/features/notice/handlers/publish-notice.handler";
+import EditNoticeCommandHandler from "../app/features/notice/handlers/edit-notice.handler";
+import DeleteNoticeCommandHandler from "../app/features/notice/handlers/delete-notice.handler";
 // HANDLERS_IMPORTS
 
 export async function registerCommandHandlers(container: AwilixContainer) {
@@ -35,6 +38,9 @@ export async function registerCommandHandlers(container: AwilixContainer) {
       awilix.asClass(GardenSetNoteCommandHandler),
       awilix.asClass(InviteUserCommandHandler),
       awilix.asClass(InviteManagerCommandHandler),
+      awilix.asClass(PublishNoticeCommandHandler),
+      awilix.asClass(EditNoticeCommandHandler),
+      awilix.asClass(DeleteNoticeCommandHandler),
       // COMMAND_HANDLERS_SETUP
     ]),
   });

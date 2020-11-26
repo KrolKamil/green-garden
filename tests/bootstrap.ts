@@ -9,10 +9,12 @@ import { UserNoteModel } from "../src/app/features/users/models/user-note.model"
 import { GardenModel } from "../src/app/features/gardens/models/garden.model";
 import { AssignedGardensModel } from "../src/app/features/gardens/models/assigned-gardens.model";
 import { PendingUserModel } from "../src/app/features/users/models/pending-user.model";
+import { NoticeModel } from "../src/app/features/notice/models/notice.model";
 
 use(chaiAsPromised);
 
 const clearDb = async (connection: Connection) => {
+  await connection.getRepository(NoticeModel).delete({});
   await connection.getRepository(AssignedGardensModel).delete({});
   await connection.getRepository(UserBaseModel).delete({});
   await connection.getRepository(UserNoteModel).delete({});
