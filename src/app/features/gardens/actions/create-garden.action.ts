@@ -120,12 +120,6 @@ export class CreateGardenActionResponse {
   includeGas: boolean;
 
   @ApiModelProperty({})
-  assignedUser: Object;
-
-  @ApiModelProperty({})
-  gardenNote: Object;
-
-  @ApiModelProperty({})
   createdAt: string;
 
   @ApiModelProperty({})
