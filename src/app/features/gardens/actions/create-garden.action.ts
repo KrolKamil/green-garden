@@ -41,6 +41,7 @@ class CreateGardenAction implements Action {
     responses: {
       200: {
         description: "Success",
+        model: "CreateGardenActionResponse",
       },
       400: {
         description: "Validation error",
@@ -94,4 +95,39 @@ export class CreateGardenActionRequestModel {
     required: false,
   })
   includeGas: boolean;
+}
+
+@ApiModel({
+  name: "CreateGardenActionResponse",
+})
+export class CreateGardenActionResponse {
+  @ApiModelProperty({})
+  id: string;
+
+  @ApiModelProperty({})
+  publicId: string;
+
+  @ApiModelProperty({})
+  surfaceInSquareMeters: number;
+
+  @ApiModelProperty({})
+  includeWater: boolean;
+
+  @ApiModelProperty({})
+  includeElectricity: boolean;
+
+  @ApiModelProperty({})
+  includeGas: boolean;
+
+  @ApiModelProperty({})
+  assignedUser: Object;
+
+  @ApiModelProperty({})
+  gardenNote: Object;
+
+  @ApiModelProperty({})
+  createdAt: string;
+
+  @ApiModelProperty({})
+  updatedAt: string;
 }
