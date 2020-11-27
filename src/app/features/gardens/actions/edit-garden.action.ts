@@ -14,8 +14,8 @@ export const editGardenActionValidation = celebrate(
     headers: Joi.object(),
     body: {
       id: Joi.string().required(),
-      publicId: Joi.string().required(),
-      surfaceInSquareMeters: Joi.number().min(0).required(),
+      publicId: Joi.string().allow("").optional(),
+      surfaceInSquareMeters: Joi.number().min(0).optional(),
       includeWater: Joi.boolean().optional(),
       includeElectricity: Joi.boolean().optional(),
       includeGas: Joi.boolean().optional(),

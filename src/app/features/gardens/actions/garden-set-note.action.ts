@@ -14,7 +14,7 @@ export const gardenSetNoteActionValidation = celebrate(
     headers: Joi.object(),
     body: {
       gardenId: Joi.string().required(),
-      content: Joi.string().max(200).required(),
+      content: Joi.string().max(200).allow("").required(),
     },
   },
   { abortEarly: false },
