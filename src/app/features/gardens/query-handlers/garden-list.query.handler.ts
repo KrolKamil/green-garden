@@ -19,7 +19,6 @@ export default class GardenListQueryHandler implements QueryHandler<GardenListQu
       .createQueryBuilder("garden")
       .leftJoinAndSelect("garden.assignedGardens", "ag")
       .leftJoinAndSelect("ag.userBase", "ub")
-      .andWhere("ag.unassigned_at is null")
       .getMany();
 
     return new GardenListQueryResult(this.getGardenListDTO(gardenList));
@@ -28,9 +27,10 @@ export default class GardenListQueryHandler implements QueryHandler<GardenListQu
   private getGardenListDTO(gardenList: GardenModel[]) {
     return gardenList.map((garden) => {
       const { assignedGardens, ...rest } = garden;
+      const assignedGardenWithCurrentGardenOwner = assignedGardens.find((assignedGarden) => assignedGarden.unassignedAt === null);
       return {
         ...rest,
-        assignedUser: assignedGardens[0]?.userBase || null,
+        assignedUser: assignedGardenWithCurrentGardenOwner ? assignedGardenWithCurrentGardenOwner.userBase : null
       };
     });
   }
