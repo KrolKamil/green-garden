@@ -33,8 +33,8 @@ export default class CreateGardenHandler implements CommandHandler<CreateGardenC
       includeWater,
     });
 
-    await gardenRepository.save(garden);
-
-    return {};
+    return {
+      result: await gardenRepository.save(garden),
+    };
   }
 }

@@ -27,10 +27,12 @@ export default class GardenListQueryHandler implements QueryHandler<GardenListQu
   private getGardenListDTO(gardenList: GardenModel[]) {
     return gardenList.map((garden) => {
       const { assignedGardens, ...rest } = garden;
-      const assignedGardenWithCurrentGardenOwner = assignedGardens.find((assignedGarden) => assignedGarden.unassignedAt === null);
+      const assignedGardenWithCurrentGardenOwner = assignedGardens.find(
+        (assignedGarden) => assignedGarden.unassignedAt === null,
+      );
       return {
         ...rest,
-        assignedUser: assignedGardenWithCurrentGardenOwner ? assignedGardenWithCurrentGardenOwner.userBase : null
+        assignedUser: assignedGardenWithCurrentGardenOwner ? assignedGardenWithCurrentGardenOwner.userBase : null,
       };
     });
   }
