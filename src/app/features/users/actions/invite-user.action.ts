@@ -14,7 +14,7 @@ export const inviteUserActionValidation = celebrate(
     headers: Joi.object(),
     body: {
       email: Joi.string()
-        .email({ tlds: { allow: false } })
+        .email({ tlds: { allow: false, ignoreLength: true } })
         .required(),
     },
   },

@@ -8,7 +8,7 @@ import { loginHelper } from "../helpers/login.helper";
 
 describe("/users/set-note integration", () => {
   it("sets user note", async () => {
-    const content = "abc";
+    const content = "";
     const { users } = await seedApplication(global.container, { usersAmount: 1 });
 
     const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
