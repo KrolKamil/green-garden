@@ -63,7 +63,6 @@ export default class GardenDetailsQueryHandler implements QueryHandler<GardenDet
       .leftJoinAndSelect("garden.assignedGardens", "ag")
       .leftJoinAndSelect("ag.userBase", "ub")
       .where("garden.id=:gardenId", { gardenId })
-      .andWhere("ag.unassigned_at is null")
       .getOne();
 
     if (!garden) {
@@ -75,9 +74,12 @@ export default class GardenDetailsQueryHandler implements QueryHandler<GardenDet
 
   private getGardensAsManagerDTO(garden: GardenModel) {
     const { assignedGardens, ...rest } = garden;
+    const assignedGardenWithCurrentGardenOwner = assignedGardens.find(
+      (assignedGarden) => assignedGarden.unassignedAt === null,
+    );
     return {
       ...rest,
-      assignedUser: assignedGardens[0]?.userBase || null,
+      assignedUser: assignedGardenWithCurrentGardenOwner ? assignedGardenWithCurrentGardenOwner.userBase : null,
     };
   }
 }
