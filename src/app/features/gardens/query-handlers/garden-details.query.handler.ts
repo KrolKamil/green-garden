@@ -39,12 +39,22 @@ export default class GardenDetailsQueryHandler implements QueryHandler<GardenDet
 
     const garden = await gardenRepository
       .createQueryBuilder("garden")
+      .select("garden.id", "id")
+      .addSelect("garden.public_id", "publicId")
+      .addSelect("garden.surface_in_square_meters", "surfaceInSquareMeters")
+      .addSelect("garden.include_water", "includeWater")
+      .addSelect("garden.include_electricity", "includeElectricity")
+      .addSelect("garden.include_gas", "includeGas")
+      .addSelect("garden.active", "active")
+      .addSelect("garden.created_at", "createdAt")
+      .addSelect("garden.updated_at", "updatedAt")
+      .addSelect("ag.assigned_at", "assignedAt")
       .leftJoin("garden.assignedGardens", "ag")
       .leftJoin("ag.userBase", "ub")
       .where("garden.id=:gardenId", { gardenId })
       .andWhere("ub.id=:userId", { userId: userDTO.id })
       .andWhere("ag.unassigned_at is null")
-      .getOne();
+      .getRawOne();
 
     if (!garden) {
       throw new HttpError("No records found", BAD_REQUEST);

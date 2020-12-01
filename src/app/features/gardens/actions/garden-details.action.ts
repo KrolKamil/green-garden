@@ -81,6 +81,9 @@ export class GardenDetailsActionResponse {
   gardenNote: Object;
 
   @ApiModelProperty({})
+  assignedAt: string;
+
+  @ApiModelProperty({})
   createdAt: string;
 
   @ApiModelProperty({})

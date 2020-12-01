@@ -31,14 +31,16 @@ describe("/gardens/garden-details/{id} integration", () => {
       const garden = gardens![0];
 
       const { accessToken } = loginHelper(global.container, user);
-      await assignGardenHelper(global.container, user, garden);
+      const assignedGarden = await assignGardenHelper(global.container, user, garden);
 
       await request(global.container.resolve("app"))
         .get(`/api/gardens/${garden.id}/garden-details`)
         .set("Authorization", `Bearer ${accessToken}`)
         .expect(200)
         .then((res) => {
-          expect(res.body).to.be.deep.equal(JSON.parse(JSON.stringify(garden)));
+          expect(res.body).to.be.deep.equal(
+            JSON.parse(JSON.stringify({ ...garden, assignedAt: assignedGarden.assignedAt })),
+          );
         });
     });
   });
