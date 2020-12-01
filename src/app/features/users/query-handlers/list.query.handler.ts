@@ -14,12 +14,22 @@ export default class ListQueryHandler implements QueryHandler<ListQuery, ListQue
 
   async execute(_query: ListQuery): Promise<ListQueryResult> {
     const { userBaseRepository } = this.dependencies;
-    const userList = await userBaseRepository.find({
-      where: {
-        type: UserBaseType.USER,
-      },
-    });
 
+    const userList = await userBaseRepository
+      .createQueryBuilder("ub")
+      .select("ub.id", "id")
+      .addSelect("ub.email", "email")
+      .addSelect("ub.name", "name")
+      .addSelect("ub.surname", "surname")
+      .addSelect("ub.phone", "phone")
+      .addSelect("ub.type", "type")
+      .addSelect("ub.active", "active")
+      .addSelect("ub.created_at", "createdAt")
+      .addSelect("ub.updated_at", "updatedAt")
+      .addSelect("case when un.content <> '' then true else false end as \"containsNote\"")
+      .leftJoin("ub.userNote", "un")
+      .where("ub.type=:userType", { userType: UserBaseType.USER })
+      .getRawMany();
     return new ListQueryResult(userList);
   }
 }
