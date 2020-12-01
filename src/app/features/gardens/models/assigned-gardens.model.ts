@@ -29,12 +29,12 @@ export class AssignedGardensModel {
   garden: GardenModel;
 
   @Column({
-    type: "date",
+    type: "timestamp",
   })
   assignedAt: Date;
 
   @Column({
-    type: "date",
+    type: "timestamp",
     nullable: true,
   })
   unassignedAt: Date;
