@@ -79,6 +79,9 @@ export class ListActionResponseModel {
   active: boolean;
 
   @ApiModelProperty({})
+  containsNote: boolean;
+
+  @ApiModelProperty({})
   createdAt: string;
 
   @ApiModelProperty({})
