@@ -14,6 +14,8 @@ import { AssignedGardensModel } from "../../gardens/models/assigned-gardens.mode
 interface UserBaseModelProps {
   id: string;
   email: string;
+  name: string;
+  surname: string;
   password: string;
   type: UserBaseType;
   active?: boolean;
@@ -45,14 +47,10 @@ export class UserBaseModel {
   })
   password: string;
 
-  @Column({
-    nullable: true,
-  })
+  @Column({})
   name: string;
 
-  @Column({
-    nullable: true,
-  })
+  @Column({})
   surname: string;
 
   @Column({
