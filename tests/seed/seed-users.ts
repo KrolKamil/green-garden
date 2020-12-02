@@ -22,6 +22,8 @@ export async function seedUsers(container: AwilixContainer<any>, config: SeedUse
       email: "manager@test.com",
       password: hashedPassword,
       type: UserBaseType.MANAGER,
+      name: "Stanisław",
+      surname: "Ulam",
     }),
   );
   // eslint-disable-next-line
@@ -32,6 +34,8 @@ export async function seedUsers(container: AwilixContainer<any>, config: SeedUse
         email: `user+${i}@test.com`,
         password: hashedPassword,
         type: UserBaseType.USER,
+        name: `name+${i}`,
+        surname: `surname+${i}`,
       }),
     );
   }

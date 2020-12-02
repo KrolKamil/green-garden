@@ -15,6 +15,8 @@ export const registerActionValidation = celebrate(
     body: {
       userId: Joi.string().required(),
       password: Joi.string().min(6).max(80).required(),
+      name: Joi.string().min(1).required(),
+      surname: Joi.string().min(1).required(),
     },
   },
   { abortEarly: false },
@@ -68,4 +70,10 @@ export class RegisterActionRequest {
 
   @ApiModelProperty({})
   password: string;
+
+  @ApiModelProperty({})
+  name: string;
+
+  @ApiModelProperty({})
+  surname: string;
 }

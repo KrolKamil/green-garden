@@ -33,6 +33,8 @@ describe("/users/register integration", () => {
       .send({
         userId: pendingUser.id,
         password: "123456",
+        name: "test name",
+        surname: "test surname",
       })
       .expect(200);
 
@@ -63,6 +65,8 @@ describe("/users/register integration", () => {
       .send({
         userId: pendingUser.id,
         password: "123456",
+        name: "test name",
+        surname: "test surname",
       })
       .expect(200);
 
@@ -82,6 +86,8 @@ describe("/users/register integration", () => {
       .send({
         userId: "123456",
         password: "123456",
+        name: "test name",
+        surname: "test surname",
       })
       .expect(400)
       .then((res) => {
