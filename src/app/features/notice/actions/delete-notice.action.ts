@@ -31,7 +31,7 @@ class DeleteNoticeAction implements Action {
     description: "Description",
     parameters: {
       body: {
-        model: "EditNoticeActionRequest",
+        model: "DeleteNoticeActionRequest",
       },
     },
     responses: {
@@ -59,9 +59,9 @@ class DeleteNoticeAction implements Action {
 export default DeleteNoticeAction;
 
 @ApiModel({
-  name: "EditNoticeActionRequest",
+  name: "DeleteNoticeActionRequest",
 })
-export class EditNoticeActionRequest {
+export class DeleteNoticeActionRequest {
   @ApiModelProperty({})
   noticeId: string;
 }
