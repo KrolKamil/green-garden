@@ -11,7 +11,7 @@ interface NoticeModelProps {
 
 export enum NoticeType {
   NORMAL = "NORMAL",
-  IMPORTANT = "IMPORTNAT",
+  IMPORTANT = "IMPORTANT",
 }
 
 @Entity({
