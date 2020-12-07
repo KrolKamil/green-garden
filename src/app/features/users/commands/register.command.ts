@@ -7,6 +7,7 @@ export interface RegisterCommandPayload {
   password: string;
   name: string;
   surname: string;
+  phone: string;
 }
 
 export class RegisterCommand implements Command<RegisterCommandPayload> {

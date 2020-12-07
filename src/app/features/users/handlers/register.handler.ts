@@ -20,7 +20,7 @@ export default class RegisterHandler implements CommandHandler<RegisterCommand> 
 
   async execute(command: RegisterCommand) {
     const { pendingUserRepository, userBaseRepository } = this.dependencies;
-    const { userId, password, name, surname } = command.payload;
+    const { userId, password, name, surname, phone } = command.payload;
 
     const pendingUser = await pendingUserRepository.findOne(userId);
     if (!pendingUser) {
@@ -37,6 +37,7 @@ export default class RegisterHandler implements CommandHandler<RegisterCommand> 
         name,
         surname,
         password,
+        phone,
         type,
         active: type === UserBaseType.USER,
       }),

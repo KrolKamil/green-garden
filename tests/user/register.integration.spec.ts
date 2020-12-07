@@ -35,6 +35,7 @@ describe("/users/register integration", () => {
         password: "123456",
         name: "test name",
         surname: "test surname",
+        phone: "123",
       })
       .expect(200);
 
@@ -67,6 +68,7 @@ describe("/users/register integration", () => {
         password: "123456",
         name: "test name",
         surname: "test surname",
+        phone: "123",
       })
       .expect(200);
 
