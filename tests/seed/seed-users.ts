@@ -22,6 +22,7 @@ export async function seedUsers(container: AwilixContainer<any>, config: SeedUse
       email: "manager@test.com",
       password: hashedPassword,
       type: UserBaseType.MANAGER,
+      phone: "123",
       name: "Stanisław",
       surname: "Ulam",
     }),
@@ -35,6 +36,7 @@ export async function seedUsers(container: AwilixContainer<any>, config: SeedUse
         password: hashedPassword,
         type: UserBaseType.USER,
         name: `name+${i}`,
+        phone: `00${i}`,
         surname: `surname+${i}`,
       }),
     );

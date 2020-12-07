@@ -17,6 +17,7 @@ interface UserBaseModelProps {
   name: string;
   surname: string;
   password: string;
+  phone: string;
   type: UserBaseType;
   active?: boolean;
 }
@@ -53,9 +54,7 @@ export class UserBaseModel {
   @Column({})
   surname: string;
 
-  @Column({
-    nullable: true,
-  })
+  @Column({})
   phone: string;
 
   @Column()
