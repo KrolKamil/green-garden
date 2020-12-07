@@ -13,9 +13,9 @@ export const updateActionValidation = celebrate(
   {
     headers: Joi.object(),
     body: Joi.object({
-      name: Joi.string().max(60).optional(),
-      surname: Joi.string().max(60).optional(),
-      phone: Joi.string().max(20).optional(),
+      name: Joi.string().min(1).max(60).optional(),
+      surname: Joi.string().min(1).max(60).optional(),
+      phone: Joi.string().min(1).max(20).optional(),
     }).min(1),
   },
   { abortEarly: false },

@@ -15,9 +15,9 @@ export const registerActionValidation = celebrate(
     body: {
       userId: Joi.string().required(),
       password: Joi.string().min(6).max(80).required(),
-      name: Joi.string().min(1).required(),
-      surname: Joi.string().min(1).required(),
-      phone: Joi.string().min(1).required(),
+      name: Joi.string().min(1).max(60).required(),
+      surname: Joi.string().min(1).max(60).required(),
+      phone: Joi.string().min(1).max(20).required(),
     },
   },
   { abortEarly: false },
