@@ -86,7 +86,7 @@ export const usersRouting = (actions: UsersRoutingDependencies) => {
   );
   router.get(
     "/:userId/pending-user",
-    [authenticationMiddleware, createAuthorizationMiddleware([UserBaseType.MANAGER]), pendingUserActionValidation],
+    [pendingUserActionValidation],
     actions.pendingUserAction.invoke.bind(actions.pendingUserAction),
   );
   // ACTIONS_SETUP
