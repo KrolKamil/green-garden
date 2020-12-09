@@ -26,9 +26,11 @@ export class MailService {
     return this.transporter.sendMail({
       from: this.mailFrom,
       to: email,
-      subject: "Green Garden activation link",
-      text: `${id}
-            ${this.frontendRegisterUserLink}/${id}`,
+      subject: "Twoje konto zostało dodane do serwisu GreenGarden",
+      html: `<p>W celu aktywacji swojego konta oraz dokończenia procesu rejestracji kliknij link znajdujący się poniżej.</p>
+      <a href="localhost:3000/signup-screen/${id}">Dokończenie procesu rejestracji</a>`,
+      text: `W celu aktywacji swojego konta oraz dokończenia procesu rejestracji wklej adres znajdujący się poniżej do paska adresu przeglądarki:
+      localhost:3000/signup-screen/${id}`
     });
   }
 
@@ -36,17 +38,8 @@ export class MailService {
     return this.transporter.sendMail({
       from: this.mailFrom,
       to: email,
-      subject: "Green Garden important notice",
-      text: `Important notice of title: "${title}" has been added. Please log in to application and check content of it.`,
-    });
-  }
-
-  sendTestMail() {
-    return this.transporter.sendMail({
-      from: "test@test.com",
-      to: "test1@test.com",
-      subject: "Test2",
-      text: "test3",
+      subject: "Nowa ważna wiadomość dostępna w Strefie Najemcy GreenGarden",
+      text: `Nowa wiadomość pod tytułem "${title}" została dodana do listy ogłoszeń. Zaloguj się w Strefie Najemcy, aby zabaczyć szczegóły wiadomości.`,
     });
   }
 }
