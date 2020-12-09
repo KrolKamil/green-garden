@@ -7,10 +7,12 @@ import { PendingUserModel } from "../models/pending-user.model";
 import { UserBaseRepository } from "../repositories/user-base.repository";
 import { HttpError } from "../../../../errors/http.error";
 import { UserBaseModel, UserBaseType } from "../models/user-base.model";
+import { HashService } from "../../../services/hash.service";
 
 export interface RegisterHandlerDependencies {
   pendingUserRepository: Repository<PendingUserModel>;
   userBaseRepository: UserBaseRepository;
+  hashService: HashService;
 }
 
 export default class RegisterHandler implements CommandHandler<RegisterCommand> {
@@ -19,7 +21,7 @@ export default class RegisterHandler implements CommandHandler<RegisterCommand> 
   constructor(private dependencies: RegisterHandlerDependencies) {}
 
   async execute(command: RegisterCommand) {
-    const { pendingUserRepository, userBaseRepository } = this.dependencies;
+    const { pendingUserRepository, userBaseRepository, hashService } = this.dependencies;
     const { userId, password, name, surname, phone } = command.payload;
 
     const pendingUser = await pendingUserRepository.findOne(userId);
@@ -30,13 +32,15 @@ export default class RegisterHandler implements CommandHandler<RegisterCommand> 
     const { email, type } = pendingUser;
     await pendingUserRepository.delete({ id: pendingUser.id });
 
+    const hashedPassword = await hashService.hash(password);
+
     await userBaseRepository.save(
       UserBaseModel.create({
         id: uuid(),
         email,
         name,
         surname,
-        password,
+        password: hashedPassword,
         phone,
         type,
         active: type === UserBaseType.USER,
