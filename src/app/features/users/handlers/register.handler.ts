@@ -43,7 +43,7 @@ export default class RegisterHandler implements CommandHandler<RegisterCommand> 
         password: hashedPassword,
         phone,
         type,
-        active: true,
+        active: type === UserBaseType.USER,
       }),
     );
 
