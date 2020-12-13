@@ -5,20 +5,15 @@ import * as request from "supertest";
 import { Repository } from "typeorm";
 import { UserBaseRepository } from "../../src/app/features/users/repositories/user-base.repository";
 import { UserBaseType } from "../../src/app/features/users/models/user-base.model";
-import { seedApplication } from "../seed/seed-application";
-import { loginHelper } from "../helpers/login.helper";
 import { PendingUserModel } from "../../src/app/features/users/models/pending-user.model";
 import { HttpError } from "../../src/errors/http.error";
 
 describe("/users/register integration", () => {
-  it("registers user", async () => {
+  it("registers a user", async () => {
     const userBaseRepository: UserBaseRepository = global.container.resolve("userBaseRepository");
     const pendingUserRepository: Repository<PendingUserModel> = global.container.resolve("pendingUserRepository");
-    const { users } = await seedApplication(global.container, { usersAmount: 1 });
-    const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
-    const { accessToken } = loginHelper(global.container, manager);
 
-    const email = "test@test.com";
+    const email = "stefan.banach@gmail.com";
     const pendingUser = await pendingUserRepository.save(
       PendingUserModel.create({
         id: uuid(),
@@ -29,13 +24,12 @@ describe("/users/register integration", () => {
 
     await request(global.container.resolve("app"))
       .post("/api/users/register")
-      .set("Authorization", `Bearer ${accessToken}`)
       .send({
         userId: pendingUser.id,
         password: "123456",
-        name: "test name",
-        surname: "test surname",
-        phone: "123",
+        name: "Stefan",
+        surname: "Banach",
+        phone: "123456",
       })
       .expect(200);
 
@@ -44,12 +38,9 @@ describe("/users/register integration", () => {
     const newUser = await userBaseRepository.findOne({ email });
     expect(newUser).to.not.be.equal(undefined);
   });
-  it("resgister manager", async () => {
+  it("resgisters a manager", async () => {
     const userBaseRepository: UserBaseRepository = global.container.resolve("userBaseRepository");
     const pendingUserRepository: Repository<PendingUserModel> = global.container.resolve("pendingUserRepository");
-    const { users } = await seedApplication(global.container, { usersAmount: 1 });
-    const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
-    const { accessToken } = loginHelper(global.container, manager);
 
     const email = "test@test.com";
     const pendingUser = await pendingUserRepository.save(
@@ -62,7 +53,6 @@ describe("/users/register integration", () => {
 
     await request(global.container.resolve("app"))
       .post("/api/users/register")
-      .set("Authorization", `Bearer ${accessToken}`)
       .send({
         userId: pendingUser.id,
         password: "123456",
@@ -78,13 +68,8 @@ describe("/users/register integration", () => {
     expect(newUser).to.not.be.equal(undefined);
   });
   it("rejects registration on invalid userId", async () => {
-    const { users } = await seedApplication(global.container, { usersAmount: 1 });
-    const manager = users.find((singleUser) => singleUser.type === UserBaseType.MANAGER)!;
-    const { accessToken } = loginHelper(global.container, manager);
-
     request(global.container.resolve("app"))
       .post("/api/users/register")
-      .set("Authorization", `Bearer ${accessToken}`)
       .send({
         userId: "123456",
         password: "123456",

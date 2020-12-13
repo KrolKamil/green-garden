@@ -30,7 +30,7 @@ export class MailService {
       html: `<p>W celu aktywacji swojego konta oraz dokończenia procesu rejestracji kliknij link znajdujący się poniżej.</p>
       <a href="localhost:3000/signup-screen/${id}">Dokończenie procesu rejestracji</a>`,
       text: `W celu aktywacji swojego konta oraz dokończenia procesu rejestracji wklej adres znajdujący się poniżej do paska adresu przeglądarki:
-      localhost:3000/signup-screen/${id}`
+      localhost:3000/signup-screen/${id}`,
     });
   }
 
