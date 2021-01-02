@@ -31,16 +31,14 @@ describe("authenicationMiddleware integration", () => {
     };
     await authenticationMiddleware(req, res, next);
   });
-  it("allow acces on valid Bearer token", async () => {
+  it("allows access on valid Bearer token", async () => {
     const { users } = await seedApplication(global.container, {
       usersAmount: 1,
     });
     const { accessToken } = loginHelper(global.container, users[0]);
     const authenticationMiddleware: MiddlewareType = global.container.resolve("authenticationMiddleware");
     const req = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      headers: { authorization: `Bearer ${accessToken}` },
     } as any;
     const res = { locals: {} } as any;
     const next = (err: any) => {

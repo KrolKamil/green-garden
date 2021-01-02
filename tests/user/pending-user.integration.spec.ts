@@ -23,15 +23,13 @@ describe("/users/pending-user integration", () => {
   it("returns pending user", async () => {
     const pendingUserRepository: Repository<PendingUserModel> = global.container.resolve("pendingUserRepository");
     await seedApplication(global.container, { usersAmount: 1 });
-
     const pendingUser = await pendingUserRepository.save(
       PendingUserModel.create({
         id: uuid(),
-        email: "test@test.com",
+        email: "stanislaw@ulam.com",
         type: UserBaseType.USER,
       }),
     );
-
     await request(global.container.resolve("app"))
       .get(`/api/users/${pendingUser.id}/pending-user`)
       .expect(200)
